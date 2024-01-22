@@ -28,6 +28,13 @@
 // export default App;
 
 
+
+
+
+
+
+
+
 import React from 'react';
 
 const App = () => {
@@ -35,7 +42,8 @@ const App = () => {
     <div className="bg-gray-800 min-h-screen">
       <header className="py-4">
         <div className="container mx-auto flex justify-between items-center px-6">
-          <h1 className="text-white text-lg">My New Taskboard</h1>
+          {/* <h1 className="text-white text-lg">My New Taskboard</h1> */}
+          <button className="bg-blue-600 text-white py-2 px-4 rounded">My New Taskboard</button>
           <nav>
             <ul className="flex space-x-4">
               <li><button className="bg-blue-600 text-white py-2 px-4 rounded">Update</button></li>
@@ -60,3 +68,8 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
