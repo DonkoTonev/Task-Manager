@@ -36,6 +36,7 @@
 
 
 import React from 'react';
+import Settings from './components/settings'; 
 
 const App = () => {
   return (
@@ -68,8 +69,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-
