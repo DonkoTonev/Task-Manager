@@ -18,6 +18,8 @@
 </html> -->
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,12 +45,8 @@
         </nav>
     </header>
     <main>
-        <section class="taskboard-grid">
-            <!-- Dynamically generate task cards here -->
-            <div class="task-card">
-                <!-- Content of task card -->
-            </div>
-            <!-- ... other task cards ... -->
+        <section class="taskboard-grid" id="taskboard-grid">
+            <!-- Task cards will be dynamically added here -->
         </section>
     </main>
     <script>
@@ -69,14 +67,25 @@
                 formData.append('file', file);
                 formData.append('name', taskboardName);
                 
-                fetch('/upload/', {
+                fetch('/upload/', { // Make sure this endpoint is correct
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    // Handle the response from the server here
+                    // Assuming 'data' is an array of row objects
+                    var taskboardGrid = document.getElementById('taskboard-grid');
+                    taskboardGrid.innerHTML = ''; // Clear existing cards
+                    data.forEach((row) => {
+                        var card = document.createElement('div');
+                        card.className = 'task-card';
+                        for (var key in row) {
+                            var p = document.createElement('p');
+                            p.textContent = `${key}: ${row[key]}`;
+                            card.appendChild(p);
+                        }
+                        taskboardGrid.appendChild(card);
+                    });
                 })
                 .catch(error => {
                     console.error('Error:', error);

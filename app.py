@@ -2,11 +2,14 @@ from TaskboardManager import TaskboardManager
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from openpyxl import load_workbook
+from io import BytesIO
 from fastapi.responses import FileResponse, HTMLResponse
 from typing import Optional, Annotated
 import base64
 import sqlite3
 import json
+from datetime import datetime
 
 app = FastAPI(title="Taskboard")
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
@@ -54,12 +57,32 @@ async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File
 #     db.uploadFile(name, file)
 #     return
 
+# @app.post("/upload/")
+# async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
+#     file_content = await file.read()
+#     db.uploadFile(name, file_content)
+#     return {"message": f"File '{file.filename}' uploaded for taskboard '{name}'."}
+
 @app.post("/upload/")
 async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
-    file_content = await file.read()
-    db.uploadFile(name, file_content)
-    return {"message": f"File '{file.filename}' uploaded for taskboard '{name}'."}
+    contents = await file.read()
+    workbook = load_workbook(filename=BytesIO(contents))
+    sheet = workbook.active
+    rows = list(sheet.iter_rows(values_only=True))
+    headers = rows[0]
 
+    def convert_to_json_serializable(row):
+        json_row = {}
+        for key, value in zip(headers, row):
+            if isinstance(value, datetime):
+                # Convert datetime to ISO string format
+                json_row[key] = value.isoformat()
+            else:
+                json_row[key] = value
+        return json_row
+
+    data = [convert_to_json_serializable(row) for row in rows[1:]]  # Convert rows to list of dicts
+    return data  # Return the data as a list of dictionaries
 
 
 # @app.post("/upload_xlsx/")
