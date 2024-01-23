@@ -31,18 +31,60 @@
         <nav>
             <h1>My New Taskboard</h1>
             <ul>
-                <li><button>Update</button></li>
-                <li><button>Edit</button></li>
-                <li><button>Open</button></li>
-                <li><button>New</button></li>
-                <li><button>Settings</button></li>
+                <li>
+                    <button id="update-button">Update</button>
+                    <input type="text" id="taskboard-name" placeholder="Enter Taskboard Name" style="margin-left: 10px;">
+                </li>
+                <li><button id="edit-button">Edit</button></li>
+                <li><button id="open-button">Open</button></li>
+                <li><button id="new-button">New</button></li>
+                <li><button id="settings-button">Settings</button></li>
             </ul>
         </nav>
     </header>
     <main>
         <section class="taskboard-grid">
             <!-- Dynamically generate task cards here -->
+            <div class="task-card">
+                <!-- Content of task card -->
+            </div>
+            <!-- ... other task cards ... -->
         </section>
     </main>
+    <script>
+        document.getElementById('update-button').addEventListener('click', function() {
+            var taskboardName = document.getElementById('taskboard-name').value;
+            if (!taskboardName) {
+                alert('Please enter the name of the taskboard.');
+                return;
+            }
+
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.xlsx'; // Accept only .xlsx files
+            
+            fileInput.addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('name', taskboardName);
+                
+                fetch('/upload/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Handle the response from the server here
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+            
+            fileInput.click();
+        });
+    </script>
 </body>
 </html>

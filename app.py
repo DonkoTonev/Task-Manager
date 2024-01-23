@@ -1,5 +1,5 @@
 from TaskboardManager import TaskboardManager
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
@@ -49,10 +49,30 @@ async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File
 
 
 # Endpoint to upload a file to a Taskboard
+# @app.post("/upload/")
+# async def upload_file(name: str, file: Annotated[bytes, File()]):
+#     db.uploadFile(name, file)
+#     return
+
 @app.post("/upload/")
-async def upload_file(name: str, file: Annotated[bytes, File()]):
-    db.uploadFile(name, file)
-    return
+async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
+    file_content = await file.read()
+    db.uploadFile(name, file_content)
+    return {"message": f"File '{file.filename}' uploaded for taskboard '{name}'."}
+
+
+
+# @app.post("/upload_xlsx/")
+# async def upload_xlsx(name: str, file: UploadFile = File(...)):
+#     if not file.filename.endswith('.xlsx'):
+#         raise HTTPException(status_code=400, detail="Invalid file type. Only '.xlsx' files are accepted.")
+#     contents = await file.read()
+#     try:
+#         # Process the .XLSX file and update the Taskboard
+#         db.uploadFile(name, contents)
+#         return {"status": "success", "message": f"Taskboard '{name}' updated successfully."}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
 
 
 # Endpoint to delete a Taskboard

@@ -62,3 +62,9 @@ main {
 }
 
 /* Add a specific class for the task cards if necessary */
+.task-card {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 5px;
+    /* Additional styling for task cards */
+}
