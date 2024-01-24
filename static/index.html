@@ -18,7 +18,7 @@
 </html> -->
 
 
-
+<!-- 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,6 @@
     </header>
     <main>
         <section class="taskboard-grid" id="taskboard-grid">
-            <!-- Task cards will be dynamically added here -->
         </section>
     </main>
     <script>
@@ -94,6 +93,146 @@
             
             fileInput.click();
         });
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskboard</title>
+    <link rel="stylesheet" href="/static/styling/home.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>My New Taskboard</h1>
+            <ul>
+                <li>
+                    <button id="update-button">Update</button>
+                    <input type="text" id="taskboard-name" placeholder="Enter Taskboard Name" style="margin-left: 10px;">
+                </li>
+                <li><button id="edit-button">Edit</button></li>
+                <li><button id="open-button">Open</button></li>
+                <li><button id="new-button">New</button></li>
+                <li><button id="settings-button">Settings</button></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="taskboard-grid" id="taskboard-grid">
+            <!-- Task cards will be dynamically added here -->
+        </section>
+    </main>
+    <script>
+            document.getElementById('update-button').addEventListener('click', function() {
+                var taskboardName = document.getElementById('taskboard-name').value;
+                if (!taskboardName) {
+                    alert('Please enter the name of the taskboard.');
+                    return;
+                }
+    
+                var fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.xlsx'; // Accept only .xlsx files
+                
+                fileInput.addEventListener('change', function(event) {
+                    var file = event.target.files[0];
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('name', taskboardName);
+                    
+                    fetch('/upload/', { // Make sure this endpoint is correct
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Assuming 'data' is an array of row objects
+                        var taskboardGrid = document.getElementById('taskboard-grid');
+                        taskboardGrid.innerHTML = ''; // Clear existing cards
+                        data.forEach((row) => {
+                            var card = document.createElement('div');
+                            card.className = 'task-card';
+                            for (var key in row) {
+                                var p = document.createElement('p');
+                                p.textContent = `${key}: ${row[key]}`;
+                                card.appendChild(p);
+                            }
+                            taskboardGrid.appendChild(card);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+                
+                fileInput.click();
+            });
+
+            document.getElementById('open-button').addEventListener('click', function() {
+                fetch('/list/')
+                .then(response => response.json())
+                .then(taskboards => {
+                    showTaskboardSelector(Object.values(taskboards));
+                })
+                .catch(error => {
+                    console.error('Error fetching taskboards:', error);
+                });
+            });
+    
+            function showTaskboardSelector(taskboards) {
+                var selector = document.createElement('select');
+                selector.id = 'taskboard-selector';
+                taskboards.forEach(taskboard => {
+                    var option = document.createElement('option');
+                    option.value = taskboard;
+                    option.textContent = taskboard;
+                    selector.appendChild(option);
+                });
+    
+                document.body.appendChild(selector);
+    
+                selector.addEventListener('change', function() {
+                    var selectedTaskboard = this.value;
+                    fetchTaskboardData(selectedTaskboard);
+                });
+            }
+    
+            function fetchTaskboardData(taskboardName) {
+                fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    var taskboardGrid = document.getElementById('taskboard-grid');
+                    taskboardGrid.innerHTML = ''; // Clear existing content
+    
+                    // Check if data is an array and handle accordingly
+                    if (Array.isArray(data)) {
+                        data.forEach(createCard);
+                    } else if (typeof data === 'object') {
+                        // If data is an object, iterate over its values
+                        Object.values(data).forEach(createCard);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching taskboard data:', error);
+                });
+            }
+    
+            function createCard(row) {
+                var card = document.createElement('div');
+                card.className = 'task-card';
+                Object.keys(row).forEach(key => {
+                    var p = document.createElement('p');
+                    p.textContent = `${key}: ${row[key]}`;
+                    card.appendChild(p);
+                });
+                document.getElementById('taskboard-grid').appendChild(card);
+            }
     </script>
 </body>
 </html>
