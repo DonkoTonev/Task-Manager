@@ -127,6 +127,13 @@
         <section class="taskboard-grid" id="taskboard-grid">
             <!-- Task cards will be dynamically added here -->
         </section>
+
+        <!-- Hidden form for creating a new taskboard -->
+        <div id="new-taskboard-form" style="display: none;">
+            <input type="text" id="new-taskboard-name" placeholder="Enter Taskboard Name">
+            <input type="file" id="new-taskboard-file" accept=".xlsx">
+            <button id="submit-new-taskboard">Create Taskboard</button>
+        </div>
     </main>
     <script>
             document.getElementById('update-button').addEventListener('click', function() {
@@ -233,6 +240,42 @@
                 });
                 document.getElementById('taskboard-grid').appendChild(card);
             }
+
+            // New functionality for the 'New' button
+            document.getElementById('new-button').addEventListener('click', function() {
+                document.getElementById('new-taskboard-form').style.display = 'block';
+            });
+
+            document.getElementById('submit-new-taskboard').addEventListener('click', function() {
+                var taskboardName = document.getElementById('new-taskboard-name').value;
+                var fileInput = document.getElementById('new-taskboard-file');
+                var file = fileInput.files[0];
+
+                if (!taskboardName || !file) {
+                    alert('Please enter a taskboard name and select a file.');
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append('name', taskboardName);
+                formData.append('file', file);
+
+                fetch('/create', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Taskboard created:', data);
+                    // Hide the form and clear inputs after successful creation
+                    document.getElementById('new-taskboard-form').style.display = 'none';
+                    document.getElementById('new-taskboard-name').value = '';
+                    fileInput.value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
     </script>
 </body>
 </html>
