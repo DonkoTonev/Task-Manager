@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+</head>
+<body>
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
+                    <i class="fas fa-cog text-blue-600 fa-2x"></i>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Settings</h3>
+                <div class="mt-2 px-7 py-3">
+                    <input type="text" placeholder="Columns" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                    <input type="text" placeholder="Rows" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                    <input type="text" placeholder="Tile Height" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                    <input type="text" placeholder="Tile Width" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                    <input type="password" placeholder="Password" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                    <div class="flex justify-between">
+                        <div class="flex flex-col w-1/2 mr-2">
+                            <label class="mb-2 text-sm font-bold text-gray-700">Font Size:</label>
+                            <input type="text" placeholder="0 px" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                        </div>
+                        <div class="flex flex-col w-1/2 ml-2">
+                            <label class="mb-2 text-sm font-bold text-gray-700">Font Color:</label>
+                            <input type="text" placeholder="Black" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                        </div>
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="flex flex-col w-1/2 mr-2">
+                            <label class="mb-2 text-sm font-bold text-gray-700">Background Color:</label>
+                            <input type="text" placeholder="Grey" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                        </div>
+                        <div class="flex flex-col w-1/2 ml-2">
+                            <label class="mb-2 text-sm font-bold text-gray-700">Font Family:</label>
+                            <input type="text" placeholder="Eras ITC" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
+                        </div>
+                    </div>
+                    <button class="mt-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
