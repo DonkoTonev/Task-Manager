@@ -45,15 +45,35 @@ async def home():
 
 
 # Endpoint to create a new Taskboard
+# @app.post("/create")
+# async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File()):
+#     db.createTaskboard(name)
+
+#     data = await file.read()
+#     if not data == b"":
+#         db.uploadFile(name, data)
+#         return {"msg": "file uploaded"}
+#     return {"msg": "file not uploaded"}
+
+
 @app.post("/create")
 async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File()):
     db.createTaskboard(name)
 
-    data = await file.read()
-    if not data == b"":
+    contents = await file.read()
+    if contents != b"":
+        # Process the file into the required format
+        workbook = load_workbook(filename=BytesIO(contents))
+        sheet = workbook.active
+        rows = list(sheet.iter_rows(values_only=True))
+        headers = rows[0]
+
+        data = [dict(zip(headers, row)) for row in rows[1:]]  # Convert rows to list of dicts
+        
         db.uploadFile(name, data)
-        return {"msg": "file uploaded"}
+        return {"msg": "file uploaded and data processed"}
     return {"msg": "file not uploaded"}
+
 
 
 # Endpoint to upload a file to a Taskboard

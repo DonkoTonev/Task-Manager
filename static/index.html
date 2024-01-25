@@ -154,42 +154,31 @@
                 alert('Please select a taskboard first.');
                 return;
             }
-
+        
             var fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = '.xlsx';
-
+        
             fileInput.addEventListener('change', function(event) {
                 var file = event.target.files[0];
                 var formData = new FormData();
                 formData.append('file', file);
                 formData.append('name', currentTaskboard); // Use the current taskboard
-
+        
                 fetch('/upload/', {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Assuming 'data' is an array of row objects
-                    var taskboardGrid = document.getElementById('taskboard-grid');
-                    taskboardGrid.innerHTML = ''; // Clear existing cards
-                    data.forEach((row) => {
-                        var card = document.createElement('div');
-                        card.className = 'task-card';
-                        for (var key in row) {
-                            var p = document.createElement('p');
-                            p.textContent = `${key}: ${row[key]}`;
-                            card.appendChild(p);
-                        }
-                        taskboardGrid.appendChild(card);
-                    });
+                    // If the upload is successful, fetch and display the updated data
+                    fetchTaskboardData(currentTaskboard);
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
             });
-
+        
             fileInput.click();
         });
 

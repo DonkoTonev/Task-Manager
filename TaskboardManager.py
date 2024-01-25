@@ -246,16 +246,19 @@ class TaskboardManager:
     
     
     def _ensure_columns_exist(self, name, columns):
-        # Ensure that the Taskboard table has columns for all specified headers
         with self.global_db:
             cursor = self.global_db.cursor()
+
+            # Fetch the current columns in the table and sanitize them
             cursor.execute("PRAGMA table_info('{}')".format(name))
-            existing_columns = set(row[1] for row in cursor.fetchall())
+            existing_columns_info = cursor.fetchall()
+            existing_columns = [col_info[1].strip().lower() for col_info in existing_columns_info]  # Sanitize column names
+
             for column in columns:
-                if column not in existing_columns:
-                    cursor.execute(
-                        "ALTER TABLE '{}' ADD COLUMN '{}' TEXT".format(name, column)
-                    )
+                sanitized_column = column.strip().lower()  # Sanitize input column names
+                if sanitized_column not in existing_columns:
+                    cursor.execute("ALTER TABLE '{}' ADD COLUMN '{}' TEXT".format(name, sanitized_column))
+
 
 
     def destroy(self, name):
