@@ -258,6 +258,19 @@
 
 
 
+        // Event listener for the 'Edit' button
+        document.getElementById('edit-button').addEventListener('click', function() {
+            if (!currentTaskboard) {
+                alert('Please select a taskboard first.');
+                return;
+            }
+            
+            // Correctly append the taskboard name to the URL and navigate to the edit page
+            window.location.href = '/edit?name=' + encodeURIComponent(currentTaskboard);
+        });
+
+
+        
         // New functionality for the 'New' button
         document.getElementById('new-button').addEventListener('click', function() {
             document.getElementById('new-taskboard-form').style.display = 'block';

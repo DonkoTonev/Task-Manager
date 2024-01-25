@@ -1,5 +1,6 @@
 from TaskboardManager import TaskboardManager
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
@@ -37,6 +38,10 @@ async def home():
 @app.get("/settings")
 async def home():
     return FileResponse("static/settings.html")
+
+@app.get("/edit")
+async def home():
+    return FileResponse("static/edit.html")
 
 
 @app.get("/menu")

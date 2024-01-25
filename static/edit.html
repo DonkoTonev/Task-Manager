@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Taskboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eras+ITC">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .custom-font {
+            font-family: 'Eras ITC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-800 text-white custom-font">
+    <div class="flex justify-between p-4">
+        <div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">My New Taskboard</button>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Save</button>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Duplicate</button>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Delete</button>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">New</button>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
+        </div>
+        <div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Settings</button>
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="w-3/4 p-4">
+            <div class="mb-4">
+                <h2 class="text-blue-300 mb-2">Tile Settings</h2>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="columns">Columns</label>
+                        <input type="number" id="columns" value="10" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="rows">Rows</label>
+                        <input type="number" id="rows" value="10" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+            </div>
+            <!-- More settings follow the same pattern -->
+        </div>
+        <div class="w-1/4 p-4">
+            <h2 class="text-blue-300 mb-2">Filter Editor</h2>
+            <!-- Filter Editor content -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Extract 'name' parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskboardName = urlParams.get('name');
+            
+            if (taskboardName) {
+                // Logic to handle the editing of the taskboard with name taskboardName
+                console.log('Editing taskboard:', taskboardName);
+                // Here you can add more code to initialize the form with taskboard data
+            } else {
+                alert('No taskboard specified for editing.');
+                // Handle the absence of a taskboard name, maybe redirect back or show a message
+            }
+        });
+    </script>
+</body>
+</html>
