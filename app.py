@@ -34,6 +34,11 @@ async def home():
     return FileResponse("static/index.html")
 
 
+@app.get("/settings")
+async def home():
+    return FileResponse("static/settings.html")
+
+
 @app.get("/menu")
 async def home():
     return FileResponse("static/menu.html")
@@ -63,6 +68,38 @@ async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File
 #     db.uploadFile(name, file_content)
 #     return {"message": f"File '{file.filename}' uploaded for taskboard '{name}'."}
 
+
+
+
+
+
+
+
+
+# @app.post("/upload/")
+# async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
+#     contents = await file.read()
+#     workbook = load_workbook(filename=BytesIO(contents))
+#     sheet = workbook.active
+#     rows = list(sheet.iter_rows(values_only=True))
+#     headers = rows[0]
+
+#     def convert_to_json_serializable(row):
+#         json_row = {}
+#         for key, value in zip(headers, row):
+#             if isinstance(value, datetime):
+#                 json_row[key] = value.isoformat()
+#             else:
+#                 json_row[key] = value
+#         return json_row
+
+#     data = [convert_to_json_serializable(row) for row in rows[1:]]  # Convert rows to list of dicts
+
+#     # Call TaskboardManager's uploadFile method with processed data
+#     db.uploadFile(name, data)
+#     return {"message": "Data uploaded successfully to Taskboard"}
+
+
 @app.post("/upload/")
 async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
     contents = await file.read()
@@ -71,18 +108,21 @@ async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
     rows = list(sheet.iter_rows(values_only=True))
     headers = rows[0]
 
-    def convert_to_json_serializable(row):
-        json_row = {}
-        for key, value in zip(headers, row):
-            if isinstance(value, datetime):
-                # Convert datetime to ISO string format
-                json_row[key] = value.isoformat()
-            else:
-                json_row[key] = value
-        return json_row
+    data = [dict(zip(headers, row)) for row in rows[1:]]  # Convert rows to list of dicts
+    db.uploadFile(name, data)  # Call the updated uploadFile method
+    return {"message": f"Data uploaded successfully to taskboard '{name}'."}
 
-    data = [convert_to_json_serializable(row) for row in rows[1:]]  # Convert rows to list of dicts
-    return data  # Return the data as a list of dictionaries
+
+
+
+
+
+
+
+
+
+
+
 
 
 # @app.post("/upload_xlsx/")

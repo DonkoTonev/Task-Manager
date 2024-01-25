@@ -97,6 +97,12 @@
 </body>
 </html> -->
 
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,6 +140,12 @@
         </div>
     </main>
     <script>
+
+        document.getElementById('settings-button').addEventListener('click', function() {
+            // To open in the same tab:
+            window.location.href = 'settings';
+
+        });
         // Global variable to keep track of the currently selected taskboard
         let currentTaskboard = null;
 
@@ -234,12 +246,28 @@
             var card = document.createElement('div');
             card.className = 'task-card';
             Object.keys(row).forEach(key => {
-                var p = document.createElement('p');
-                p.textContent = `${key}: ${row[key]}`;
-                card.appendChild(p);
+                if (row[key] !== null && row[key] !== undefined) {  // Check for non-null and non-undefined values
+                    var p = document.createElement('p');
+                    p.textContent = `${key}: ${row[key]}`;
+                    card.appendChild(p);
+                }
             });
             document.getElementById('taskboard-grid').appendChild(card);
         }
+        
+
+     //   function createCard(row) {
+        //    var card = document.createElement('div');
+            //card.className = 'task-card';
+          //  Object.keys(row).forEach(key => {
+                //var p = document.createElement('p');
+              //  p.textContent = `${key}: ${row[key]}`;
+            //    card.appendChild(p);
+          //  });
+        //    document.getElementById('taskboard-grid').appendChild(card);
+       // }
+
+
 
         // New functionality for the 'New' button
         document.getElementById('new-button').addEventListener('click', function() {
