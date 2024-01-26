@@ -53,19 +53,18 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Extract 'name' parameter from URL
             const urlParams = new URLSearchParams(window.location.search);
             const taskboardName = urlParams.get('name');
-            
+            console.log('URL Parameters:', urlParams.toString());
+            console.log('Taskboard Name:', taskboardName);
+        
             if (taskboardName) {
                 // Logic to handle the editing of the taskboard with name taskboardName
-                console.log('Editing taskboard:', taskboardName);
-                // Here you can add more code to initialize the form with taskboard data
             } else {
                 alert('No taskboard specified for editing.');
-                // Handle the absence of a taskboard name, maybe redirect back or show a message
             }
         });
+        
     </script>
 </body>
 </html>

@@ -265,9 +265,10 @@
                 return;
             }
             
-            // Correctly append the taskboard name to the URL and navigate to the edit page
-            window.location.href = '/edit?name=' + encodeURIComponent(currentTaskboard);
+            // Change the window location to your edit page and pass the taskboard name as a query parameter
+            window.location.href = `/edit?name=${encodeURIComponent(currentTaskboard)}`;
         });
+        
 
 
         
