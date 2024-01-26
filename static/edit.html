@@ -11,20 +11,21 @@
         .custom-font {
             font-family: 'Eras ITC', sans-serif;
         }
+        /* Additional custom styling may be required if Tailwind does not support certain specifics */
     </style>
 </head>
 <body class="bg-gray-800 text-white custom-font">
     <div class="flex justify-between p-4">
         <div>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">My New Taskboard</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Save</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Duplicate</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Delete</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">New</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">My New Taskboard</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Save</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Duplicate</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Delete</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">New</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
         </div>
         <div>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Settings</button>
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
         </div>
     </div>
 
@@ -35,19 +36,91 @@
                 <div class="flex flex-wrap -mx-2">
                     <div class="px-2 w-1/2">
                         <label class="block text-gray-500 text-sm mb-1" for="columns">Columns</label>
-                        <input type="number" id="columns" value="10" class="w-full bg-blue-600 rounded text-white p-2">
+                        <input type="number" id="columns" value="10" class="w-full bg-gray-700 rounded text-white p-2">
                     </div>
                     <div class="px-2 w-1/2">
                         <label class="block text-gray-500 text-sm mb-1" for="rows">Rows</label>
-                        <input type="number" id="rows" value="10" class="w-full bg-blue-600 rounded text-white p-2">
+                        <input type="number" id="rows" value="10" class="w-full bg-gray-700 rounded text-white p-2">
+                    </div>
+                    <!-- Repeat this structure for all the other input fields as shown in the screenshot -->
+                    <!-- Make sure to match the text, value, and any other attributes exactly as they appear in the screenshot -->
+                </div>
+            </div>
+            <div>
+                <h2 class="text-blue-300 mb-2">Formatting</h2>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Font Size</label>
+                        <input type="number" id="font-size" value="0" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Font Color</label>
+                        <input type="text" id="font-color" value="Black" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-2 mt-4">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Background Color</label>
+                        <input type="text" id="bg-color" value="Grey" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Font Family</label>
+                        <input type="text" id="bg-color" value="Eras ITC" class="w-full bg-blue-600 rounded text-white p-2">
                     </div>
                 </div>
             </div>
-            <!-- More settings follow the same pattern -->
+            <div>
+                <h2 class="text-blue-300 mb-2">Linking</h2>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Master Taskboard</label>
+                        <input type="text" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Online Source</label>
+                        <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-2 mt-4">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Auto-Update</label>
+                        <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Update File</label>
+                        <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-blue-300 mb-2">Data Builder</h2>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Title Header</label>
+                        <input type="number" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Text-Wrapping</label>
+                        <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-2 mt-4">
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sorting Header</label>
+                        <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                    <div class="px-2 w-1/2">
+                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sort By</label>
+                        <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
+                    </div>
+                </div>
+            </div>
+                    <!-- More settings follow the same pattern -->
         </div>
         <div class="w-1/4 p-4">
             <h2 class="text-blue-300 mb-2">Filter Editor</h2>
-            <!-- Filter Editor content -->
+            <input type="text" id="filter-editor" class="w-full bg-gray-700 rounded text-white p-2">
         </div>
     </div>
 
