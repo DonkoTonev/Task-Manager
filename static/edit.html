@@ -17,12 +17,12 @@
 <body class="bg-gray-800 text-white custom-font">
     <div class="flex justify-between p-4">
         <div>
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">My New Taskboard</button>
+            <button onclick="fetchTaskboardData()" id="taskboard-name-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4">My New Taskboard</button>
             <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Save</button>
             <button onclick="duplicateTaskboard()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Duplicate</button>
             <button onclick="confirmDeletion()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Delete</button>
             <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">New</button>
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
+            <button id="close-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
         </div>
         <div>
             <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
@@ -126,6 +126,21 @@
 
     <script>
 
+        document.getElementById('taskboard-name-button').addEventListener('click', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskboardName = urlParams.get('name');
+            if (taskboardName) {
+                window.location.href = `/?name=${encodeURIComponent(taskboardName)}`;
+            } else {
+                alert('No taskboard specified.');
+            }
+        });
+
+
+        document.getElementById('close-button').addEventListener('click', function() {
+            window.location.href = '/';
+        });
+
         document.getElementById('settings-button').addEventListener('click', function() {
             // To open in the same tab:
             window.location.href = 'settings';
@@ -188,6 +203,22 @@
                 console.error('Error:', error);
             }
         }
+
+        async function fetchTaskboardData() {
+            // Get the taskboard name from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentTaskboardName = urlParams.get('name');
+        
+            // Check if a taskboard name is present
+            if (currentTaskboardName) {
+                // Redirect to the taskboard view page
+                window.location.href = `/get/?name=${encodeURIComponent(currentTaskboardName)}`;
+            } else {
+                // Handle the case where no taskboard name is present
+                alert('No taskboard specified.');
+            }
+        }
+        
     </script>
 </body>
 </html>

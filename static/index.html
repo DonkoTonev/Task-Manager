@@ -307,6 +307,23 @@
                 console.error('Error:', error);
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskboardName = urlParams.get('name');
+            if (taskboardName) {
+                // Code to open the specified taskboard
+                // For example, if you have a function to load a taskboard by name, call it here
+                openTaskboard(taskboardName);
+            }
+        });
+    
+        function openTaskboard(taskboardName) {
+            // Implement the logic to open and display the taskboard by its name
+            // This might involve setting the 'currentTaskboard' variable and calling a function to fetch and display its data
+            currentTaskboard = taskboardName;
+            fetchTaskboardData(taskboardName);
+        }
     </script>
 </body>
 </html>
