@@ -86,14 +86,12 @@ class TaskboardManager:
     #             ws.iter_rows())]  # Corrected line
     #         for row in ws.iter_rows(values_only=True):
     #             data.append(row)
-                
+
     #     elif isinstance(data, list) and all(isinstance(item, dict) for item in data):
     #         # New: Processing list of dictionaries
     #         if not data:
     #             return  # No data to process
 
-            
-            
     #         # Use headers from the first dictionary
     #         headers = list(data[0].keys())
 
@@ -124,12 +122,9 @@ class TaskboardManager:
     #                     ),
     #                     values
     #                 )
-                
+
     #     else:
     #         raise Exception("Unsupported data format for upload.")
-
-
-
 
     def uploadFile(self, name, data):
         # Check if the Taskboard exists
@@ -148,27 +143,30 @@ class TaskboardManager:
             # Check and handle 'upload_id' column
             cursor.execute("PRAGMA table_info('{}')".format(name))
             columns_info = cursor.fetchall()
-            upload_id_exists = any(column[1] == "upload_id" for column in columns_info)
+            upload_id_exists = any(
+                column[1] == "upload_id" for column in columns_info)
 
             if not upload_id_exists:
-                cursor.execute("ALTER TABLE '{}' ADD COLUMN 'upload_id' INTEGER DEFAULT 0".format(name))
+                cursor.execute(
+                    "ALTER TABLE '{}' ADD COLUMN 'upload_id' INTEGER DEFAULT 0".format(name))
                 upload_id = 0
             else:
-                upload_id = cursor.execute("SELECT MAX(upload_id) FROM '{}'".format(name)).fetchone()[0]
+                upload_id = cursor.execute(
+                    "SELECT MAX(upload_id) FROM '{}'".format(name)).fetchone()[0]
                 upload_id = 0 if upload_id is None else (upload_id + 1)
 
             for row in data:
-                row_values = [upload_id] + [row.get(header, None) for header in headers]
+                row_values = [upload_id] + \
+                    [row.get(header, None) for header in headers]
                 cursor.execute(
                     "INSERT INTO '{}' ({}) VALUES ({})".format(
                         name,
-                        ",".join(["'upload_id'"] + [f"'{header}'" for header in headers]),
+                        ",".join(["'upload_id'"] +
+                                 [f"'{header}'" for header in headers]),
                         ",".join(["?"] * (len(headers) + 1)),
                     ),
                     row_values,
                 )
-
-
 
         # # Ensure that the Taskboard table has columns for all headers
         # self._ensure_columns_exist(name, headers)
@@ -225,9 +223,6 @@ class TaskboardManager:
         #             values,
         #         )
 
-
-
-
     # def _ensure_columns_exist(self, name, columns):
     #     # Ensure that the Taskboard table has columns for all specified headers
     #     with self.global_db:
@@ -240,11 +235,7 @@ class TaskboardManager:
     #                     "ALTER TABLE '{}' ADD COLUMN '{}' TEXT".format(
     #                         name, column)
     #                 )
-    
-    
-    
-    
-    
+
     def _ensure_columns_exist(self, name, columns):
         with self.global_db:
             cursor = self.global_db.cursor()
@@ -252,14 +243,14 @@ class TaskboardManager:
             # Fetch the current columns in the table and sanitize them
             cursor.execute("PRAGMA table_info('{}')".format(name))
             existing_columns_info = cursor.fetchall()
-            existing_columns = [col_info[1].strip().lower() for col_info in existing_columns_info]  # Sanitize column names
+            existing_columns = [col_info[1].strip().lower(
+            ) for col_info in existing_columns_info]  # Sanitize column names
 
             for column in columns:
                 sanitized_column = column.strip().lower()  # Sanitize input column names
                 if sanitized_column not in existing_columns:
-                    cursor.execute("ALTER TABLE '{}' ADD COLUMN '{}' TEXT".format(name, sanitized_column))
-
-
+                    cursor.execute("ALTER TABLE '{}' ADD COLUMN '{}' TEXT".format(
+                        name, sanitized_column))
 
     def destroy(self, name):
         # Check if the Taskboard exists

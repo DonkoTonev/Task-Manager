@@ -81,6 +81,42 @@ async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File
 
 
 
+
+
+
+
+@app.post("/duplicate")
+async def duplicate_taskboard(currentName: str, newName: str):
+    try:
+        # Check if the new taskboard name already exists
+        if newName in db.listAvailable():
+            return {"message": "Taskboard with the new name already exists."}
+
+        # Retrieve data from the current taskboard
+        currentData = db.getAsDict(currentName)
+
+        # Convert the data into a list of dictionaries if it's not already
+        if isinstance(currentData, dict):
+            currentData = list(currentData.values())
+
+        # Ensure the data is in the correct format: a list of dictionaries
+        if not isinstance(currentData, list) or not all(isinstance(item, dict) for item in currentData):
+            raise ValueError("Invalid data format: Data must be a list of dictionaries.")
+
+        # Create a new taskboard and upload the data
+        db.createTaskboard(newName)
+        db.uploadFile(newName, currentData)
+        return {"message": "Taskboard duplicated successfully."}
+    except Exception as e:
+        print(f"Error during duplication: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
+
+
 # Endpoint to upload a file to a Taskboard
 # @app.post("/upload/")
 # async def upload_file(name: str, file: Annotated[bytes, File()]):
