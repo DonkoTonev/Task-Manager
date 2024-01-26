@@ -25,7 +25,7 @@
             <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
         </div>
         <div>
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
+            <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
         </div>
     </div>
 
@@ -125,6 +125,13 @@
     </div>
 
     <script>
+
+        document.getElementById('settings-button').addEventListener('click', function() {
+            // To open in the same tab:
+            window.location.href = 'settings';
+
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const taskboardName = urlParams.get('name');
