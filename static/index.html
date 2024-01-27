@@ -182,6 +182,20 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
+
+
+        header {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between; /* Aligns items on opposite ends */
+            align-items: center;
+        }
+        
+        #settings-button {
+            margin-right: 20px; /* Add some margin for spacing */
+        }
     </style>
 </head>
 <body>
@@ -193,9 +207,9 @@
                 <li><button id="edit-button" class="button-blue">Edit</button></li>
                 <li><button id="open-button" class="button-blue">Open</button></li>
                 <li><button id="new-button" class="button-blue">New</button></li>
-                <li><button id="settings-button" class="button-blue">Settings</button></li>
             </ul>
         </nav>
+        <button id="settings-button" class="button-blue">Settings</button> <!-- Moved outside of the nav, into the header -->
     </header>
     <main>
 
