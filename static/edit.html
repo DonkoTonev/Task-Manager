@@ -11,18 +11,33 @@
         .custom-font {
             font-family: 'Eras ITC', sans-serif;
         }
+
+        .button-blue {
+            background-color: blue; /* Blue background color */
+            color: white; /* White text for better visibility */
+            border: none; /* Remove default border */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px; /* Rounded corners */
+        }
+        
+        button.button-blue:hover {
+            background-color: blue; /* Maintain blue background on hover */
+        }
         /* Additional custom styling may be required if Tailwind does not support certain specifics */
     </style>
 </head>
 <body class="bg-gray-800 text-white custom-font">
     <div class="flex justify-between p-4">
         <div>
-            <button onclick="fetchTaskboardData()" id="taskboard-name-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4">My New Taskboard</button>
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Save</button>
-            <button onclick="duplicateTaskboard()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Duplicate</button>
-            <button onclick="confirmDeletion()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Delete</button>
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">New</button>
-            <button id="close-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 ml-2 rounded">Close</button>
+            <button onclick="fetchTaskboardData()" id="taskboard-name-button" class="button-blue">My New Taskboard</button>
+            <button class="button-blue">Save</button>
+            <button onclick="duplicateTaskboard()" class="button-blue">Duplicate</button>
+            <button onclick="confirmDeletion()" class="button-blue">Delete</button>
+            <button class="button-blue">New</button>
+            <button id="close-button" class="button-blue">Close</button>
         </div>
         <div>
             <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
