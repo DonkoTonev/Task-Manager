@@ -46,28 +46,44 @@
             list-style: none;
             padding: 0;
             position: absolute;
-            top: 100%; /* Position below the header */
-            right: 0;
-            width: 100%;
-            transform: scaleY(0); /* Initially collapsed */
-            transform-origin: top;
+            top: 0; /* Align with the top of nav h1 */
+            left: 100%; /* Position to the right of the nav h1 */
+            transform: scaleX(0); /* Initially collapsed along the X axis */
+            transform-origin: left;
             transition: transform 350ms ease-in-out; /* Animate the transform property */
-            background-color: #222; /* Optional: Add background color */
+            background-color: #222;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: Add a shadow for better visibility */
         }
         
         .showNavMenu {
-            transform: scaleY(1); /* Expand to full height */
+            transform: scaleX(1); /* Expand to full width */
         }
         
         ul li {
             display: block; /* Change to block for vertical list */
             padding: 5px;
-            background-color: #555;
-            color: white;
+            background-color: blue;
+            color: blue;
+            margin-top: -13px;
+            margin-left: 8px;
         }
         
         ul li:hover {
-            background-color: #333;
+            background-color: blue;
+        }
+
+        .button-blue {
+            background-color: blue; /* Same blue as the nav h1 */
+            color: white; /* White text for better visibility */
+            border: none; /* Remove default border */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px; /* Optional: rounded corners */
+        }
+        ul li button.button-blue:hover {
+            background-color: blue; /* Keep the background color blue on hover */
         }
     </style>
 </head>
@@ -76,11 +92,11 @@
         <nav>
             <h1>My New Taskboard <span class="hamburger">&#9776;</span></h1>
             <ul class="menu">
-                <li><button id="update-button">Update</button></li>
-                <li><button id="edit-button">Edit</button></li>
-                <li><button id="open-button">Open</button></li>
-                <li><button id="new-button">New</button></li>
-                <li><button id="settings-button">Settings</button></li>
+                <li><button id="update-button" class="button-blue">Update</button></li>
+                <li><button id="edit-button" class="button-blue">Edit</button></li>
+                <li><button id="open-button" class="button-blue">Open</button></li>
+                <li><button id="new-button" class="button-blue">New</button></li>
+                <li><button id="settings-button" class="button-blue">Settings</button></li>
             </ul>
         </nav>
     </header>

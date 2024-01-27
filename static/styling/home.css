@@ -27,7 +27,7 @@ nav ul {
 }
 
 nav ul li button {
-    background-color: #555;
+    background-color: blue;
     border: none;
     padding: 10px 20px;
     color: white;
@@ -35,7 +35,7 @@ nav ul li button {
 }
 
 nav ul li button:hover {
-    background-color: #666;
+    background-color: blue;
 }
 
 main {
