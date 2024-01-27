@@ -127,6 +127,61 @@
         #new-taskboard-form input[type="text"]::placeholder {
             color: #888;
         }
+
+
+
+
+
+
+
+
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 5% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 8px; /* Optional: Rounded corners */
+        }
+        
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .taskboard-selector {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +198,10 @@
         </nav>
     </header>
     <main>
+
+        
+
+
         <section class="taskboard-grid" id="taskboard-grid">
             <!-- Task cards will be dynamically added here -->
         </section>
@@ -154,151 +213,152 @@
             <button id="submit-new-taskboard">Create Taskboard</button>
         </div>        
     </main>
-    <script>
 
+    <div id="taskboard-selection-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Select a Taskboard</h2>
+            <select id="taskboard-selector" class="taskboard-selector">
+                <!-- Taskboard options will be dynamically populated here -->
+            </select>
+            <button id="select-taskboard-button" class="button-blue">Open Taskboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle menu visibility
         const hamburger = document.querySelector('.hamburger');
         const menu = document.querySelector('.menu');
         hamburger.addEventListener('click', () => {
             menu.classList.toggle('showNavMenu');
         });
-
-
+    
+        // Open settings page
         document.getElementById('settings-button').addEventListener('click', function() {
-            // To open in the same tab:
             window.location.href = 'settings';
-
         });
+    
         // Global variable to keep track of the currently selected taskboard
         let currentTaskboard = null;
-
+    
+        // Update taskboard functionality
         document.getElementById('update-button').addEventListener('click', function() {
             if (!currentTaskboard) {
                 alert('Please select a taskboard first.');
                 return;
             }
-        
+    
             var fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = '.xlsx';
-        
+    
             fileInput.addEventListener('change', function(event) {
                 var file = event.target.files[0];
                 var formData = new FormData();
                 formData.append('file', file);
-                formData.append('name', currentTaskboard); // Use the current taskboard
-        
+                formData.append('name', currentTaskboard);
+    
                 fetch('/upload/', {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // If the upload is successful, fetch and display the updated data
                     fetchTaskboardData(currentTaskboard);
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
             });
-        
+    
             fileInput.click();
         });
-
+    
+        // Open taskboard selection modal
         document.getElementById('open-button').addEventListener('click', function() {
             fetch('/list/')
             .then(response => response.json())
             .then(taskboards => {
-                showTaskboardSelector(Object.values(taskboards));
+                populateTaskboardSelector(Object.values(taskboards));
+                showModal();
             })
             .catch(error => {
                 console.error('Error fetching taskboards:', error);
             });
         });
-
-        function showTaskboardSelector(taskboards) {
-            var selector = document.createElement('select');
-            selector.id = 'taskboard-selector';
+    
+        // Populate taskboard selector in modal
+        function populateTaskboardSelector(taskboards) {
+            var selector = document.getElementById('taskboard-selector');
+            selector.innerHTML = '';
             taskboards.forEach(taskboard => {
                 var option = document.createElement('option');
                 option.value = taskboard;
                 option.textContent = taskboard;
                 selector.appendChild(option);
             });
-
-            document.body.appendChild(selector);
-
-            selector.addEventListener('change', function() {
-                currentTaskboard = this.value; // Update the current taskboard
-                fetchTaskboardData(currentTaskboard);
-            });
         }
-
-        function fetchTaskboardData(taskboardName) {
-            fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
-            .then(response => response.json())
-            .then(data => {
-                var taskboardGrid = document.getElementById('taskboard-grid');
-                taskboardGrid.innerHTML = ''; // Clear existing content
-
-                // Check if data is an array and handle accordingly
-                if (Array.isArray(data)) {
-                    data.forEach(createCard);
-                } else if (typeof data === 'object') {
-                    // If data is an object, iterate over its values
-                    Object.values(data).forEach(createCard);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching taskboard data:', error);
-            });
+    
+        // Show modal
+        function showModal() {
+            var modal = document.getElementById('taskboard-selection-modal');
+            modal.style.display = 'block';
         }
-
-        function createCard(row) {
-            var card = document.createElement('div');
-            card.className = 'task-card';
-            Object.keys(row).forEach(key => {
-                if (row[key] !== null && row[key] !== undefined) {  // Check for non-null and non-undefined values
-                    var p = document.createElement('p');
-                    p.textContent = `${key}: ${row[key]}`;
-                    card.appendChild(p);
-                }
-            });
-            document.getElementById('taskboard-grid').appendChild(card);
+    
+        // Close modal functionality
+        document.querySelector('.close-button').addEventListener('click', function() {
+            var modal = document.getElementById('taskboard-selection-modal');
+            modal.style.display = 'none';
+        });
+    
+        window.onclick = function(event) {
+            var modal = document.getElementById('taskboard-selection-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
         }
-
-        // Event listener for the 'Edit' button
+    
+        // Handle taskboard selection from modal
+        document.getElementById('select-taskboard-button').addEventListener('click', function() {
+            var selectedTaskboard = document.getElementById('taskboard-selector').value;
+            if (selectedTaskboard) {
+                openTaskboard(selectedTaskboard);
+                var modal = document.getElementById('taskboard-selection-modal');
+                modal.style.display = 'none';
+            } else {
+                alert('Please select a taskboard.');
+            }
+        });
+    
+        // Edit taskboard functionality
         document.getElementById('edit-button').addEventListener('click', function() {
             if (!currentTaskboard) {
                 alert('Please select a taskboard first.');
                 return;
             }
-            
-            // Change the window location to your edit page and pass the taskboard name as a query parameter
             window.location.href = `/edit?name=${encodeURIComponent(currentTaskboard)}`;
         });
-        
-
-
-        
-        // New functionality for the 'New' button
+    
+        // New taskboard functionality
         document.getElementById('new-button').addEventListener('click', function() {
             document.getElementById('new-taskboard-form').style.display = 'block';
         });
-
+    
+        // Submit new taskboard
         document.getElementById('submit-new-taskboard').addEventListener('click', function() {
             var taskboardName = document.getElementById('new-taskboard-name').value;
             var fileInput = document.getElementById('new-taskboard-file');
             var file = fileInput.files[0];
-
+    
             if (!taskboardName || !file) {
                 alert('Please enter a taskboard name and select a file.');
                 return;
             }
-
+    
             var formData = new FormData();
             formData.append('name', taskboardName);
             formData.append('file', file);
-
+    
             fetch('/create', {
                 method: 'POST',
                 body: formData
@@ -306,7 +366,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Taskboard created:', data);
-                // Hide the form and clear inputs after successful creation
                 document.getElementById('new-taskboard-form').style.display = 'none';
                 document.getElementById('new-taskboard-name').value = '';
                 fileInput.value = '';
@@ -315,23 +374,61 @@
                 console.error('Error:', error);
             });
         });
-
+    
+        // Function to fetch and display taskboard data
+        function fetchTaskboardData(taskboardName) {
+            console.log('Fetching data for:', taskboardName); // Debug log
+            fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data received:', data); // Debug log
+                var taskboardGrid = document.getElementById('taskboard-grid');
+                taskboardGrid.innerHTML = ''; // Clear existing content
+        
+                // Check if data is an object and not an array
+                if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+                    Object.values(data).forEach(createCard); // Iterate over object values
+                } else {
+                    console.error('Unexpected data format:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching taskboard data:', error);
+            });
+        }
+    
+        // Function to create a card for each task
+        function createCard(row) {
+            console.log('Creating card for:', row); // Debug log
+            var card = document.createElement('div');
+            card.className = 'task-card';
+    
+            Object.keys(row).forEach(key => {
+                if (row[key] !== null && row[key] !== undefined) {
+                    var p = document.createElement('p');
+                    p.textContent = `${key}: ${row[key]}`;
+                    card.appendChild(p);
+                }
+            });
+    
+            document.getElementById('taskboard-grid').appendChild(card); // Append card to taskboard grid
+        }
+    
+        // Open taskboard function
+        function openTaskboard(taskboardName) {
+            currentTaskboard = taskboardName;
+            fetchTaskboardData(taskboardName);
+        }
+    
+        // DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const taskboardName = urlParams.get('name');
             if (taskboardName) {
-                // Code to open the specified taskboard
-                // For example, if you have a function to load a taskboard by name, call it here
                 openTaskboard(taskboardName);
             }
         });
-    
-        function openTaskboard(taskboardName) {
-            // Implement the logic to open and display the taskboard by its name
-            // This might involve setting the 'currentTaskboard' variable and calling a function to fetch and display its data
-            currentTaskboard = taskboardName;
-            fetchTaskboardData(taskboardName);
-        }
     </script>
+    
 </body>
 </html>
