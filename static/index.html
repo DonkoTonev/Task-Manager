@@ -5,15 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taskboard</title>
     <link rel="stylesheet" href="/static/styling/home.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+        }
+       
+        header {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+       
+        nav h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .hamburger {
+            cursor: pointer;
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+            transform: translate(-200%);
+            transition: transform 350ms ease-in-out;
+        }
+       
+        ul li {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            background-color: #555;
+            color: white;
+        }
+       
+        ul li:hover {
+            background-color: #333;
+        }
+       
+        .showNavMenu {
+            transform: translate(0%);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
-            <h1>My New Taskboard</h1>
-            <ul>
-                <li>
-                    <button id="update-button">Update</button>
-                </li>
+            <h1>My New Taskboard <span class="hamburger">&#9776;</span></h1>
+            <ul class="menu">
+                <li><button id="update-button">Update</button></li>
                 <li><button id="edit-button">Edit</button></li>
                 <li><button id="open-button">Open</button></li>
                 <li><button id="new-button">New</button></li>
@@ -34,6 +87,13 @@
         </div>
     </main>
     <script>
+
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+        hamburger.addEventListener('click', () => {
+            menu.classList.toggle('showNavMenu');
+        });
+
 
         document.getElementById('settings-button').addEventListener('click', function() {
             // To open in the same tab:
