@@ -8,41 +8,111 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eras+ITC">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        .custom-font {
-            font-family: 'Eras ITC', sans-serif;
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
         }
 
+        header {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav {
+            position: relative;
+        }
+        
+        nav h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            background-color: blue; /* Set the background color to blue */
+            padding: 10px; /* Adjust padding as needed */
+            position: relative; /* Ensure relative positioning for the nav h1 */
+        }
+        
+        nav .hamburger {
+            cursor: pointer;
+            font-size: 24px;
+            margin-left: 10px;
+            color: white;
+        }
+        
+        .menu {
+            list-style: none;
+            padding: 0;
+            position: absolute;
+            top: 0; /* Align with the top of the nav */
+            right: 0; /* Start from the right side */
+            transform: scaleX(0); /* Hide initially, horizontal transformation */
+            transform-origin: left; /* Transform from the right */
+            transition: transform 350ms ease-in-out; /* Smooth transition for the transform */
+            background-color: #222;
+            display: flex; /* Align items in a row */
+            flex-direction: row; /* Horizontal layout */
+            align-items: center; /* Center items vertically */
+        }
+        
+        .showNavMenu {
+            transform: translateX(100%); /* Slide in to view */
+        }
+        
+        ul li {
+            display: inline-block; /* Display items in a line */
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+        }
+        
+        ul li button.button-blue {
+            background-color: transparent;
+            color: white;
+            border: none;
+        }
+        
+        
+        ul li:hover {
+            background-color: blue;
+        }
+        
         .button-blue {
             background-color: blue; /* Blue background color */
             color: white; /* White text for better visibility */
             border: none; /* Remove default border */
+            padding: 10px 20px; /* Add padding for better appearance */
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            border-radius: 4px; /* Rounded corners */
+            cursor: pointer;
+            border-radius: 4px; /* Rounded corners for aesthetics */
         }
         
-        button.button-blue:hover {
-            background-color: blue; /* Maintain blue background on hover */
+        .button-blue:hover {
+            background-color: #0044cc; /* Darker blue on hover for visual feedback */
         }
-        /* Additional custom styling may be required if Tailwind does not support certain specifics */
+        
     </style>
 </head>
 <body class="bg-gray-800 text-white custom-font">
-    <div class="flex justify-between p-4">
-        <div>
-            <button onclick="fetchTaskboardData()" id="taskboard-name-button" class="button-blue">My New Taskboard</button>
-            <button class="button-blue">Save</button>
-            <button onclick="duplicateTaskboard()" class="button-blue">Duplicate</button>
-            <button onclick="confirmDeletion()" class="button-blue">Delete</button>
-            <button class="button-blue">New</button>
-            <button id="close-button" class="button-blue">Close</button>
-        </div>
-        <div>
-            <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Settings</button>
-        </div>
-    </div>
+    <header>
+        <nav>
+            <h1>Taskboard Editor <span class="hamburger">&#9776;</span></h1>
+            <ul class="menu">
+                <li><button id="save-button" class="button-blue">Save</button></li>
+                <li><button id="duplicate-button" class="button-blue">Duplicate</button></li>
+                <li><button id="delete-button" class="button-blue">Delete</button></li>
+                <li><button id="new-task-button" class="button-blue">New</button></li>
+            </ul>
+        </nav>
+        <button id="close-button" class="button-blue">Close</button>
+    </header>
 
     <div class="flex">
         <div class="w-3/4 p-4">
@@ -140,6 +210,54 @@
     </div>
 
     <script>
+        
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle the menu
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.querySelector('.menu');
+            hamburger.addEventListener('click', () => {
+                menu.classList.toggle('showNavMenu');
+            });
+        
+            // Event listener for Delete button
+            const deleteButton = document.getElementById('delete-button');
+            if (deleteButton) {
+                deleteButton.addEventListener('click', confirmDeletion);
+            }
+        
+            // Event listener for Duplicate button
+            const duplicateButton = document.getElementById('duplicate-button');
+            if (duplicateButton) {
+                duplicateButton.addEventListener('click', duplicateTaskboard);
+            }
+        
+            // Event listener for Close button
+            const closeButton = document.getElementById('close-button');
+            if (closeButton) {
+                closeButton.addEventListener('click', function() {
+                    window.location.href = '/';
+                });
+            }
+        
+            // Event listener for Save button
+            const saveButton = document.getElementById('save-button');
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    console.log('Save button clicked');
+                    // Implement save functionality here
+                });
+            }
+        
+            // Event listener for New Task button
+            const newTaskButton = document.getElementById('new-task-button');
+            if (newTaskButton) {
+                newTaskButton.addEventListener('click', function() {
+                    console.log('New Task button clicked');
+                    // Implement new task functionality here
+                });
+            }
+        });        
 
         document.getElementById('taskboard-name-button').addEventListener('click', function() {
             const urlParams = new URLSearchParams(window.location.search);
