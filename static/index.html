@@ -12,11 +12,13 @@
             font-family: Arial, sans-serif;
             background-color: #333;
             color: white;
+            
         }
         
         header {
             background-color: #222;
             padding: 10px 20px;
+            padding-left: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -24,6 +26,7 @@
         
         nav {
             position: relative; /* Ensure nav is positioned for absolute positioning of children */
+            padding-left: 0;
         }
         
         nav h1 {
@@ -35,20 +38,26 @@
             padding: 5px;
             font-size: 16px;
             transform: skewX(-20deg);
+            margin-left: -40px;
+            padding-left: 50px;
+            margin-right: 5px;
         }
 
 
 
+        nav h1 span { 
+            display: inline-block; /* Makes sure the transformation applies properly */
+            transform: skewX(20deg); /* Opposite skew to the button's skew */
         
-
-
-
+        }
         
         nav .hamburger {
             cursor: pointer;
             font-size: 24px;
             margin-left: 10px;
             color: white; /* Change the color of the hamburger icon to white for better visibility */
+            padding-left: 150px;
+            transform: skewX(0deg);
         }
         
         .menu {
@@ -82,8 +91,7 @@
             padding: 10px 15px;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 4px; /* Adjust as needed */
-            margin-left: 10px; /* Space between buttons */
+            margin-left: -15px; /* Space between buttons */
             transition: background-color 0.3s ease; /* Smooth transition for hover effect */
             text-transform: uppercase; /* If the text should be uppercase as in the screenshot */
             transform: skewX(-20deg);
@@ -221,23 +229,24 @@
             align-items: center;
         }
         
-        #settings-button {
-            margin-right: 20px; /* Add some margin for spacing */
+        .button-blue span {
+            display: inline-block; /* Makes sure the transformation applies properly */
+            transform: skewX(20deg); /* Opposite skew to the button's skew */
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <h1>My New Taskboard <span class="hamburger">&#9776;</span></h1>
+            <h1><span>My New Taskboard</span><span class="hamburger">&#9776;</span></h1>
             <ul class="menu">
-                <li><button id="update-button" class="button-blue">Update</button></li>
-                <li><button id="edit-button" class="button-blue">Edit</button></li>
-                <li><button id="open-button" class="button-blue">Open</button></li>
-                <li><button id="new-button" class="button-blue">New</button></li>
+                <li><button id="update-button" class="button-blue"><span>Update</span></button></li>
+                <li><button id="edit-button" class="button-blue"><span>Edit</span></button></li>
+                <li><button id="open-button" class="button-blue"><span>Open</span></button></li>
+                <li><button id="new-button" class="button-blue"><span>New</span></button></li>
             </ul>
         </nav>
-        <button id="settings-button" class="button-blue">Settings</button> <!-- Moved outside of the nav, into the header -->
+        <button id="settings-button" class="button-blue"><span>Settings</span></button> <!-- Moved outside of the nav, into the header -->
     </header>
     <main>
 
