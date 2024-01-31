@@ -30,10 +30,19 @@
             margin: 0;
             display: flex;
             align-items: center;
-            background-color: blue; /* Set the background color to blue */
-            padding: 10px; /* Adjust padding as needed */
+            background: #007bff; /* Set the background color to blue */
             position: relative; /* Ensure relative positioning for the nav h1 */
+            padding: 5px;
+            font-size: 16px;
+            transform: skewX(-20deg);
         }
+
+
+
+        
+
+
+
         
         nav .hamburger {
             cursor: pointer;
@@ -44,9 +53,9 @@
         
         .menu {
             list-style: none;
+            align-items: center;
             padding: 0;
             position: absolute;
-            top: 0; /* Align with the top of nav h1 */
             left: 100%; /* Position to the right of the nav h1 */
             transform: scaleX(0); /* Initially collapsed along the X axis */
             transform-origin: left;
@@ -62,32 +71,61 @@
         ul li {
             display: block; /* Change to block for vertical list */
             padding: 5px;
-            background-color: blue;
-            color: blue;
-            margin-top: -13px;
-            margin-left: 8px;
+          
+            
         }
         
-        ul li:hover {
-            background-color: blue;
+        .button-blue {
+            background: #007bff; /* Assuming a solid blue; replace with gradient if needed */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px; /* Adjust as needed */
+            margin-left: 10px; /* Space between buttons */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+            text-transform: uppercase; /* If the text should be uppercase as in the screenshot */
+            transform: skewX(-20deg);
         }
 
-        .button-blue {
-            background-color: blue; /* Same blue as the nav h1 */
-            color: white; /* White text for better visibility */
-            border: none; /* Remove default border */
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 4px; /* Optional: rounded corners */
+        nav {
+            display: flex;
+            justify-content: space-between; /* Adjust this to align the nav items as in the screenshot */
+            align-items: center;
+            padding: 10px; /* Adjust as needed */
         }
+        
+        /* Style for the hamburger icon */
+        nav .hamburger {
+            cursor: pointer;
+            font-size: 24px;
+            color: white; /* Change the color of the hamburger icon to white for better visibility */
+        }
+        
+        /* You might also want to style the <ul> element to have padding and margin 0 */
+        nav ul {
+            padding: 0;
+            margin: 0;
+            display: flex; /* To align the buttons horizontally */
+        }
+        
+        /* Style for the <li> elements to remove list styles and margins */
+        nav ul li {
+            list-style: none;
+            margin: 0;
+        }
+
         ul li button.button-blue:hover {
             background-color: blue; /* Keep the background color blue on hover */
         }
 
 
-
+        .button-blue:hover {
+            background: linear-gradient(to bottom right, #0056b3, #004291);
+            box-shadow: 0 2px #002b5e;
+            transform: translateY(2px) skewX(-20deg); /* Add skew transformation here as well */
+        }
 
         #new-taskboard-form {
             display: none;
