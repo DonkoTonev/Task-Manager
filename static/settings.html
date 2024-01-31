@@ -1,52 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
+    <title>Settings Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Eraser&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Eraser', sans-serif;
+        }
+    </style>
 </head>
-<body>
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div class="mt-3 text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                    <i class="fas fa-cog text-blue-600 fa-2x"></i>
+
+<body class="bg-gray-800 text-white">
+    <div class="max-w-md mx-auto py-10">
+        <div class="text-center text-3xl font-bold mb-6">Settings</div>
+        <div class="grid gap-4">
+            <!-- Settings Group 1 -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]"
+                    style="height: 30px;"> <!-- Set height here -->
+                    <span>Columns</span>
+                    <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50" />
                 </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Settings</h3>
-                <div class="mt-2 px-7 py-3">
-                    <input type="text" placeholder="Columns" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                    <input type="text" placeholder="Rows" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                    <input type="text" placeholder="Tile Height" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                    <input type="text" placeholder="Tile Width" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                    <input type="password" placeholder="Password" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                    <div class="flex justify-between">
-                        <div class="flex flex-col w-1/2 mr-2">
-                            <label class="mb-2 text-sm font-bold text-gray-700">Font Size:</label>
-                            <input type="text" placeholder="0 px" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                        </div>
-                        <div class="flex flex-col w-1/2 ml-2">
-                            <label class="mb-2 text-sm font-bold text-gray-700">Font Color:</label>
-                            <input type="text" placeholder="Black" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                        </div>
-                    </div>
-                    <div class="flex justify-between">
-                        <div class="flex flex-col w-1/2 mr-2">
-                            <label class="mb-2 text-sm font-bold text-gray-700">Background Color:</label>
-                            <input type="text" placeholder="Grey" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                        </div>
-                        <div class="flex flex-col w-1/2 ml-2">
-                            <label class="mb-2 text-sm font-bold text-gray-700">Font Family:</label>
-                            <input type="text" placeholder="Eras ITC" class="mb-3 px-5 py-3 border rounded-md text-sm w-full"/>
-                        </div>
-                    </div>
-                    <button class="mt-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Save
-                    </button>
+                <!-- Adjusted divs similar to Columns -->
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Rows</span>
+                    <span>10</span>
                 </div>
+            </div>
+            <!-- Settings Group 2 -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Tile Height</span>
+                    <span>0px</span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Tile Width</span>
+                    <span>0px</span>
+                </div>
+            </div>
+            <!-- Password -->
+            <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                style="height: 30px;">
+                <span>Password</span>
+                <span>****</span>
+            </div>
+            <!-- Default Formatting -->
+            <div class="text-center text-2xl font-bold my-4">Default Formatting</div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Font Size</span>
+                    <span>0px</span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Font Color</span>
+                    <span>Black</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Background Color</span>
+                    <span>Grey</span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Font Family</span>
+                    <span>Eraser</span>
+                </div>
+            </div>
+            <!-- Hotkeys -->
+            <div class="text-center text-2xl font-bold my-4">Hotkeys</div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Update | Ctrl+U</span>
+                    <span><i class="fas fa-sync-alt"></i></span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Rollback | Ctrl+Z</span>
+                    <span><i class="fas fa-undo-alt"></i></span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Reset | Ctrl+R</span>
+                    <span><i class="fas fa-redo-alt"></i></span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Roll-forward | Ctrl+Y</span>
+                    <span><i class="fas fa-redo-alt"></i></span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Edit Taskboard | Ctrl+E</span>
+                    <span><i class="fas fa-edit"></i></span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-700 px-4 rounded transform skew-x-[-20deg]" 
+                    style="height: 30px;">
+                    <span>Open Taskboard | Ctrl+O</span>
+                    <span><i class="fas fa-external-link-alt"></i></span>
+                </div>
+            </div>
+            <!-- Save Button -->
+            <div class="mt-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+                    Save
+                </button>
             </div>
         </div>
     </div>
 </body>
+
 </html>
