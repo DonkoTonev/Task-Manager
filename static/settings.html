@@ -32,6 +32,19 @@
             transform: skewX(0deg);
         }
         
+
+
+        /* Skew the button */
+        .skew-button {
+            transform: skewX(-40deg); /* Adjust the skew angle as needed */
+        }
+
+        /* Counter-skew the text inside the button */
+        .skew-button .unskew-text {
+            display: block; /* Make span behave like a block element to center the text correctly */
+            transform: skewX(40deg); /* Apply the opposite skew transformation */
+        }
+
     </style>
 </head>
 
@@ -151,12 +164,14 @@
                     <span class="skew-text"><i class="fas fa-external-link-alt"></i></span>
                 </div>
             </div>
+
+
             <!-- Save Button -->
-            <div class="mt-4">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-none w-full"> <!-- Add rounded-none class -->
-                    Save
-                </button>
-            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-none w-full skew-button">
+                <span class="unskew-text">Save</span>
+            </button>
+
+            
         </div>
     </div>
 </body>
