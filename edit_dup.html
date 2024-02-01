@@ -1,0 +1,839 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Taskboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eras+ITC">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+        }
+
+        header {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav {
+            position: relative;
+        }
+        
+        nav h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            background-color: blue; /* Set the background color to blue */
+            padding: 10px; /* Adjust padding as needed */
+            position: relative; /* Ensure relative positioning for the nav h1 */
+        }
+        
+        nav .hamburger {
+            cursor: pointer;
+            font-size: 24px;
+            margin-left: 10px;
+            color: white;
+        }
+        
+        .menu {
+            list-style: none;
+            padding: 0;
+            position: absolute;
+            top: 0; /* Align with the top of the nav */
+            right: 0; /* Start from the right side */
+            transform: scaleX(0); /* Hide initially, horizontal transformation */
+            transform-origin: left; /* Transform from the right */
+            transition: transform 350ms ease-in-out; /* Smooth transition for the transform */
+            background-color: #222;
+            display: flex; /* Align items in a row */
+            flex-direction: row; /* Horizontal layout */
+            align-items: center; /* Center items vertically */
+        }
+        
+        .showNavMenu {
+            transform: translateX(100%); /* Slide in to view */
+        }
+        
+        ul li {
+            display: inline-block; /* Display items in a line */
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+        }
+        
+        ul li button.button-blue {
+            background-color: transparent;
+            color: white;
+            border: none;
+        }
+        
+        
+        ul li:hover {
+            background-color: blue;
+        }
+        
+        .button-blue {
+            background-color: blue; /* Blue background color */
+            color: white; /* White text for better visibility */
+            border: none; /* Remove default border */
+            padding: 10px 20px; /* Add padding for better appearance */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px; /* Rounded corners for aesthetics */
+        }
+        
+        .button-blue:hover {
+            background-color: #0044cc; /* Darker blue on hover for visual feedback */
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-800 text-white custom-font">
+    <header>
+        <nav>
+            <h1>Taskboard Editor <span class="hamburger">&#9776;</span></h1>
+            <ul class="menu">
+                <li><button id="save-button" class="button-blue">Save</button></li>
+                <li><button id="duplicate-button" class="button-blue">Duplicate</button></li>
+                <li><button id="delete-button" class="button-blue">Delete</button></li>
+                <li><button id="new-task-button" class="button-blue">New</button></li>
+            </ul>
+        </nav>
+        <button id="close-button" class="button-blue">Close</button>
+    </header> -->
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Taskboard</title>
+        <link rel="stylesheet" href="/static/styling/home.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Eras+ITC&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #333;
+                color: white;
+                
+            }
+    
+            
+            
+            header {
+                background-color: #222;
+                padding: 10px 20px;
+                padding-left: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            nav {
+                position: relative; /* Ensure nav is positioned for absolute positioning of children */
+                padding-left: 0;
+            }
+            
+            nav h1 {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                background: #007bff; /* Set the background color to blue */
+                position: relative; /* Ensure relative positioning for the nav h1 */
+                padding: 5px;
+                font-size: 16px;
+                transform: skewX(-20deg);
+                margin-left: -40px;
+                padding-left: 50px;
+                margin-right: 5px;
+            }
+    
+    
+    
+            nav h1 span { 
+                display: inline-block; /* Makes sure the transformation applies properly */
+                transform: skewX(20deg); /* Opposite skew to the button's skew */
+            
+            }
+            
+            nav .hamburger {
+                cursor: pointer;
+                font-size: 24px;
+                margin-left: 10px;
+                color: white; /* Change the color of the hamburger icon to white for better visibility */
+                padding-left: 150px;
+                transform: skewX(0deg);
+            }
+            
+            .menu {
+                list-style: none;
+                align-items: center;
+                padding: 0;
+                position: absolute;
+                left: 100%; /* Position to the right of the nav h1 */
+                transform: scaleX(0); /* Initially collapsed along the X axis */
+                transform-origin: left;
+                transition: transform 350ms ease-in-out; /* Animate the transform property */
+                background-color: #222;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: Add a shadow for better visibility */
+            }
+            
+            .showNavMenu {
+                transform: scaleX(1); /* Expand to full width */
+            }
+            
+            ul li {
+                display: block; /* Change to block for vertical list */
+                padding: 5px;
+                
+                
+            }
+            
+            .button-blue {
+                background: #007bff; /* Assuming a solid blue; replace with gradient if needed */
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                font-size: 16px;
+                font-weight: bold;
+                margin-left: -15px; /* Space between buttons */
+                transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+                text-transform: uppercase; /* If the text should be uppercase as in the screenshot */
+                transform: skewX(-20deg);
+            }
+    
+            nav {
+                display: flex;
+                justify-content: space-between; /* Adjust this to align the nav items as in the screenshot */
+                align-items: center;
+                padding: 10px; /* Adjust as needed */
+            }
+            
+            /* Style for the hamburger icon */
+            nav .hamburger {
+                cursor: pointer;
+                font-size: 24px;
+                color: white; /* Change the color of the hamburger icon to white for better visibility */
+            }
+            
+            /* You might also want to style the <ul> element to have padding and margin 0 */
+            nav ul {
+                padding: 0;
+                margin: 0;
+                display: flex; /* To align the buttons horizontally */
+            }
+            
+            /* Style for the <li> elements to remove list styles and margins */
+            nav ul li {
+                list-style: none;
+                margin: 0;
+            }
+    
+            ul li button.button-blue:hover {
+                background-color: blue; /* Keep the background color blue on hover */
+            }
+    
+    
+            .button-blue:hover {
+                background: linear-gradient(to bottom right, #0056b3, #004291);
+                box-shadow: 0 2px #002b5e;
+                transform: translateY(2px) skewX(-20deg); /* Add skew transformation here as well */
+            }
+    
+            #new-taskboard-form {
+                display: none;
+                margin: 20px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+            }
+    
+            #new-taskboard-form input[type="text"],
+            #new-taskboard-form input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+    
+            #new-taskboard-form button {
+                width: 100%;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            #new-taskboard-form button:hover {
+                background-color: #45a049;
+            }
+    
+            #new-taskboard-form input[type="text"]::placeholder {
+                color: #888;
+            }
+    
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                padding-top: 60px;
+            }
+            
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto; /* 5% from the top and centered */
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+                border-radius: 8px; /* Optional: Rounded corners */
+            }
+            
+            .close-button {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+            .close-button:hover,
+            .close-button:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            
+            .taskboard-selector {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+    
+            header {
+                background-color: #222;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between; /* Aligns items on opposite ends */
+                align-items: center;
+            }
+            
+            .button-blue span {
+                display: inline-block; /* Makes sure the transformation applies properly */
+                transform: skewX(20deg); /* Opposite skew to the button's skew */
+            }
+    
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+            }
+    
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+    
+            .close-button {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+    
+            .close-button:hover,
+            .close-button:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    
+            .eras { font-family: 'Eras ITC', sans-serif; }
+    
+    
+            body {
+                font-family: 'Eraser', sans-serif;
+            }
+    
+            /* Adjust button style */
+            .rounded-none {
+                border-radius: 0;
+            }
+    
+            /* Adjust skew for all divs */
+            .skew-div {
+                transform: skewX(-40deg);
+            }
+    
+            /* Counteract skew for text */
+            .skew-text {
+                transform: skewX(40deg);
+            }
+    
+            /* Adjust skew for text in input fields */
+            input.skew-text {
+                transform: skewX(0deg);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h1><span>My New Taskboard</span><span class="hamburger">&#9776;</span></h1>
+                <ul class="menu">
+                    <li><button id="update-button" class="button-blue"><span>Update</span></button></li>
+                    <li><button id="edit-button" class="button-blue"><span>Edit</span></button></li>
+                    <li><button id="open-button" class="button-blue"><span>Open</span></button></li>
+                    <li><button id="new-button" class="button-blue"><span>New</span></button></li>
+                </ul>
+            </nav>
+            <button id="settings-button" class="button-blue"><span>Settings</span></button> <!-- Moved outside of the nav, into the header -->
+        </header>
+        <main>
+    
+    
+        <div class="container">
+            <div class="left-panel">
+                <div class="text-center text-3xl font-bold mb-6">Settings</div>
+            <div class="grid gap-2"> <!-- Reduce spacing between divs -->
+                <!-- Settings Group 1 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Columns -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Columns</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+    
+                    <!-- Rows -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Rows</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <!-- Settings Group 2 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Tile Height -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Height</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Tile Width -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Width</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <!-- Password -->
+                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                        <span class="skew-text">Password</span>
+                    </div>
+                    <input type="password" value="****" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                </div>
+                <!-- Default Formatting -->
+                <div class="text-center text-2xl font-bold my-4">Default Formatting</div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Font Size -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Size</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Color</span>
+                        </div>
+                        <input type="text" value="Black" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Background Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Background Color</span>
+                        </div>
+                        <input type="text" value="Grey" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Family -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Family</span>
+                        </div>
+                        <input type="text" value="Eraser" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="text-center text-3xl font-bold mb-6">Settings</div>
+            <div class="grid gap-2"> <!-- Reduce spacing between divs -->
+                <!-- Settings Group 1 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Columns -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Columns</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+    
+                    <!-- Rows -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Rows</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <!-- Settings Group 2 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Tile Height -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Height</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Tile Width -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Width</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <!-- Password -->
+                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                        <span class="skew-text">Password</span>
+                    </div>
+                    <input type="password" value="****" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                </div>
+                <!-- Default Formatting -->
+                <div class="text-center text-2xl font-bold my-4">Default Formatting</div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Font Size -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Size</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Color</span>
+                        </div>
+                        <input type="text" value="Black" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Background Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Background Color</span>
+                        </div>
+                        <input type="text" value="Grey" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Family -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Family</span>
+                        </div>
+                        <input type="text" value="Eraser" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 
+        <div class="flex">
+            <div class="w-3/4 p-4">
+                <div class="mb-4">
+                    <h2 class="text-blue-300 mb-2">Tile Settings</h2>
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="columns">Columns</label>
+                            <input type="number" id="columns" value="10" class="w-full bg-gray-700 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="rows">Rows</label>
+                            <input type="number" id="rows" value="10" class="w-full bg-gray-700 rounded text-white p-2">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-blue-300 mb-2">Formatting</h2>
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-size">Font Size</label>
+                            <input type="number" id="font-size" value="0" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-color">Font Color</label>
+                            <input type="text" id="font-color" value="Black" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap -mx-2 mt-4">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Background Color</label>
+                            <input type="text" id="bg-color" value="Grey" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Font Family</label>
+                            <input type="text" id="bg-color" value="Eras ITC" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-blue-300 mb-2">Linking</h2>
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-size">Master Taskboard</label>
+                            <input type="text" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-color">Online Source</label>
+                            <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap -mx-2 mt-4">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Auto-Update</label>
+                            <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Update File</label>
+                            <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                </div>
+    
+                <div>
+                    <h2 class="text-blue-300 mb-2">Data Builder</h2>
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-size">Title Header</label>
+                            <input type="number" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="font-color">Text-Wrapping</label>
+                            <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap -mx-2 mt-4">
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sorting Header</label>
+                            <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                        <div class="px-2 w-1/2">
+                            <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sort By</label>
+                            <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/4 p-4">
+                <h2 class="text-blue-300 mb-2">Filter Editor</h2>
+                <input type="text" id="filter-editor" class="w-full bg-gray-700 rounded text-white p-2">
+            </div>
+        </div> -->
+    
+        <script>
+            
+    
+            document.addEventListener('DOMContentLoaded', function() {
+                // Toggle the menu
+                const hamburger = document.querySelector('.hamburger');
+                const menu = document.querySelector('.menu');
+                hamburger.addEventListener('click', () => {
+                    menu.classList.toggle('showNavMenu');
+                });
+            
+                // Event listener for Delete button
+                const deleteButton = document.getElementById('delete-button');
+                if (deleteButton) {
+                    deleteButton.addEventListener('click', confirmDeletion);
+                }
+            
+                // Event listener for Duplicate button
+                const duplicateButton = document.getElementById('duplicate-button');
+                if (duplicateButton) {
+                    duplicateButton.addEventListener('click', duplicateTaskboard);
+                }
+            
+                // Event listener for Close button
+                const closeButton = document.getElementById('close-button');
+                if (closeButton) {
+                    closeButton.addEventListener('click', function() {
+                        window.location.href = '/';
+                    });
+                }
+            
+                // Event listener for Save button
+                const saveButton = document.getElementById('save-button');
+                if (saveButton) {
+                    saveButton.addEventListener('click', function() {
+                        console.log('Save button clicked');
+                        // Implement save functionality here
+                    });
+                }
+            
+                // Event listener for New Task button
+                const newTaskButton = document.getElementById('new-task-button');
+                if (newTaskButton) {
+                    newTaskButton.addEventListener('click', function() {
+                        console.log('New Task button clicked');
+                        // Implement new task functionality here
+                    });
+                }
+            });        
+    
+            document.getElementById('taskboard-name-button').addEventListener('click', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const taskboardName = urlParams.get('name');
+                if (taskboardName) {
+                    window.location.href = `/?name=${encodeURIComponent(taskboardName)}`;
+                } else {
+                    alert('No taskboard specified.');
+                }
+            });
+    
+    
+            document.getElementById('close-button').addEventListener('click', function() {
+                window.location.href = '/';
+            });
+    
+            document.getElementById('settings-button').addEventListener('click', function() {
+                // To open in the same tab:
+                window.location.href = 'settings';
+    
+            });
+    
+            document.addEventListener('DOMContentLoaded', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const taskboardName = urlParams.get('name');
+                console.log('URL Parameters:', urlParams.toString());
+                console.log('Taskboard Name:', taskboardName);
+    
+                if (!taskboardName) {
+                    alert('No taskboard specified for editing.');
+                }
+            });
+    
+            async function confirmDeletion() {
+                if (confirm("Are you sure you want to delete this taskboard?")) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const taskboardName = urlParams.get('name');
+                    console.log('Taskboard Name:', taskboardName);
+    
+                    try {
+                        const response = await fetch(`/delete/?name=${taskboardName}`, { method: 'DELETE' });
+                        if (response.ok) {
+                            console.log('Taskboard deleted successfully.');
+                            // Redirect to home or refresh
+                            // window.location.href = 'home.html';
+                            // location.reload();
+                        } else {
+                            console.error('Failed to delete taskboard.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+            }
+    
+            async function duplicateTaskboard() {
+                const newTaskboardName = prompt('Please enter a name for the new taskboard:');
+                if (!newTaskboardName) {
+                    alert('Taskboard duplication cancelled.');
+                    return;
+                }
+    
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentTaskboardName = urlParams.get('name');
+    
+                try {
+                    const response = await fetch(`/duplicate?currentName=${encodeURIComponent(currentTaskboardName)}&newName=${encodeURIComponent(newTaskboardName)}`, { method: 'POST' });
+                    if (response.ok) {
+                        alert('Taskboard duplicated successfully.');
+                        // Optionally, redirect to the edit page of the new taskboard
+                        // window.location.href = `/edit?name=${encodeURIComponent(newTaskboardName)}`;
+                    } else {
+                        alert('Failed to duplicate taskboard.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+    
+            async function fetchTaskboardData() {
+                // Get the taskboard name from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentTaskboardName = urlParams.get('name');
+            
+                // Check if a taskboard name is present
+                if (currentTaskboardName) {
+                    // Redirect to the taskboard view page
+                    window.location.href = `/get/?name=${encodeURIComponent(currentTaskboardName)}`;
+                } else {
+                    // Handle the case where no taskboard name is present
+                    alert('No taskboard specified.');
+                }
+            }
+            
+        </script>
+    </body>
+    </html>
+    
