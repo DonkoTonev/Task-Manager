@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Taskboard</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="new_static/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="new_staticZcss/responsive.css">
+
+    <style>
+      
+      #new-taskboard-form {
+        display: none; /* Keep it hidden initially */
+        margin: 20px auto; /* Centered with automatic margins */
+        padding: 20px;
+        border: none; /* Remove border */
+        border-radius: 8px;
+        background-color: #ffffff; /* Light background for contrast */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Soft shadow for depth */
+        width: 90%; /* Responsive width */
+        max-width: 500px; /* Maximum width to maintain form structure */
+    }
+    
+    #new-taskboard-form input[type="text"],
+    #new-taskboard-form input[type="file"] {
+        width: calc(100% - 20px); /* Full width minus padding */
+        padding: 10px;
+        margin: 10px 0;
+        display: block; /* Ensure it takes its own line */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Include padding and border in element's width */
+        font-size: 16px; /* Larger font size for better readability */
+    }
+    
+    #new-taskboard-form button {
+        width: calc(100% - 20px); /* Full width minus padding */
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px; /* Match input font size for consistency */
+        transition: background-color 0.2s; /* Smooth transition for hover effect */
+    }
+    
+    #new-taskboard-form button:hover {
+        background-color: #0056b3; /* Darker shade on hover for feedback */
+    }
+    
+    #new-taskboard-form input[type="text"]::placeholder,
+    #new-taskboard-form input[type="file"]::placeholder {
+        color: #888;
+        font-size: 16px; /* Increase placeholder font size for better visibility */
+    }
+    
+
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      padding-top: 60px;
+  }
+  
+  .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto; /* 5% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+      border-radius: 8px; /* Optional: Rounded corners */
+  }
+
+  .taskboard-selector {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+  
+  
+  
+  
+
+  .taskboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Creates as many columns as can fit, with each card having a minimum width of 250px and maximum of 1 fraction of the available space */
+      gap: 20px; /* Adjusts spacing between cards */
+  }
+  
+  .task-card {
+      padding: 10px;
+      background-color: #444;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      box-sizing: border-box;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+  }
+  #new-taskboard-form {
+    transform: none;
+}
+  
+    </style>
+
+</head>
+<body class="body">
+    <div class="wrapper">
+        <!-- header section-->
+        <div class="mobile-container">
+            <!-- Top Navigation Menu -->
+            <div class="topnav">
+              <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard
+              <div id="toggle">
+                  <div class="one"></div>
+                  <div class="two"></div>
+                  <div class="three"></div>
+              </div>
+              </a>
+              <a href="#setting" class="setting" data-bs-toggle="modal" data-bs-target="#setting">Settings</a>
+              <div id="myLinks">
+                <a id="update-button" href="#" class="menu_box"><p class="menu_text">Update</p></a>
+                <a id="edit-button" href="#" class="menu_box"><p class="menu_text">Edit</p></a>
+                <a id="open-button" href="#" class="menu_box"><p class="menu_text">Open</p></a>
+                <a id="new-button" href="#" class="menu_box"><p class="menu_text">New</p></a>
+              </div>
+            </div>
+        </div>
+        <!-- end header section-->
+
+        <section class="taskboard-grid" id="taskboard-grid">
+          <!-- Task cards will be dynamically added here -->
+        </section>
+
+        <!-- Hidden form for creating a new taskboard -->
+        <div id="new-taskboard-form">
+            <input type="text" id="new-taskboard-name" placeholder="Enter Taskboard Name">
+            <input type="file" id="new-taskboard-file" accept=".xlsx">
+            <button id="submit-new-taskboard">Create Taskboard</button>
+        </div>  
+
+        <div id="taskboard-selection-modal" class="modal">
+          <div class="modal-content">
+              <span class="close-button">&times;</span>
+              <h2>Select a Taskboard</h2>
+              <select id="taskboard-selector" class="taskboard-selector">
+                  <!-- Taskboard options will be dynamically populated here -->
+              </select>
+              <button id="select-taskboard-button" class="button-blue">Open Taskboard</button>
+          </div>
+        </div>
+
+
+
+        <!-- <div class="main">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+                <div class="content_col"><div class="content_box"></div></div>
+              </div>
+            </div>
+        </div> -->
+
+        <!-- Modal -->
+          <div id="setting" class="modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="close-popup">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+                  <div class="row justify-content-center px_20">
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Columns</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Columns" placeholder="10"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Rows</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Rows" placeholder="10"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Tile Height</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Tile_Height" placeholder="0 px"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Tile Width</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Tile_Width" placeholder="0 px"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Password</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="Password" id="Password" placeholder="*****"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                    </div>
+                  </div>
+
+                  <h5 class="modal-title" id="exampleModalLabel">Default Formatting</h5>
+                  <div class="row justify-content-center px_20">
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Font Size</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Font_Size" placeholder="0 px"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Font Color</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Color" placeholder="Black"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Background Color</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="BG" placeholder="Grey"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="setting_row_box">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 col-sm-6"><p class="setting_row_text">Font Family</p></div>
+                          <div class="col-md-6 col-sm-6"><div class="setting_row_count_box"><input type="text" id="Font_Family" placeholder="Eras ITC"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="px_50">
+                    <h5 class="modal-title modal-title_color" id="exampleModalLabel">Hotkeys</h5>
+                    <div class="row justify-content-center px_20">
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Update | Ctrl+U</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Rollback | Ctrl+Z</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Reset | Ctrl+R</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Roll-forward | Ctrl+Y</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Edit Taskboard | Ctrl+E</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="setting_row_box1">
+                          <div class="row align-items-center">
+                            <a href="#"><div class="col-md-12"><p class="setting_row_text">Open Taskboard | Ctrl+O</p></div></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="save_btn">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- end-Modal -->
+
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+    <script>
+        function myFunction() {
+          var x = document.getElementById("myLinks");
+          if (x.style.display === "block") {
+            x.style.display = "none";
+          } else {
+            x.style.display = "block";
+          }
+        }
+
+
+
+
+
+
+        // Global variable to keep track of the currently selected taskboard
+        let currentTaskboard = null;
+    
+        // Update taskboard functionality
+        document.getElementById('update-button').addEventListener('click', function() {
+            if (!currentTaskboard) {
+                alert('Please select a taskboard first.');
+                return;
+            }
+    
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.xlsx';
+    
+            fileInput.addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('name', currentTaskboard);
+    
+                fetch('/upload/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    fetchTaskboardData(currentTaskboard);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+    
+            fileInput.click();
+        });
+
+
+
+
+
+
+
+
+        // Open taskboard selection modal
+        document.getElementById('open-button').addEventListener('click', function() {
+          fetch('/list/')
+          .then(response => response.json())
+          .then(taskboards => {
+              populateTaskboardSelector(Object.values(taskboards));
+              showModal();
+          })
+          .catch(error => {
+              console.error('Error fetching taskboards:', error);
+          });
+        });
+  
+        // Populate taskboard selector in modal
+        function populateTaskboardSelector(taskboards) {
+            var selector = document.getElementById('taskboard-selector');
+            selector.innerHTML = '';
+            taskboards.forEach(taskboard => {
+                var option = document.createElement('option');
+                option.value = taskboard;
+                option.textContent = taskboard;
+                selector.appendChild(option);
+            });
+        }
+    
+        // Show modal
+        function showModal() {
+            var modal = document.getElementById('taskboard-selection-modal');
+            modal.style.display = 'block';
+        }
+
+
+
+        // Close modal functionality
+        document.querySelector('.close-button').addEventListener('click', function() {
+          var modal = document.getElementById('taskboard-selection-modal');
+          modal.style.display = 'none';
+      });
+  
+      window.onclick = function(event) {
+          var modal = document.getElementById('taskboard-selection-modal');
+          if (event.target == modal) {
+              modal.style.display = 'none';
+          }
+      }
+  
+      // Handle taskboard selection from modal
+      document.getElementById('select-taskboard-button').addEventListener('click', function() {
+          var selectedTaskboard = document.getElementById('taskboard-selector').value;
+          if (selectedTaskboard) {
+              openTaskboard(selectedTaskboard);
+              var modal = document.getElementById('taskboard-selection-modal');
+              modal.style.display = 'none';
+          } else {
+              alert('Please select a taskboard.');
+          }
+      });
+  
+      // Edit taskboard functionality
+      document.getElementById('edit-button').addEventListener('click', function() {
+          if (!currentTaskboard) {
+              alert('Please select a taskboard first.');
+              return;
+          }
+          window.location.href = `/edit?name=${encodeURIComponent(currentTaskboard)}`;
+      });
+  
+      // New taskboard functionality
+      // New taskboard functionality
+      document.getElementById('new-button').addEventListener('click', function() {
+          document.getElementById('new-taskboard-form').style.display = 'block';
+      });
+  
+      // Submit new taskboard
+      document.getElementById('submit-new-taskboard').addEventListener('click', function() {
+          var taskboardName = document.getElementById('new-taskboard-name').value;
+          var fileInput = document.getElementById('new-taskboard-file');
+          var file = fileInput.files[0];
+  
+          if (!taskboardName || !file) {
+              alert('Please enter a taskboard name and select a file.');
+              return;
+          }
+  
+          var formData = new FormData();
+          formData.append('name', taskboardName);
+          formData.append('file', file);
+  
+          fetch('/create', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Taskboard created:', data);
+              document.getElementById('new-taskboard-form').style.display = 'none';
+              document.getElementById('new-taskboard-name').value = '';
+              fileInput.value = '';
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      });
+  
+      // Function to fetch and display taskboard data
+      function fetchTaskboardData(taskboardName) {
+          console.log('Fetching data for:', taskboardName); // Debug log
+          fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+          .then(response => response.json())
+          .then(data => {
+              console.log('Data received:', data); // Debug log
+              var taskboardGrid = document.getElementById('taskboard-grid');
+              taskboardGrid.innerHTML = ''; // Clear existing content
+      
+              // Check if data is an object and not an array
+              if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+                  Object.values(data).forEach(createCard); // Iterate over object values
+              } else {
+                  console.error('Unexpected data format:', data);
+              }
+          })
+          .catch(error => {
+              console.error('Error fetching taskboard data:', error);
+          });
+      }
+  
+      // Function to create a card for each task
+      function createCard(row) {
+          console.log('Creating card for:', row); // Debug log
+          var card = document.createElement('div');
+          card.className = 'task-card';
+  
+          Object.keys(row).forEach(key => {
+              if (row[key] !== null && row[key] !== undefined) {
+                  var p = document.createElement('p');
+                  p.textContent = `${key}: ${row[key]}`;
+                  card.appendChild(p);
+              }
+          });
+  
+          document.getElementById('taskboard-grid').appendChild(card); // Append card to taskboard grid
+      }
+  
+      // Open taskboard function
+      function openTaskboard(taskboardName) {
+          currentTaskboard = taskboardName;
+          fetchTaskboardData(taskboardName);
+      }
+  
+      // DOMContentLoaded event listener
+      document.addEventListener('DOMContentLoaded', function() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const taskboardName = urlParams.get('name');
+          if (taskboardName) {
+              openTaskboard(taskboardName);
+          }
+      });
+    </script>
+</body>
+
+</html>
