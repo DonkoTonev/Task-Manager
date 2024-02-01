@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Taskboard</title>
+    <title>Taskboard</title>
+    <link rel="stylesheet" href="/static/styling/home.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eras+ITC">
+    <link href="https://fonts.googleapis.com/css2?family=Eras+ITC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <style>
         body, html {
             height: 100%;
@@ -14,200 +16,375 @@
             font-family: Arial, sans-serif;
             background-color: #333;
             color: white;
+            
         }
-
+        
         header {
             background-color: #222;
             padding: 10px 20px;
+            padding-left: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         nav {
-            position: relative;
+            position: relative; /* Ensure nav is positioned for absolute positioning of children */
+            padding-left: 0;
         }
         
         nav h1 {
             margin: 0;
             display: flex;
             align-items: center;
-            background-color: blue; /* Set the background color to blue */
-            padding: 10px; /* Adjust padding as needed */
+            background: #007bff; /* Set the background color to blue */
             position: relative; /* Ensure relative positioning for the nav h1 */
+            padding: 5px;
+            font-size: 16px;
+            transform: skewX(-20deg);
+            margin-left: -40px;
+            padding-left: 50px;
+            margin-right: 5px;
+        }
+
+
+
+        nav h1 span { 
+            display: inline-block; /* Makes sure the transformation applies properly */
+            transform: skewX(20deg); /* Opposite skew to the button's skew */
+        
         }
         
         nav .hamburger {
             cursor: pointer;
             font-size: 24px;
             margin-left: 10px;
-            color: white;
+            color: white; /* Change the color of the hamburger icon to white for better visibility */
+            padding-left: 150px;
+            transform: skewX(0deg);
         }
         
         .menu {
             list-style: none;
+            align-items: center;
             padding: 0;
             position: absolute;
-            top: 0; /* Align with the top of the nav */
-            right: 0; /* Start from the right side */
-            transform: scaleX(0); /* Hide initially, horizontal transformation */
-            transform-origin: left; /* Transform from the right */
-            transition: transform 350ms ease-in-out; /* Smooth transition for the transform */
+            left: 100%; /* Position to the right of the nav h1 */
+            transform: scaleX(0); /* Initially collapsed along the X axis */
+            transform-origin: left;
+            transition: transform 350ms ease-in-out; /* Animate the transform property */
             background-color: #222;
-            display: flex; /* Align items in a row */
-            flex-direction: row; /* Horizontal layout */
-            align-items: center; /* Center items vertically */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: Add a shadow for better visibility */
         }
         
         .showNavMenu {
-            transform: translateX(100%); /* Slide in to view */
+            transform: scaleX(1); /* Expand to full width */
         }
         
         ul li {
-            display: inline-block; /* Display items in a line */
-            padding: 10px 20px;
-            background-color: blue;
-            color: white;
-        }
-        
-        ul li button.button-blue {
-            background-color: transparent;
-            color: white;
-            border: none;
-        }
-        
-        
-        ul li:hover {
-            background-color: blue;
+            display: block; /* Change to block for vertical list */
+            padding: 5px;
+            
+            
         }
         
         .button-blue {
-            background-color: blue; /* Blue background color */
-            color: white; /* White text for better visibility */
-            border: none; /* Remove default border */
-            padding: 10px 20px; /* Add padding for better appearance */
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+            background: #007bff; /* Assuming a solid blue; replace with gradient if needed */
+            color: white;
+            border: none;
+            padding: 10px 15px;
             font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px; /* Rounded corners for aesthetics */
+            font-weight: bold;
+            margin-left: -15px; /* Space between buttons */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+            text-transform: uppercase; /* If the text should be uppercase as in the screenshot */
+            transform: skewX(-20deg);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between; /* Adjust this to align the nav items as in the screenshot */
+            align-items: center;
+            padding: 10px; /* Adjust as needed */
         }
         
-        .button-blue:hover {
-            background-color: #0044cc; /* Darker blue on hover for visual feedback */
+        /* Style for the hamburger icon */
+        nav .hamburger {
+            cursor: pointer;
+            font-size: 24px;
+            color: white; /* Change the color of the hamburger icon to white for better visibility */
         }
+        
+        /* You might also want to style the <ul> element to have padding and margin 0 */
+        nav ul {
+            padding: 0;
+            margin: 0;
+            display: flex; /* To align the buttons horizontally */
+        }
+        
+        /* Style for the <li> elements to remove list styles and margins */
+        nav ul li {
+            list-style: none;
+            margin: 0;
+        }
+
+        ul li button.button-blue:hover {
+            background-color: blue; /* Keep the background color blue on hover */
+        }
+
+
+        .button-blue:hover {
+            background: linear-gradient(to bottom right, #0056b3, #004291);
+            box-shadow: 0 2px #002b5e;
+            transform: translateY(2px) skewX(-20deg); /* Add skew transformation here as well */
+        }
+
+        header {
+            background-color: #222;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between; /* Aligns items on opposite ends */
+            align-items: center;
+        }
+        
+        .button-blue span {
+            display: inline-block; /* Makes sure the transformation applies properly */
+            transform: skewX(20deg); /* Opposite skew to the button's skew */
+        }
+
+        .eras { font-family: 'Eras ITC', sans-serif; }
+
+
+        body {
+            font-family: 'Eraser', sans-serif;
+        }
+
+        /* Adjust button style */
+        .rounded-none {
+            border-radius: 0;
+        }
+
+        /* Adjust skew for all divs */
+        .skew-div {
+            transform: skewX(-40deg);
+        }
+
+        /* Counteract skew for text */
+        .skew-text {
+            transform: skewX(40deg);
+        }
+
+        /* Adjust skew for text in input fields */
+        input.skew-text {
+            transform: skewX(0deg);
+        }
+
+        .main-container {
+            display: flex; /* Enable Flexbox */
+            flex-wrap: nowrap; /* Prevent wrapping of items */
+            justify-content: space-between; /* Space out the child elements */
+            align-items: stretch; /* Make children of container stretch to fill the container's height */
+            width: 100%; /* Ensure the container takes full width */
+        }
+        
+        
+        .left-panel, .right-panel {
+            flex: 1; /* Each panel takes up equal space */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        
+        /* Additional styles to ensure no margin or padding is collapsing the layout */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Ensure the body takes full width of the viewport */
+        }
+
+        .right-container {
+            width: 100%; /* Adjust this as needed, e.g., 50% if it's half of a split layout */
+            /* Other styling for right-container */
+        }
+        
+        .large-input {
+            width: 100%; /* Full width of the container */
+            height: 100px; /* Adjust the height as needed */
+            padding: 10px; /* Inner spacing */
+            margin: 0; /* No external margin */
+            font-size: 1.2em; /* Larger text */
+            background-color: #e0e0e0; /* Light grey background */
+            border: 1px solid #ccc; /* Defined border */
+            border-radius: 4px; /* Optional: rounded corners */
+        }
+        
+        
+        
         
     </style>
 </head>
-<body class="bg-gray-800 text-white custom-font">
+<body>
     <header>
         <nav>
-            <h1>Taskboard Editor <span class="hamburger">&#9776;</span></h1>
+            <h1><span>My New Taskboard</span><span class="hamburger">&#9776;</span></h1>
             <ul class="menu">
-                <li><button id="save-button" class="button-blue">Save</button></li>
-                <li><button id="duplicate-button" class="button-blue">Duplicate</button></li>
-                <li><button id="delete-button" class="button-blue">Delete</button></li>
-                <li><button id="new-task-button" class="button-blue">New</button></li>
+                <li><button id="update-button" class="button-blue"><span>Update</span></button></li>
+                <li><button id="edit-button" class="button-blue"><span>Edit</span></button></li>
+                <li><button id="open-button" class="button-blue"><span>Open</span></button></li>
+                <li><button id="new-button" class="button-blue"><span>New</span></button></li>
             </ul>
         </nav>
-        <button id="close-button" class="button-blue">Close</button>
+        <button id="settings-button" class="button-blue"><span>Settings</span></button> <!-- Moved outside of the nav, into the header -->
     </header>
+    
 
-    <div class="flex">
-        <div class="w-3/4 p-4">
-            <div class="mb-4">
-                <h2 class="text-blue-300 mb-2">Tile Settings</h2>
-                <div class="flex flex-wrap -mx-2">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="columns">Columns</label>
-                        <input type="number" id="columns" value="10" class="w-full bg-gray-700 rounded text-white p-2">
-                    </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="rows">Rows</label>
-                        <input type="number" id="rows" value="10" class="w-full bg-gray-700 rounded text-white p-2">
-                    </div>
-                    <!-- Repeat this structure for all the other input fields as shown in the screenshot -->
-                    <!-- Make sure to match the text, value, and any other attributes exactly as they appear in the screenshot -->
-                </div>
-            </div>
-            <div>
-                <h2 class="text-blue-300 mb-2">Formatting</h2>
-                <div class="flex flex-wrap -mx-2">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Font Size</label>
-                        <input type="number" id="font-size" value="0" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Font Color</label>
-                        <input type="text" id="font-color" value="Black" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 mt-4">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Background Color</label>
-                        <input type="text" id="bg-color" value="Grey" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Font Family</label>
-                        <input type="text" id="bg-color" value="Eras ITC" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-blue-300 mb-2">Linking</h2>
-                <div class="flex flex-wrap -mx-2">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Master Taskboard</label>
-                        <input type="text" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Online Source</label>
-                        <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 mt-4">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Auto-Update</label>
-                        <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Update File</label>
-                        <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
-                    </div>
-                </div>
-            </div>
 
-            <div>
-                <h2 class="text-blue-300 mb-2">Data Builder</h2>
-                <div class="flex flex-wrap -mx-2">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-size">Title Header</label>
-                        <input type="number" id="font-size" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+
+    <div class="main-container">
+
+
+
+
+        <!-- Left Container -->
+        <div class="left-container">
+            <div class="text-center text-3xl font-bold mb-6">Settings</div>
+            <div class="grid gap-2"> <!-- Reduce spacing between divs -->
+                <!-- Settings Group 1 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Columns -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Columns</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
                     </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="font-color">Text-Wrapping</label>
-                        <input type="text" id="font-color" value="Disabled" class="w-full bg-blue-600 rounded text-white p-2">
+    
+                    <!-- Rows -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Rows</span>
+                        </div>
+                        <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
                     </div>
                 </div>
-                <div class="flex flex-wrap -mx-2 mt-4">
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sorting Header</label>
-                        <input type="text" id="bg-color" value="Yes" class="w-full bg-blue-600 rounded text-white p-2">
+                <!-- Settings Group 2 -->
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Tile Height -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Height</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
                     </div>
-                    <div class="px-2 w-1/2">
-                        <label class="block text-gray-500 text-sm mb-1" for="bg-color">Sort By</label>
-                        <input type="text" id="bg-color" value="None" class="w-full bg-blue-600 rounded text-white p-2">
+                    <!-- Tile Width -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Tile Width</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
                     </div>
+                </div>
+                <!-- Password -->
+                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                        <span class="skew-text">Password</span>
+                    </div>
+                    <input type="password" value="****" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                </div>
+                <!-- Default Formatting -->
+                <div class="text-center text-2xl font-bold my-4">Default Formatting</div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Font Size -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Size</span>
+                        </div>
+                        <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Color</span>
+                        </div>
+                        <input type="text" value="Black" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <!-- Background Color -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Background Color</span>
+                        </div>
+                        <input type="text" value="Grey" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                    <!-- Font Family -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                            <span class="skew-text">Font Family</span>
+                        </div>
+                        <input type="text" value="Eraser" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    </div>
+                </div>
+                <!-- Hotkeys -->
+                <div class="text-center text-2xl font-bold my-4">Hotkeys</div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Update | Ctrl+U</span>
+                        <span class="skew-text"><i class="fas fa-sync-alt"></i></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Rollback | Ctrl+Z</span>
+                        <span class="skew-text"><i class="fas fa-undo-alt"></i></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Reset | Ctrl+R</span>
+                        <span class="skew-text"><i class="fas fa-redo-alt"></i></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Roll-forward | Ctrl+Y</span>
+                        <span class="skew-text"><i class="fas fa-redo-alt"></i></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Edit Taskboard | Ctrl+E</span>
+                        <span class="skew-text"><i class="fas fa-edit"></i></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                        <span class="skew-text">Open Taskboard | Ctrl+O</span>
+                        <span class="skew-text"><i class="fas fa-external-link-alt"></i></span>
+                    </div>
+                </div>
+                <!-- Save Button -->
+                <div class="mt-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-none w-full"> <!-- Add rounded-none class -->
+                        Save
+                    </button>
                 </div>
             </div>
-                    <!-- More settings follow the same pattern -->
+            <!-- Sample Data for Left Panel -->
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <ul>
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+            </ul>
+            <!-- More content as required -->
         </div>
-        <div class="w-1/4 p-4">
-            <h2 class="text-blue-300 mb-2">Filter Editor</h2>
-            <input type="text" id="filter-editor" class="w-full bg-gray-700 rounded text-white p-2">
+
+        <!-- Right Container -->
+        <div class="right-container">
+            <!-- Large Input Field -->
+            <input type="text" class="large-input" placeholder="Enter text here...">
+
+            <!-- More content as required -->
         </div>
     </div>
+
+    
+
+
+    
 
     <script>
         
