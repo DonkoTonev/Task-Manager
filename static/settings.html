@@ -36,114 +36,118 @@
 </head>
 
 <body class="bg-gray-800 text-white">
-    <div class="max-w-md mx-auto py-10">
-        <div class="text-center text-3xl font-bold mb-6">Settings</div>
+    <div class="max-w-2xl mx-auto py-10">
+
+        <div class="text-center text-2xl font-bold mb-6">Settings</div>
         <div class="grid gap-2"> <!-- Reduce spacing between divs -->
             <!-- Settings Group 1 -->
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
                 <!-- Columns -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Columns</span>
+                        <span class="skew-text text-black">Columns</span>
                     </div>
-                    <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
 
                 <!-- Rows -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Rows</span>
+                        <span class="skew-text text-black">Rows</span>
                     </div>
-                    <input type="number" value="10" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
             </div>
             <!-- Settings Group 2 -->
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
                 <!-- Tile Height -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Tile Height</span>
+                        <span class="skew-text text-black">Tile Height</span>
                     </div>
-                    <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
                 <!-- Tile Width -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Tile Width</span>
+                        <span class="skew-text text-black">Tile Width</span>
                     </div>
-                    <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
             </div>
             <!-- Password -->
-            <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                    <span class="skew-text">Password</span>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
+                        <span class="skew-text text-black">Password</span>
+                    </div>
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
-                <input type="password" value="****" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
             </div>
             <!-- Default Formatting -->
             <div class="text-center text-2xl font-bold my-4">Default Formatting</div>
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
                 <!-- Font Size -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Font Size</span>
+                        <span class="skew-text text-black">Font Size</span>
                     </div>
-                    <input type="text" value="0px" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
                 <!-- Font Color -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Font Color</span>
+                        <span class="skew-text text-black">Font Color</span>
                     </div>
-                    <input type="text" value="Black" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
                 <!-- Background Color -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Background Color</span>
+                        <span class="skew-text text-black">Background Color</span>
                     </div>
-                    <input type="text" value="Grey" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
                 <!-- Font Family -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                <div class="flex justify-between items-center bg-blue-500 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
                     <div class="flex-1 flex items-center"> <!-- Adjusted to take up half width -->
-                        <span class="skew-text">Font Family</span>
+                        <span class="skew-text text-black">Font Family</span>
                     </div>
-                    <input type="text" value="Eraser" class="w-16 bg-gray-800 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text" style="width:50%;" />
+                    <input type="number" value="10" class="w-16 bg-blue-300 text-black rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 skew-text text-center" style="width:50%;" />
                 </div>
             </div>
             <!-- Hotkeys -->
             <div class="text-center text-2xl font-bold my-4">Hotkeys</div>
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Update | Ctrl+U</span>
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Update | Ctrl+U</span>
                     <span class="skew-text"><i class="fas fa-sync-alt"></i></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Rollback | Ctrl+Z</span>
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Rollback | Ctrl+Z</span>
                     <span class="skew-text"><i class="fas fa-undo-alt"></i></span>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Reset | Ctrl+R</span>
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Reset | Ctrl+R</span>
                     <span class="skew-text"><i class="fas fa-redo-alt"></i></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Roll-forward | Ctrl+Y</span>
+                
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Roll-forward | Ctrl+Y</span>
                     <span class="skew-text"><i class="fas fa-redo-alt"></i></span>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2"> <!-- Reduce spacing between divs -->
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Edit Taskboard | Ctrl+E</span>
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Edit Taskboard | Ctrl+E</span>
                     <span class="skew-text"><i class="fas fa-edit"></i></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-700 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
-                    <span class="skew-text">Open Taskboard | Ctrl+O</span>
+                <div class="flex justify-center items-center bg-gray-300 px-4 skew-div rounded-none" style="height: 30px;"> <!-- Add skew-div class -->
+                    <span class="skew-text text-black">Open Taskboard | Ctrl+O</span>
                     <span class="skew-text"><i class="fas fa-external-link-alt"></i></span>
                 </div>
             </div>
