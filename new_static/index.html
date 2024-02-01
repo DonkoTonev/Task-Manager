@@ -111,18 +111,44 @@
   }
   
   .task-card {
-      padding: 10px;
-      background-color: #444;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      box-sizing: border-box;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-  }
+    padding: 10px;
+    background-color: #444; /* Dark background */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    color: #bbbbbb; /* Lighter text color */
+}
   #new-taskboard-form {
     transform: none;
+
 }
   
+    body .wrapper #new-taskboard-form input[type="text"],
+    body .wrapper #new-taskboard-form input[type="file"] {
+        width: 100% !important; /* Full width of the parent */
+        padding: 10px !important; /* Comfortable padding */
+        margin-bottom: 10px !important; /* Space between fields */
+        display: block !important; /* Ensure display is block */
+        border: 1px solid #ccc !important; /* Consistent border */
+        border-radius: 4px !important; /* Rounded corners for aesthetics */
+        box-sizing: border-box !important; /* Include padding and border in the element's total width and height */
+        font-size: 16px !important; /* Increase font size for better readability */
+    }
+
+    body .wrapper #new-taskboard-form button {
+        width: 100% !important; /* Full width to match input fields */
+        padding: 10px !important; /* Consistent padding */
+        margin-top: 10px !important; /* Space above the button */
+        background-color: #007bff !important; /* Bootstrap primary button color */
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        font-size: 16px !important; /* Match input font size */
+    }
+
     </style>
 
 </head>
@@ -155,11 +181,32 @@
         </section>
 
         <!-- Hidden form for creating a new taskboard -->
-        <div id="new-taskboard-form">
+        <!-- <div id="new-taskboard-form">
             <input type="text" id="new-taskboard-name" placeholder="Enter Taskboard Name">
             <input type="file" id="new-taskboard-file" accept=".xlsx">
             <button id="submit-new-taskboard">Create Taskboard</button>
-        </div>  
+        </div>   -->
+
+
+
+
+
+        <div class="form-container mt-3" id="new-taskboard-form">
+          <form>
+              <div class="mb-3">
+                  <label for="new-taskboard-name" class="form-label">Taskboard Name</label>
+                  <input type="text" class="form-control" id="new-taskboard-name" placeholder="Enter Taskboard Name">
+              </div>
+              <div class="mb-3">
+                  <label for="new-taskboard-file" class="form-label">Taskboard File</label>
+                  <input type="file" class="form-control" id="new-taskboard-file" accept=".xlsx">
+              </div>
+              <button type="submit" class="btn btn-primary" id="submit-new-taskboard">Create Taskboard</button>
+          </form>
+      </div>
+
+      
+      
 
         <div id="taskboard-selection-modal" class="modal">
           <div class="modal-content">
