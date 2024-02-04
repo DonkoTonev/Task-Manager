@@ -492,7 +492,9 @@
               alert('Please select a taskboard.');
           }
       });
-  
+
+
+
       // Edit taskboard functionality
       document.getElementById('edit-button').addEventListener('click', function() {
           if (!currentTaskboard) {
@@ -508,37 +510,69 @@
           document.getElementById('new-taskboard-form').style.display = 'block';
       });
   
+
+
+
+
+
+
+
+
+
+
       // Submit new taskboard
-      document.getElementById('submit-new-taskboard').addEventListener('click', function() {
+      document.getElementById('submit-new-taskboard').addEventListener('click', function(event) {
+          event.preventDefault(); // Prevent the form from submitting in the traditional way
+
           var taskboardName = document.getElementById('new-taskboard-name').value;
           var fileInput = document.getElementById('new-taskboard-file');
           var file = fileInput.files[0];
-  
+
           if (!taskboardName || !file) {
               alert('Please enter a taskboard name and select a file.');
               return;
           }
-  
+
           var formData = new FormData();
           formData.append('name', taskboardName);
           formData.append('file', file);
-  
+
           fetch('/create', {
               method: 'POST',
               body: formData
           })
-          .then(response => response.json())
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
           .then(data => {
               console.log('Taskboard created:', data);
               document.getElementById('new-taskboard-form').style.display = 'none';
               document.getElementById('new-taskboard-name').value = '';
               fileInput.value = '';
+              // Redirect to the homepage with the new taskboard name as a query parameter
+              window.location.href = `/?name=${encodeURIComponent(taskboardName)}`;
           })
           .catch(error => {
               console.error('Error:', error);
           });
       });
+
   
+
+
+
+
+
+
+
+
+
+
+
+
       // Function to fetch and display taskboard data
       function fetchTaskboardData(taskboardName) {
           console.log('Fetching data for:', taskboardName); // Debug log
