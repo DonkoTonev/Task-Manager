@@ -23,13 +23,13 @@
         <div class="mobile-container">
             <!-- Top Navigation Menu -->
             <div class="topnav">
-              <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard
+              <a class="new_task">My New Taskboard
                 <div id="toggle">
-                  <div class="one"></div>
-                  <div class="two"></div>
-                  <div class="three"></div>
-              </div>
-              </a>
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </div>
+                </a>
               <a href="#setting" class="setting" data-bs-toggle="modal" data-bs-target="#setting">Settings</a>
               <div id="myLinks" class="mobile_tab">
                 <a id="save-button" href="#" class="menu_box"><p class="menu_text">Save</p></a>
@@ -380,6 +380,32 @@
         }
       }
         document.addEventListener('DOMContentLoaded', function() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskboardName = urlParams.get('name');
+            
+            // Check if a taskboard name is present
+            if (taskboardName) {
+                // Decode the taskboard name to handle spaces and special characters correctly
+                const decodedTaskboardName = decodeURIComponent(taskboardName);
+                
+                // Set the taskboard name to the title in the navigation bar
+                const titleElement = document.querySelector('.new_task');
+                if (titleElement) {
+                    titleElement.textContent = decodedTaskboardName;
+                }
+            } else {
+                // Optional: Handle the case where no taskboard name is present, or set a default title
+                console.log('No taskboard specified. Default title is used.');
+            }
+
+
+
+
+            
+
+            var menuLinks = document.getElementById("myLinks");
+            menuLinks.style.display = "block";
             
         
             // Event listener for Delete button
