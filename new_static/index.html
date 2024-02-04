@@ -595,22 +595,47 @@
           });
       }
   
+
+
+
+
       // Function to create a card for each task
       function createCard(row) {
-          console.log('Creating card for:', row); // Debug log
-          var card = document.createElement('div');
-          card.className = 'task-card';
-  
-          Object.keys(row).forEach(key => {
-              if (row[key] !== null && row[key] !== undefined) {
-                  var p = document.createElement('p');
-                  p.textContent = `${key}: ${row[key]}`;
-                  card.appendChild(p);
-              }
-          });
-  
-          document.getElementById('taskboard-grid').appendChild(card); // Append card to taskboard grid
-      }
+        console.log('Creating card for:', row); // Debug log
+        var card = document.createElement('div');
+        card.className = 'task-card';
+
+        Object.keys(row).forEach(key => {
+            if (row[key] !== null && row[key] !== undefined) {
+                var p = document.createElement('p');
+                p.textContent = `${key}: `;
+                p.setAttribute('contenteditable', 'true'); // Make the paragraph editable
+                p.classList.add('editable-text'); // Add class for targeting editable elements
+
+                var span = document.createElement('span'); // Use span to hold the value
+                span.textContent = row[key];
+                p.appendChild(span);
+
+                // Optional: Add event listener to save changes on blur
+                p.addEventListener('blur', function(event) {
+                    var newText = event.target.innerText;
+                    console.log(`New text for ${key}: ${newText}`);
+                    // Here, you can call a function to update the backend with the new text
+                    // updateTaskDetail(currentTaskboard, key, newText);
+                });
+
+                card.appendChild(p);
+            }
+        });
+
+        document.getElementById('taskboard-grid').appendChild(card); // Append card to taskboard grid
+    }
+
+
+
+
+
+
   
       // Open taskboard function
       function openTaskboard(taskboardName) {
