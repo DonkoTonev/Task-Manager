@@ -149,6 +149,11 @@
         font-size: 16px !important; /* Match input font size */
     }
 
+    .task-card.dragging {
+      opacity: 0.5;
+  }
+
+
     </style>
 
 </head>
@@ -219,44 +224,6 @@
           </div>
         </div>
 
-
-
-        <!-- <div class="main">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-                <div class="content_col"><div class="content_box"></div></div>
-              </div>
-            </div>
-        </div> -->
 
         <!-- Modal -->
           <div id="setting" class="modal">
@@ -623,6 +590,71 @@
               openTaskboard(taskboardName);
           }
       });
+
+
+
+
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const taskboards = document.getElementById('taskboard-grid');
+        let selectedCard = null; // To store the currently selected card
+    
+        taskboards.addEventListener('dblclick', function(e) {
+            if (e.target.classList.contains('task-card')) {
+                if (selectedCard) {
+                    // If there's already a selected card, deselect it
+                    selectedCard.classList.remove('selected');
+                }
+                selectedCard = e.target;
+                selectedCard.classList.add('selected'); // Add a class to style the selected card
+                e.stopPropagation(); // Stop the event from propagating further
+            }
+        });
+    
+        document.addEventListener('click', function(e) {
+            if (selectedCard) {
+                // Check if the click is on another task card
+                if (e.target.classList.contains('task-card')) {
+                    // If the clicked card is not the selected card, insert before the clicked card
+                    if (selectedCard !== e.target) {
+                        taskboards.insertBefore(selectedCard, e.target);
+                    }
+                } else if (e.target === taskboards) {
+                    // If the click is directly on the taskboard (not on a card), append to the end
+                    taskboards.appendChild(selectedCard);
+                } else {
+                    // Check for clicks on elements inside the taskboard but not directly on a card
+                    let closestTaskCard = e.target.closest('.task-card');
+                    if (closestTaskCard) {
+                        // If the click is near another card, insert before that card
+                        taskboards.insertBefore(selectedCard, closestTaskCard);
+                    } else if (taskboards.contains(e.target)) {
+                        // If the click is within the taskboards but not on or near a card, append to the end
+                        taskboards.appendChild(selectedCard);
+                    }
+                }
+                selectedCard.classList.remove('selected');
+                selectedCard = null; // Reset selected card after dropping
+            }
+        });
+    
+        // Optional: Style for the selected card
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .task-card.selected {
+                border: 2px solid blue; /* Example style */
+                opacity: 0.7;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+    
+
+    
+
+
+    
+
     </script>
 </body>
 
