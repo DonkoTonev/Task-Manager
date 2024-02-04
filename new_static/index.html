@@ -564,7 +564,17 @@
 
 
 
-
+      document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.editable-text').forEach(element => {
+            element.addEventListener('blur', function(e) {
+                const taskId = this.closest('.task-card').getAttribute('data-task-id');
+                const fieldName = this.getAttribute('data-field-name');
+                const newValue = this.innerText; // Use `this.value` for input fields
+                updateTaskDetail(taskId, fieldName, newValue);
+            });
+        });
+    });
+    
 
 
 
@@ -575,64 +585,86 @@
 
       // Function to fetch and display taskboard data
       function fetchTaskboardData(taskboardName) {
-          console.log('Fetching data for:', taskboardName); // Debug log
-          fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
-          .then(response => response.json())
-          .then(data => {
-              console.log('Data received:', data); // Debug log
-              var taskboardGrid = document.getElementById('taskboard-grid');
-              taskboardGrid.innerHTML = ''; // Clear existing content
-      
-              // Check if data is an object and not an array
-              if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-                  Object.values(data).forEach(createCard); // Iterate over object values
-              } else {
-                  console.error('Unexpected data format:', data);
-              }
-          })
-          .catch(error => {
-              console.error('Error fetching taskboard data:', error);
-          });
-      }
-  
+        console.log('Fetching data for:', taskboardName); // Debug log
+        fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data received:', data); // Debug log
+            var taskboardGrid = document.getElementById('taskboard-grid');
+            taskboardGrid.innerHTML = ''; // Clear existing content
 
-
-
-
-      // Function to create a card for each task
-      function createCard(row) {
-        console.log('Creating card for:', row); // Debug log
-        var card = document.createElement('div');
-        card.className = 'task-card';
-
-        Object.keys(row).forEach(key => {
-            if (row[key] !== null && row[key] !== undefined) {
-                var p = document.createElement('p');
-                p.textContent = `${key}: `;
-                p.setAttribute('contenteditable', 'true'); // Make the paragraph editable
-                p.classList.add('editable-text'); // Add class for targeting editable elements
-
-                var span = document.createElement('span'); // Use span to hold the value
-                span.textContent = row[key];
-                p.appendChild(span);
-
-                // Optional: Add event listener to save changes on blur
-                p.addEventListener('blur', function(event) {
-                    var newText = event.target.innerText;
-                    console.log(`New text for ${key}: ${newText}`);
-                    // Here, you can call a function to update the backend with the new text
-                    // updateTaskDetail(currentTaskboard, key, newText);
-                });
-
-                card.appendChild(p);
-            }
+            // Iterate over the data object where each key is a taskId
+            Object.keys(data).forEach(taskId => {
+                // For each task, create a card using its ID and details
+                createCard(taskId, data[taskId]);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching taskboard data:', error);
         });
+      }
 
-        document.getElementById('taskboard-grid').appendChild(card); // Append card to taskboard grid
+
+
+
+      function createCard(taskId, row) { // Notice taskId is now explicitly passed as an argument
+          console.log('Creating card for:', row); // Debug log
+          var card = document.createElement('div');
+          card.className = 'task-card';
+
+          Object.keys(row).forEach(key => {
+              if (row[key] !== null && row[key] !== undefined) {
+                  var p = document.createElement('p');
+                  p.textContent = `${key}: `;
+                  p.setAttribute('contenteditable', 'true');
+                  p.classList.add('editable-text');
+
+                  var span = document.createElement('span');
+                  span.textContent = row[key];
+                  p.appendChild(span);
+
+                  p.addEventListener('blur', function(event) {
+                      var newText = span.textContent;
+                      fetch('/update-task', {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                              taskboardName: currentTaskboard,
+                              taskId: taskId, // Use taskId passed to createCard
+                              key: key,
+                              value: newText
+                          })
+                      })
+                      .then(response => response.json())
+                      .then(data => console.log(data))
+                      .catch(error => console.error('Error updating task:', error));
+                  });
+
+                  card.appendChild(p);
+              }
+          });
+
+          document.getElementById('taskboard-grid').appendChild(card);
+      }
+
+
+
+      
+
+    function updateTaskDetail(taskId, fieldName, newValue) {
+        const data = { taskId, columnName: fieldName, newValue };
+        fetch('http://localhost:8000/update-task-detail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
     }
-
-
-
+  
 
 
 

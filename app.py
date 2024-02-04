@@ -1,8 +1,9 @@
 from TaskboardManager import TaskboardManager
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
+from pydantic import BaseModel
 from io import BytesIO
 from fastapi.responses import FileResponse, HTMLResponse
 from typing import Optional, Annotated
@@ -116,6 +117,26 @@ async def list_taskboards():
 @app.get("/get/")
 async def get_taskboard(name: str):
     return db.getAsDict(name)
+
+
+
+
+
+@app.post("/update-task")
+async def update_task(update_details: dict = Body(...)):
+    taskboardName = update_details['taskboardName']
+    taskId = update_details['taskId']
+    key = update_details['key']
+    value = update_details['value']
+    try:
+        db.updateTask(taskboardName, taskId, key, value)
+        return {"message": "Task updated successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
 
 if __name__ == "__main__":
     import uvicorn

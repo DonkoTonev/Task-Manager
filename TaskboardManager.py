@@ -357,6 +357,16 @@ class TaskboardManager:
             return table_dict
 
 
+    def updateTask(self, taskboardName, taskId, key, value):
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            # Ensure proper sanitization to prevent SQL injection
+            update_query = f"UPDATE '{taskboardName}' SET '{key}' = ? WHERE id = ?"
+            cursor.execute(update_query, (value, taskId))
+            self.global_db.commit()
+        
+    
+
 # Test code
 # db = TaskboardManager()
 # db.createTaskboard("My New Taskboard")
