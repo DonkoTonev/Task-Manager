@@ -163,7 +163,9 @@
         <div class="mobile-container">
             <!-- Top Navigation Menu -->
             <div class="topnav">
-              <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard
+              <!-- <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard -->
+                <a href="javascript:void(0);" class="new_task" onclick="myFunction()" id="taskboardName">My New Taskboard
+
               <div id="toggle">
                   <div class="one"></div>
                   <div class="two"></div>
@@ -651,7 +653,21 @@
     
 
     
+    // Update this function to set the taskboard name in the navigation bar
+    function openTaskboard(taskboardName) {
+      currentTaskboard = taskboardName;
+      fetchTaskboardData(taskboardName);
+      document.getElementById('taskboardName').textContent = taskboardName; // Update the navigation bar text
+    }
 
+    // DOMContentLoaded event listener with updated logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskboardName = urlParams.get('name');
+        if (taskboardName) {
+            openTaskboard(taskboardName);
+        }
+    });
 
     
 
