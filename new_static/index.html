@@ -548,7 +548,7 @@
               return response.json();
           })
           .then(data => {
-              console.log('Taskboard created:', data);
+              // console.log('Taskboard created:', data);
               document.getElementById('new-taskboard-form').style.display = 'none';
               document.getElementById('new-taskboard-name').value = '';
               fileInput.value = '';
@@ -564,16 +564,16 @@
 
 
 
-      document.addEventListener('DOMContentLoaded', (event) => {
-        document.querySelectorAll('.editable-text').forEach(element => {
-            element.addEventListener('blur', function(e) {
-                const taskId = this.closest('.task-card').getAttribute('data-task-id');
-                const fieldName = this.getAttribute('data-field-name');
-                const newValue = this.innerText; // Use `this.value` for input fields
-                updateTaskDetail(taskId, fieldName, newValue);
-            });
-        });
-    });
+//      document.addEventListener('DOMContentLoaded', (event) => {
+  //      document.querySelectorAll('.editable-text').forEach(element => {
+    //        element.addEventListener('blur', function(e) {
+      //          const taskId = this.closest('.task-card').getAttribute('data-task-id');
+        //        const fieldName = this.getAttribute('data-field-name');
+          //      const newValue = this.innerText; // Use `this.value` for input fields
+            //    updateTaskDetail(taskId, fieldName, newValue);
+        //    });
+     //   });
+   // });
     
 
 
@@ -589,7 +589,7 @@
         fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Data received:', data); // Debug log
+            // console.log('Data received:', data); // Debug log
             var taskboardGrid = document.getElementById('taskboard-grid');
             taskboardGrid.innerHTML = ''; // Clear existing content
 
@@ -607,63 +607,66 @@
 
 
 
-      function createCard(taskId, row) { // Notice taskId is now explicitly passed as an argument
-          console.log('Creating card for:', row); // Debug log
-          var card = document.createElement('div');
-          card.className = 'task-card';
-
-          Object.keys(row).forEach(key => {
-              if (row[key] !== null && row[key] !== undefined) {
-                  var p = document.createElement('p');
-                  p.textContent = `${key}: `;
-                  p.setAttribute('contenteditable', 'true');
-                  p.classList.add('editable-text');
-
-                  var span = document.createElement('span');
-                  span.textContent = row[key];
-                  p.appendChild(span);
-
-                  p.addEventListener('blur', function(event) {
-                      var newText = span.textContent;
-                      fetch('/update-task', {
-                          method: 'POST',
-                          headers: {
-                              'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({
-                              taskboardName: currentTaskboard,
-                              taskId: taskId, // Use taskId passed to createCard
-                              key: key,
-                              value: newText
-                          })
-                      })
-                      .then(response => response.json())
-                      .then(data => console.log(data))
-                      .catch(error => console.error('Error updating task:', error));
-                  });
-
-                  card.appendChild(p);
-              }
-          });
-
-          document.getElementById('taskboard-grid').appendChild(card);
-      }
-
+      function createCard(taskId, row) {
+        // Create the card element and assign it a class and task ID
+        var card = document.createElement('div');
+        card.className = 'task-card';
+        card.setAttribute('data-task-id', taskId); // Set the unique task ID
+    
+        Object.keys(row).forEach(key => {
+            if (row[key] !== null && row[key] !== undefined) {
+                var p = document.createElement('p');
+                p.textContent = `${key}: `;
+                p.classList.add('editable-text');
+    
+                // Create an editable span for the content
+                var span = document.createElement('span');
+                span.contentEditable = 'true';
+                span.textContent = row[key];
+    
+                span.addEventListener('blur', function(event) {
+                    var newText = this.textContent; // Use `this` to refer to the span
+                    fetch('/update-task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            taskboardName: currentTaskboard,
+                            taskId: taskId, // Use the taskId passed to createCard
+                            key: key,
+                            value: newText
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error updating task:', error));
+                });
+    
+                p.appendChild(span); // Append the span to the paragraph element
+                card.appendChild(p); // Append the paragraph to the card
+            }
+        });
+    
+        // Append the card to the taskboard grid
+        document.getElementById('taskboard-grid').appendChild(card);
+    }
+    
 
 
       
 
-    function updateTaskDetail(taskId, fieldName, newValue) {
-        const data = { taskId, columnName: fieldName, newValue };
-        fetch('http://localhost:8000/update-task-detail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
-    }
+ //   function updateTaskDetail(taskId, fieldName, newValue) {
+      //  const data = { taskId, columnName: fieldName, newValue };
+      //  fetch('http://localhost:8000/update-task-detail', {
+          //  method: 'POST',
+        //    headers: { 'Content-Type': 'application/json' },
+    //        body: JSON.stringify(data),
+      //  })
+       // .then(response => response.json())
+        //.then(data => console.log('Success:', data))
+      //  .catch(error => console.error('Error:', error));
+    //}
   
 
 
@@ -704,6 +707,10 @@
             }
         });
     
+
+
+
+
         document.addEventListener('click', function(e) {
             if (selectedCard) {
                 // Check if the click is on another task card
@@ -761,6 +768,77 @@
     });
 
     
+
+
+
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const taskboards = document.getElementById('taskboard-grid');
+      let selectedCard = null; // Variable to store the selected card
+  
+      // Event listener for double-click to select a card
+      taskboards.addEventListener('dblclick', function(e) {
+          if (e.target.classList.contains('task-card')) {
+              if (selectedCard) {
+                  // Deselect previously selected card
+                  selectedCard.classList.remove('selected');
+                  console.log('Deselected card:', selectedCard); // Debugging log
+              }
+              // Mark new selected card and add any visual indication if needed
+              selectedCard = e.target;
+              selectedCard.classList.add('selected');
+              console.log('Selected card:', selectedCard); // Debugging log
+          }
+      });
+  
+      // Event listener for click to place the selected card before clicked card
+      taskboards.addEventListener('click', function(e) {
+          if (selectedCard && e.target.classList.contains('task-card') && selectedCard !== e.target) {
+              // Move selected card before the clicked card
+              e.target.parentNode.insertBefore(selectedCard, e.target);
+              selectedCard.classList.remove('selected'); // Remove selection from moved card
+              console.log('Moved selected card before:', e.target); // Debugging log
+              selectedCard = null; // Reset selected card variable
+              updateTaskOrder(); // Call function to update order in the backend
+          }
+      });
+  
+      function updateTaskOrder() {
+        const tasks = document.querySelectorAll('.task-card');
+        const taskOrder = Array.from(tasks).map((task, index) => ({
+            id: task.dataset.taskId, // Or use index if no taskId is available
+            order: index
+        }));
+
+        fetch('/update-task-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                taskboardName: currentTaskboard, // Ensure you have a way to identify the current taskboard
+                newOrder: taskOrder.map(task => task.order) // Send just the order if taskId is not available
+            }),
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error updating task order:', error));
+    }
+  });
+  
+
+  
+
+  
+
+
+
+
+
 
     </script>
 </body>
