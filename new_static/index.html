@@ -605,34 +605,38 @@
 
 
 
-
    function fetchTaskboardData(taskboardName) {
-      console.log('Fetching data for:', taskboardName); // Debug log
-      fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
-      .then(response => response.json())
-      .then(data => {
-          var taskboardGrid = document.getElementById('taskboard-grid');
-          taskboardGrid.innerHTML = ''; // Clear existing content
+    console.log('Fetching data for:', taskboardName);
+    fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+    .then(response => response.json())
+    .then(data => {
+        var taskboardGrid = document.getElementById('taskboard-grid');
+        taskboardGrid.innerHTML = '';
 
-          // Iterate over the data object where each key is a taskId
-          Object.keys(data).forEach(taskId => {
-              // For each task, create a card using its ID and details
-              createCard(taskId, data[taskId]);
-          });
+        // Convert data object to an array of key-value pairs
+        const dataArray = Object.entries(data);
 
-          // Append the "Plus" card at the end
-          const plusCard = document.createElement('div');
-          plusCard.innerHTML = `<div class='task-card plus-card' style='text-align:center; cursor:pointer;'><span class='bi bi-plus-lg' style='font-size: 2em;'></span></div>`;
-          plusCard.addEventListener('click', function() {
-              // Show the form to add a new task
-              document.getElementById('new-task-modal').style.display = 'block';
-          });
-          taskboardGrid.appendChild(plusCard);
-      })
-      .catch(error => {
-          console.error('Error fetching taskboard data:', error);
-      });
-  }
+        // Sort the array based on the task_order
+        dataArray.sort((a, b) => a[1].task_order - b[1].task_order);
+
+        // Iterate over sorted data and create cards
+        dataArray.forEach(([taskId, taskData]) => {
+            createCard(taskId, taskData);
+        });
+
+        // Add the plusCard element
+        const plusCard = document.createElement('div');
+        plusCard.innerHTML = `<div class='task-card plus-card' style='text-align:center; cursor:pointer;'><span class='bi bi-plus-lg' style='font-size: 2em;'></span></div>`;
+        plusCard.addEventListener('click', function() {
+            document.getElementById('new-task-modal').style.display = 'block';
+        });
+        taskboardGrid.appendChild(plusCard);
+    })
+    .catch(error => {
+        console.error('Error fetching taskboard data:', error);
+    });
+}
+
 
 
 
@@ -884,21 +888,30 @@
       });
   
       function updateTaskOrder() {
+
+        if (!currentTaskboard) {
+          alert("No taskboard selected.");
+          return;
+        }
         const tasks = document.querySelectorAll('.task-card');
-        const taskOrder = Array.from(tasks).map(task => task.dataset.taskId);
+        const taskOrder = Array.from(tasks)
+            .map(task => task.dataset.taskId)
+            .filter(taskId => taskId !== undefined); // Filter out undefined elements
+
+        console.log(currentTaskboard)
     
+        console.log(JSON.stringify({ taskBoardName: currentTaskboard, order: taskOrder }));
         fetch('/update-order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ order: taskOrder })
+            body: JSON.stringify({ taskBoardName: currentTaskboard, order: taskOrder }) // Include task board name
         })
         .then(response => response.json())
         .then(data => console.log('Order updated successfully'))
         .catch(error => console.error('Error updating order:', error));
     }
-    
     
     
   });

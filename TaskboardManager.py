@@ -34,7 +34,8 @@ class TaskboardManager:
             cursor = self.global_db.cursor()
             cursor.execute(
                 """CREATE TABLE IF NOT EXISTS '{}' (
-                        id INTEGER PRIMARY KEY
+                        id INTEGER PRIMARY KEY,
+                        task_order INTEGER DEFAULT 0
                     )""".format(
                     name
                 )
@@ -189,6 +190,33 @@ class TaskboardManager:
                     name, start_upload_id)
             )
 
+    # def getAsDict(self, name):
+    #     # Check if the Taskboard exists
+    #     if not self._taskboard_exists(name):
+    #         raise Exception(f"Taskboard '{name}' does not exist.")
+
+    #     with self.global_db:
+    #         cursor = self.global_db.cursor()
+    #         cursor.execute(f"SELECT * FROM '{name}'")
+
+    #         # Get column names
+    #         columns = [desc[0] for desc in cursor.description]
+
+    #         # Fetch all rows except the first one (header row)
+    #         rows = cursor.fetchall()[1:]
+
+    #         # Create a nested dictionary
+    #         table_dict = {}
+    #         for row in rows:
+    #             row_dict = {}
+    #             for i, column in enumerate(columns):
+    #                 # Skip 'id' and 'upload_id' columns
+    #                 if column not in ("id", "upload_id"):
+    #                     row_dict[column] = row[i]
+    #             table_dict[row[0]] = row_dict
+
+    #         return table_dict
+    
     def getAsDict(self, name):
         # Check if the Taskboard exists
         if not self._taskboard_exists(name):
@@ -196,13 +224,13 @@ class TaskboardManager:
 
         with self.global_db:
             cursor = self.global_db.cursor()
-            cursor.execute(f"SELECT * FROM '{name}'")
+            cursor.execute(f"SELECT * FROM '{name}' ORDER BY task_order ASC")
 
             # Get column names
             columns = [desc[0] for desc in cursor.description]
 
             # Fetch all rows except the first one (header row)
-            rows = cursor.fetchall()[1:]
+            rows = cursor.fetchall()[0:]
 
             # Create a nested dictionary
             table_dict = {}
@@ -215,37 +243,11 @@ class TaskboardManager:
                 table_dict[row[0]] = row_dict
 
             return table_dict
+
     
     
     
-    # def getAsDict(self, name):
-    #     # Check if the Taskboard exists
-    #     if not self._taskboard_exists(name):
-    #         raise Exception(f"Taskboard '{name}' does not exist.")
-
-    #     with self.global_db:
-    #         cursor = self.global_db.cursor()
-    #         # Include an ORDER BY clause to sort by the 'task_order' column
-    #         cursor.execute(f"SELECT * FROM '{name}' ORDER BY task_order ASC")
-
-    #         # Get column names
-    #         columns = [desc[0] for desc in cursor.description]
-
-    #         # Fetch all rows
-    #         rows = cursor.fetchall()
-
-    #         # Create a nested dictionary
-    #         table_dict = {}
-    #         for row in rows:
-    #             row_dict = {}
-    #             for i, column in enumerate(columns):
-    #                 # Optionally skip 'id' and 'upload_id' columns, depending on your use case
-    #                 if column not in ("id", "upload_id"):
-    #                     row_dict[column] = row[i]
-    #             # Assuming the first column is the unique identifier for tasks
-    #             table_dict[row[0]] = row_dict
-
-    #         return table_dict
+    
 
 
 
@@ -259,13 +261,35 @@ class TaskboardManager:
         
     
     
-    def updateTaskOrder(self, order):
+    
+    
+    
+    def updateTaskOrder(self, table_name, order):
+        print(table_name, order)
         with self.global_db:
             cursor = self.global_db.cursor()
+            
+            # Check if the 'task_order' column exists in the table
+            cursor.execute(f"PRAGMA table_info({table_name})")
+            columns = cursor.fetchall()
+            has_task_order_column = any(column[1] == 'task_order' for column in columns)
+            
+            # If the 'task_order' column doesn't exist, add it to the table
+            if not has_task_order_column:
+                cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN task_order INTEGER")
+            
+            # Update the task order
             for idx, task_id in enumerate(order, start=1):
-                cursor.execute("UPDATE taskboard SET task_order = ? WHERE id = ?", (idx, task_id))
+                print(idx, task_id)
+                cursor.execute(f"UPDATE {table_name} SET task_order = ? WHERE id = ?", (idx, task_id))
+            
             self.global_db.commit()
 
+    
+    
+    
+    
+    
     
     
     def addTask(self, taskboardName, taskContent):

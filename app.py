@@ -11,6 +11,8 @@ import base64
 import sqlite3
 import json
 from datetime import datetime
+import traceback
+
 
 app = FastAPI(title="Taskboard")
 app.mount("/new_static", StaticFiles(directory="new_static", html=True), name="new_static")
@@ -152,14 +154,17 @@ async def create_task(taskboard_name: str, task_content: TaskContent):
 
 
 @app.post("/update-order")
-async def update_order(order: List[str] = Body(...)):
+async def update_order(data: dict):
     try:
-        db.updateTaskOrder(order)
+        order = data.get('order')
+        taskBoardName = data.get('taskBoardName')
+        print(order, taskBoardName)
+        # Assuming db is an instance of YourDatabaseClass
+        db.updateTaskOrder(taskBoardName, order)
         return {"message": "Order updated successfully."}
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-
-
 
 
 
