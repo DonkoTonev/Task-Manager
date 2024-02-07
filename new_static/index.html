@@ -235,16 +235,16 @@
 
 
 
-        <div id="new-task-modal" class="modal" style="display: none;">
+        <div id="new-task-modal" class="modal">
           <div class="modal-content">
-              <span class="close-button" onclick="document.getElementById('new-task-modal').style.display='none'">&times;</span>
+              <!-- <span class="close-button" onclick="document.getElementById('new-task-modal').style.display='none'">&times;</span> -->
+              <span class="close-button">&times;</span>
               <h2>Add New Task</h2>
               <input type="text" id="new-task-content" placeholder="Task content">
               <button onclick="addNewTask()">Add Task</button>
           </div>
         </div>
       
-
 
 
 
@@ -411,7 +411,17 @@
         }
 
 
+        
 
+
+        // JavaScript function to close the new task modal
+        function closeNewTaskModal() {
+          // Get the modal element
+          var modal = document.getElementById('new-task-modal');
+
+          // Hide the modal by setting its display property to 'none'
+          modal.style.display = 'none';
+        }
 
 
 
@@ -542,46 +552,47 @@
 
 
 
-
       // Submit new taskboard
       document.getElementById('submit-new-taskboard').addEventListener('click', function(event) {
-          event.preventDefault(); // Prevent the form from submitting in the traditional way
+        event.preventDefault(); // Prevent the form from submitting in the traditional way
 
-          var taskboardName = document.getElementById('new-taskboard-name').value;
-          var fileInput = document.getElementById('new-taskboard-file');
-          var file = fileInput.files[0];
+        var taskboardName = document.getElementById('new-taskboard-name').value;
+        var fileInput = document.getElementById('new-taskboard-file');
+        var file = fileInput.files[0];
 
-          if (!taskboardName || !file) {
-              alert('Please enter a taskboard name and select a file.');
-              return;
-          }
+        if (!taskboardName || !file) {
+            alert('Please enter a taskboard name and select a file.');
+            return;
+        }
 
-          var formData = new FormData();
-          formData.append('name', taskboardName);
-          formData.append('file', file);
+        var formData = new FormData();
+        formData.append('name', taskboardName);
+        formData.append('file', file);
 
-          fetch('/create', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              // console.log('Taskboard created:', data);
-              document.getElementById('new-taskboard-form').style.display = 'none';
-              document.getElementById('new-taskboard-name').value = '';
-              fileInput.value = '';
-              // Redirect to the homepage with the new taskboard name as a query parameter
-              window.location.href = `/?name=${encodeURIComponent(taskboardName)}`;
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+        fetch('/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // console.log('Taskboard created:', data);
+            document.getElementById('new-taskboard-form').style.display = 'none';
+            document.getElementById('new-taskboard-name').value = '';
+            fileInput.value = '';
+            // Redirect to the homepage with the new taskboard name as a query parameter
+            window.location.href = `/?name=${encodeURIComponent(taskboardName)}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('A taskboard with this name already exists. Please choose another name!');
+        });
       });
+
 
   
 
