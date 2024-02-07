@@ -215,6 +215,38 @@ class TaskboardManager:
                 table_dict[row[0]] = row_dict
 
             return table_dict
+    
+    
+    
+    # def getAsDict(self, name):
+    #     # Check if the Taskboard exists
+    #     if not self._taskboard_exists(name):
+    #         raise Exception(f"Taskboard '{name}' does not exist.")
+
+    #     with self.global_db:
+    #         cursor = self.global_db.cursor()
+    #         # Include an ORDER BY clause to sort by the 'task_order' column
+    #         cursor.execute(f"SELECT * FROM '{name}' ORDER BY task_order ASC")
+
+    #         # Get column names
+    #         columns = [desc[0] for desc in cursor.description]
+
+    #         # Fetch all rows
+    #         rows = cursor.fetchall()
+
+    #         # Create a nested dictionary
+    #         table_dict = {}
+    #         for row in rows:
+    #             row_dict = {}
+    #             for i, column in enumerate(columns):
+    #                 # Optionally skip 'id' and 'upload_id' columns, depending on your use case
+    #                 if column not in ("id", "upload_id"):
+    #                     row_dict[column] = row[i]
+    #             # Assuming the first column is the unique identifier for tasks
+    #             table_dict[row[0]] = row_dict
+
+    #         return table_dict
+
 
 
     def updateTask(self, taskboardName, taskId, key, value):
@@ -225,6 +257,48 @@ class TaskboardManager:
             cursor.execute(update_query, (value, taskId))
             self.global_db.commit()
         
+    
+    
+    def updateTaskOrder(self, order):
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            for idx, task_id in enumerate(order, start=1):
+                cursor.execute("UPDATE taskboard SET task_order = ? WHERE id = ?", (idx, task_id))
+            self.global_db.commit()
+
+    
+    
+    def addTask(self, taskboardName, taskContent):
+        # Validate taskboardName
+        if not self._taskboard_exists(taskboardName):
+            raise ValueError(f"Taskboard '{taskboardName}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+
+            # Assume taskContent has a property 'content' that holds the string content
+            contentString = taskContent.content if hasattr(taskContent, 'content') else str(taskContent)
+
+            # Check if the 'content' column exists
+            cursor.execute(f"PRAGMA table_info('{taskboardName}')")
+            columns = [row[1] for row in cursor.fetchall()]
+            if 'content' not in columns:
+                # If the 'content' column does not exist, add it
+                cursor.execute(f"ALTER TABLE '{taskboardName}' ADD COLUMN content TEXT")
+
+            # Since parameters can't be used for table names, ensure taskboardName is safe
+            sql = f"INSERT INTO '{taskboardName}' (content) VALUES (?)"
+
+            try:
+                cursor.execute(sql, (contentString,))
+                self.global_db.commit()
+            except Exception as e:
+                print(f"Error inserting task into {taskboardName}: {e}")
+                # Depending on your error handling, you might want to re-raise the exception
+                raise
+
+
+
     
 
 # Test code

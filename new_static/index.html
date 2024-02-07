@@ -226,6 +226,29 @@
           </div>
         </div>
 
+        
+
+
+
+
+
+
+
+
+        <div id="new-task-modal" class="modal" style="display: none;">
+          <div class="modal-content">
+              <span class="close-button" onclick="document.getElementById('new-task-modal').style.display='none'">&times;</span>
+              <h2>Add New Task</h2>
+              <input type="text" id="new-task-content" placeholder="Task content">
+              <button onclick="addNewTask()">Add Task</button>
+          </div>
+        </div>
+      
+
+
+
+
+
 
         <!-- Modal -->
           <div id="setting" class="modal">
@@ -583,26 +606,77 @@
 
 
 
-      // Function to fetch and display taskboard data
-      function fetchTaskboardData(taskboardName) {
-        console.log('Fetching data for:', taskboardName); // Debug log
-        fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
-        .then(response => response.json())
-        .then(data => {
-            // console.log('Data received:', data); // Debug log
-            var taskboardGrid = document.getElementById('taskboard-grid');
-            taskboardGrid.innerHTML = ''; // Clear existing content
+   function fetchTaskboardData(taskboardName) {
+      console.log('Fetching data for:', taskboardName); // Debug log
+      fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+      .then(response => response.json())
+      .then(data => {
+          var taskboardGrid = document.getElementById('taskboard-grid');
+          taskboardGrid.innerHTML = ''; // Clear existing content
 
-            // Iterate over the data object where each key is a taskId
-            Object.keys(data).forEach(taskId => {
-                // For each task, create a card using its ID and details
-                createCard(taskId, data[taskId]);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching taskboard data:', error);
-        });
-      }
+          // Iterate over the data object where each key is a taskId
+          Object.keys(data).forEach(taskId => {
+              // For each task, create a card using its ID and details
+              createCard(taskId, data[taskId]);
+          });
+
+          // Append the "Plus" card at the end
+          const plusCard = document.createElement('div');
+          plusCard.innerHTML = `<div class='task-card plus-card' style='text-align:center; cursor:pointer;'><span class='bi bi-plus-lg' style='font-size: 2em;'></span></div>`;
+          plusCard.addEventListener('click', function() {
+              // Show the form to add a new task
+              document.getElementById('new-task-modal').style.display = 'block';
+          });
+          taskboardGrid.appendChild(plusCard);
+      })
+      .catch(error => {
+          console.error('Error fetching taskboard data:', error);
+      });
+  }
+
+
+
+
+
+  function addNewTask() {
+    const taskContent = document.getElementById('new-task-content').value;
+    if (!currentTaskboard) {
+        alert("No taskboard selected.");
+        return;
+    }
+
+    const payload = {
+        content: taskContent // Ensure this matches the Pydantic model in FastAPI
+    };
+
+    fetch(`/taskboard/${encodeURIComponent(currentTaskboard)}/task`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Correctly stringify the payload
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Task added:', data);
+        document.getElementById('new-task-modal').style.display = 'none';
+        fetchTaskboardData(currentTaskboard); // Optionally refresh or update UI
+    })
+    .catch(error => console.error('Error adding task:', error));
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -654,6 +728,8 @@
     
 
 
+
+    
       
 
  //   function updateTaskDetail(taskId, fieldName, newValue) {
@@ -809,30 +885,27 @@
   
       function updateTaskOrder() {
         const tasks = document.querySelectorAll('.task-card');
-        const taskOrder = Array.from(tasks).map((task, index) => ({
-            id: task.dataset.taskId, // Or use index if no taskId is available
-            order: index
-        }));
-
-        fetch('/update-task-order', {
+        const taskOrder = Array.from(tasks).map(task => task.dataset.taskId);
+    
+        fetch('/update-order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                taskboardName: currentTaskboard, // Ensure you have a way to identify the current taskboard
-                newOrder: taskOrder.map(task => task.order) // Send just the order if taskId is not available
-            }),
+            body: JSON.stringify({ order: taskOrder })
         })
         .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error updating task order:', error));
+        .then(data => console.log('Order updated successfully'))
+        .catch(error => console.error('Error updating order:', error));
     }
+    
+    
+    
   });
   
 
   
-
+      
   
 
 

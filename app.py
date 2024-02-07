@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 from pydantic import BaseModel
 from io import BytesIO
 from fastapi.responses import FileResponse, HTMLResponse
-from typing import Optional, Annotated
+from typing import Optional, Annotated, List
 import base64
 import sqlite3
 import json
@@ -133,6 +133,35 @@ async def update_task(update_details: dict = Body(...)):
         return {"message": "Task updated successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class TaskContent(BaseModel):
+    content: str
+
+
+@app.post("/taskboard/{taskboard_name}/task")
+async def create_task(taskboard_name: str, task_content: TaskContent):
+    print(f"Adding task to {taskboard_name}: {task_content.content}")
+    try:
+        db.addTask(taskboard_name, task_content)
+        return {"message": "Task created successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+@app.post("/update-order")
+async def update_order(order: List[str] = Body(...)):
+    try:
+        db.updateTaskOrder(order)
+        return {"message": "Order updated successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
 
 
 
