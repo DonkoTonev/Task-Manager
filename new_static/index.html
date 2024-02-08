@@ -198,7 +198,23 @@
 
 
 
+        <!-- <div class="form-container mt-3" id="new-taskboard-form">
+          <span class="close-button">&times;</span>
+          <form>
+              <div class="mb-3">
+                  <label for="new-taskboard-name" class="form-label">Taskboard Name</label>
+                  <input type="text" class="form-control" id="new-taskboard-name" placeholder="Enter Taskboard Name">
+              </div>
+              <div class="mb-3">
+                  <label for="new-taskboard-file" class="form-label">Taskboard File</label>
+                  <input type="file" class="form-control" id="new-taskboard-file" accept=".xlsx">
+              </div>
+              <button type="submit" class="btn btn-primary" id="submit-new-taskboard">Create Taskboard</button>
+          </form>
+        </div> -->
+
         <div class="form-container mt-3" id="new-taskboard-form">
+          <span class="close-button" onclick="closeForm()">&times;</span>
           <form>
               <div class="mb-3">
                   <label for="new-taskboard-name" class="form-label">Taskboard Name</label>
@@ -211,13 +227,14 @@
               <button type="submit" class="btn btn-primary" id="submit-new-taskboard">Create Taskboard</button>
           </form>
       </div>
+      
 
       
       
 
         <div id="taskboard-selection-modal" class="modal">
           <div class="modal-content">
-              <span class="close-button">&times;</span>
+              <span class="close-button" onclick="closeForm()">&times;</span>
               <h2>Select a Taskboard</h2>
               <select id="taskboard-selector" class="taskboard-selector">
                   <!-- Taskboard options will be dynamically populated here -->
@@ -414,14 +431,10 @@
         
 
 
-        // JavaScript function to close the new task modal
-        function closeNewTaskModal() {
-          // Get the modal element
-          var modal = document.getElementById('new-task-modal');
-
-          // Hide the modal by setting its display property to 'none'
-          modal.style.display = 'none';
-        }
+        function closeForm() {
+          var formContainer = document.getElementById('new-taskboard-form');
+          formContainer.style.display = 'none';
+      }
 
 
 
