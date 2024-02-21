@@ -21,9 +21,5 @@ Welcome to the Task Manager web application! This application is designed to hel
 - **File Upload Integration**: Optional file uploads now work seamlessly with form data submissions on the index page, enhancing the application's flexibility and usability.
 - **Next Steps**: The next phase of development involves implementing Jinja templates and creating interface/menu components to further enhance user interaction and experience.
 
-## About the ASDA Squad
-This role sits within our Assessment, Scoring, Analytics, and Data (ASDA) squad, with primary responsibility for collaborating with the Senior Python Developer to develop new scoring functions. The role also involves close collaboration with the psychometrics team to ensure the effectiveness and accuracy of the scoring algorithms.
-
-Thank you for using our Task Manager web application. For any questions, feedback, or issues, please don't hesitate to contact our development team.
 
 Happy Task Managing! 🚀
