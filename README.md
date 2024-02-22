@@ -1,25 +1,25 @@
-Welcome to the Task Manager web application! This application is designed to help users manage tasks efficiently by providing a user-friendly interface for task management.
+Welcome to the Task Manager Application! This application is designed to help users manage their tasks efficiently. Whether you're organizing personal chores, managing projects, or planning your day-to-day activities, this application offers a convenient platform to streamline your tasks.
 
 ## Features
 
-### TaskboardManager.py
-- **Rollback Method**: The `rollback` method is implemented to delete unused columns, ensuring database integrity and efficiency.
-- **Handling for Upload_id and ID Columns**: Special handling is in place for the `upload_id` and `id` columns of taskboard tables to address conflicts that may arise from uploaded data with conflicting column names.
-- **Table Configuration**: The `configure_` table for taskboards is removed and moved to `table_metadata` for better organization and management.
-- **Robust Exceptions**: More robust exceptions are created to facilitate debugging and improve error handling within the application.
+- **Excel File Upload**: Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
+  
+- **Taskboard Creation**: Upon uploading an Excel file for the first time, the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by uploading additional Excel files.
+  
+- **Edit Functionality**: Users have the ability to modify their taskboards through the edit page. This includes options to delete, duplicate, or modify existing tasks.
+  
+- **Add New Tasks**: Users can add new tasks directly from the frontend interface. These tasks are stored in the database for future reference.
+  
+- **Task Content Editing**: Users can edit the content of existing tasks directly from the frontend. Any modifications made are automatically saved to the database.
+  
+- **Drag & Drop Functionality** (In Progress): The next step in development involves implementing drag & drop functionality. Users will be able to rearrange tasks by dragging and dropping them across the taskboard. The new structure will be automatically saved in the database.
 
-### app.py
-- **Input Scrubbing and Error Handling**: Enhanced input scrubbing and error handling mechanisms are implemented to ensure data integrity and enhance security.
-- **Endpoint Development**: Endpoints are built out for data submission and optional file uploads via forms, facilitating seamless interaction with the application.
-- **Web Interface Development**: Development of the web interface is underway to provide users with a visually appealing and intuitive user experience.
+## Technologies Used
 
-### index.html
-- **Core Functionality Implementation**: The core functionality of the application is implemented in the HTML file, allowing users to interact with task management features seamlessly.
-- **UI Design Implementation**: User interface design elements are integrated to enhance the visual appeal and usability of the application.
+- **Backend**: FastAPI is utilized to handle the backend logic of the application. FastAPI provides a modern, fast (high-performance), web framework for building APIs with Python 3.7+.
 
-## Development Notes
-- **File Upload Integration**: Optional file uploads now work seamlessly with form data submissions on the index page, enhancing the application's flexibility and usability.
-- **Next Steps**: The next phase of development involves implementing Jinja templates and creating interface/menu components to further enhance user interaction and experience.
+- **Frontend**: The frontend interface is developed using JavaScript, HTML, and CSS. These technologies provide the necessary tools for creating a dynamic and interactive user experience.
+
+- **Database**: SQLite is used as the database management system for storing task data. SQLite is a lightweight, serverless, self-contained database engine that is perfect for small to medium-sized applications.
 
 
-Happy Task Managing! 🚀
