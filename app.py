@@ -1,21 +1,18 @@
 from TaskboardManager import TaskboardManager
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body, Request
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
 from pydantic import BaseModel
 from io import BytesIO
-from fastapi.responses import FileResponse, HTMLResponse
-from typing import Optional, Annotated, List
-import base64
-import sqlite3
-import json
-from datetime import datetime
+from fastapi.responses import FileResponse
+from typing import Optional, Annotated
 import traceback
 
 
 app = FastAPI(title="Taskboard")
-app.mount("/new_static", StaticFiles(directory="new_static", html=True), name="new_static")
+app.mount("/static", StaticFiles(directory="static",
+          html=True), name="static")
 
 # Enable CORS (Cross-Origin Resource Sharing) for multi-user interfaces (automated handling of synchronous clients.)
 origins = ["*"]
@@ -30,21 +27,26 @@ app.add_middleware(
 # Create an instance of TaskboardManager to manage Taskboards
 db = TaskboardManager()
 
+
 @app.get("/")
 async def home():
-    return FileResponse("new_static/index.html")
+    return FileResponse("static/index.html")
+
 
 @app.get("/settings")
 async def settings():
-    return FileResponse("new_static/settings.html")
+    return FileResponse("static/settings.html")
+
 
 @app.get("/edit")
 async def edit():
-    return FileResponse("new_static/edit.html")
+    return FileResponse("static/edit.html")
+
 
 @app.get("/menu")
 async def menu():
-    return FileResponse("new_static/menu.html")
+    return FileResponse("static/menu.html")
+
 
 @app.post("/create")
 async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File()):
@@ -58,11 +60,13 @@ async def create_taskboard(name: Annotated[str, Form()], file: UploadFile = File
         rows = list(sheet.iter_rows(values_only=True))
         headers = rows[0]
 
-        data = [dict(zip(headers, row)) for row in rows[1:]]  # Convert rows to list of dicts
-        
+        data = [dict(zip(headers, row))
+                for row in rows[1:]]  # Convert rows to list of dicts
+
         db.uploadFile(name, data)
         return {"msg": "file uploaded and data processed"}
     return {"msg": "file not uploaded"}
+
 
 @app.post("/duplicate")
 async def duplicate_taskboard(currentName: str, newName: str):
@@ -80,7 +84,8 @@ async def duplicate_taskboard(currentName: str, newName: str):
 
         # Ensure the data is in the correct format: a list of dictionaries
         if not isinstance(currentData, list) or not all(isinstance(item, dict) for item in currentData):
-            raise ValueError("Invalid data format: Data must be a list of dictionaries.")
+            raise ValueError(
+                "Invalid data format: Data must be a list of dictionaries.")
 
         # Create a new taskboard and upload the data
         db.createTaskboard(newName)
@@ -90,6 +95,7 @@ async def duplicate_taskboard(currentName: str, newName: str):
         print(f"Error during duplication: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/upload/")
 async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
     contents = await file.read()
@@ -98,30 +104,32 @@ async def upload_file(name: str = Form(...), file: UploadFile = File(...)):
     rows = list(sheet.iter_rows(values_only=True))
     headers = rows[0]
 
-    data = [dict(zip(headers, row)) for row in rows[1:]]  # Convert rows to list of dicts
+    data = [dict(zip(headers, row))
+            for row in rows[1:]]  # Convert rows to list of dicts
     db.uploadFile(name, data)  # Call the updated uploadFile method
     return {"message": f"Data uploaded successfully to taskboard '{name}'."}
+
 
 @app.delete("/delete/")
 async def delete_taskboard(name: str):
     db.destroy(name)
     return
 
+
 @app.put("/rollback/")
 async def rollback_taskboard(name: str, rollback: Optional[int] = 1):
     db.rollback(name, rollback)
     return
 
+
 @app.get("/list/")
 async def list_taskboards():
     return db.defAvailable()
 
+
 @app.get("/get/")
 async def get_taskboard(name: str):
     return db.getAsDict(name)
-
-
-
 
 
 @app.post("/update-task")
@@ -151,8 +159,6 @@ async def create_task(taskboard_name: str, task_content: TaskContent):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-
-
 @app.post("/update-order")
 async def update_order(data: dict):
     try:
@@ -165,11 +171,6 @@ async def update_order(data: dict):
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-
-
-
-
-
 
 
 if __name__ == "__main__":

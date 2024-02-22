@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Taskboard</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/responsive.css" />
+
+    <style>
+      #new-taskboard-form {
+        display: none; /* Keep it hidden initially */
+        margin: 20px auto; /* Centered with automatic margins */
+        padding: 20px;
+        border: none; /* Remove border */
+        border-radius: 8px;
+        background-color: #ffffff; /* Light background for contrast */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        width: 90%; /* Responsive width */
+        max-width: 500px; /* Maximum width to maintain form structure */
+      }
+
+      #new-taskboard-form input[type="text"],
+      #new-taskboard-form input[type="file"] {
+        width: calc(100% - 20px); /* Full width minus padding */
+        padding: 10px;
+        margin: 10px 0;
+        display: block; /* Ensure it takes its own line */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Include padding and border in element's width */
+        font-size: 16px; /* Larger font size for better readability */
+      }
+
+      #new-taskboard-form button {
+        width: calc(100% - 20px); /* Full width minus padding */
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px; /* Match input font size for consistency */
+        transition: background-color 0.2s; /* Smooth transition for hover effect */
+      }
+
+      #new-taskboard-form button:hover {
+        background-color: #0056b3; /* Darker shade on hover for feedback */
+      }
+
+      #new-taskboard-form input[type="text"]::placeholder,
+      #new-taskboard-form input[type="file"]::placeholder {
+        color: #888;
+        font-size: 16px; /* Increase placeholder font size for better visibility */
+      }
+
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto; /* 5% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        border-radius: 8px; /* Optional: Rounded corners */
+      }
+
+      .taskboard-selector {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .taskboard-grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(250px, 1fr)
+        ); /* Creates as many columns as can fit, with each card having a minimum width of 250px and maximum of 1 fraction of the available space */
+        gap: 20px; /* Adjusts spacing between cards */
+      }
+
+      .task-card {
+        padding: 10px;
+        background-color: #444; /* Dark background */
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        color: #bbbbbb; /* Lighter text color */
+      }
+      #new-taskboard-form {
+        transform: none;
+      }
+
+      body .wrapper #new-taskboard-form input[type="text"],
+      body .wrapper #new-taskboard-form input[type="file"] {
+        width: 100% !important; /* Full width of the parent */
+        padding: 10px !important; /* Comfortable padding */
+        margin-bottom: 10px !important; /* Space between fields */
+        display: block !important; /* Ensure display is block */
+        border: 1px solid #ccc !important; /* Consistent border */
+        border-radius: 4px !important; /* Rounded corners for aesthetics */
+        box-sizing: border-box !important; /* Include padding and border in the element's total width and height */
+        font-size: 16px !important; /* Increase font size for better readability */
+      }
+
+      body .wrapper #new-taskboard-form button {
+        width: 100% !important; /* Full width to match input fields */
+        padding: 10px !important; /* Consistent padding */
+        margin-top: 10px !important; /* Space above the button */
+        background-color: #007bff !important; /* Bootstrap primary button color */
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        font-size: 16px !important; /* Match input font size */
+      }
+
+      .task-card.dragging {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body class="body">
+    <div class="wrapper">
+      <!-- header section-->
+      <div class="mobile-container">
+        <!-- Top Navigation Menu -->
+        <div class="topnav">
+          <!-- <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard -->
+          <a
+            href="javascript:void(0);"
+            class="new_task"
+            onclick="myFunction()"
+            id="taskboardName"
+            >My New Taskboard
+
+            <div id="toggle">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+            </div>
+          </a>
+          <a
+            href="#setting"
+            class="setting"
+            data-bs-toggle="modal"
+            data-bs-target="#setting"
+            >Settings</a
+          >
+          <div id="myLinks">
+            <a id="update-button" href="#" class="menu_box"
+              ><p class="menu_text">Update</p></a
+            >
+            <a id="edit-button" href="#" class="menu_box"
+              ><p class="menu_text">Edit</p></a
+            >
+            <a id="open-button" href="#" class="menu_box"
+              ><p class="menu_text">Open</p></a
+            >
+            <a id="new-button" href="#" class="menu_box"
+              ><p class="menu_text">New</p></a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- end header section-->
+
+      <section class="taskboard-grid" id="taskboard-grid">
+        <!-- Task cards will be dynamically added here -->
+      </section>
+
+      <div class="form-container mt-3" id="new-taskboard-form">
+        <span class="close-button" onclick="closeForm()">&times;</span>
+        <form>
+          <div class="mb-3">
+            <label for="new-taskboard-name" class="form-label"
+              >Taskboard Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="new-taskboard-name"
+              placeholder="Enter Taskboard Name"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="new-taskboard-file" class="form-label"
+              >Taskboard File</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              id="new-taskboard-file"
+              accept=".xlsx"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="submit-new-taskboard"
+          >
+            Create Taskboard
+          </button>
+        </form>
+      </div>
+
+      <div id="taskboard-selection-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button" onclick="closeForm()">&times;</span>
+          <h2>Select a Taskboard</h2>
+          <select id="taskboard-selector" class="taskboard-selector">
+            <!-- Taskboard options will be dynamically populated here -->
+          </select>
+          <button id="select-taskboard-button" class="button-blue">
+            Open Taskboard
+          </button>
+        </div>
+      </div>
+
+      <div id="new-task-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Add New Task</h2>
+          <input type="text" id="new-task-content" placeholder="Task content" />
+          <button onclick="addNewTask()">Add Task</button>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div id="setting" class="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="close-popup">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+              <div class="row justify-content-center px_20">
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Columns</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input type="text" id="Columns" placeholder="10" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Rows</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input type="text" id="Rows" placeholder="10" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Tile Height</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input
+                            type="text"
+                            id="Tile_Height"
+                            placeholder="0 px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Tile Width</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input
+                            type="text"
+                            id="Tile_Width"
+                            placeholder="0 px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Password</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input
+                            type="Password"
+                            id="Password"
+                            placeholder="*****"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5"></div>
+              </div>
+
+              <h5 class="modal-title" id="exampleModalLabel">
+                Default Formatting
+              </h5>
+              <div class="row justify-content-center px_20">
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Font Size</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input
+                            type="text"
+                            id="Font_Size"
+                            placeholder="0 px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Font Color</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input type="text" id="Color" placeholder="Black" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Background Color</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input type="text" id="BG" placeholder="Grey" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="setting_row_box">
+                    <div class="row align-items-center">
+                      <div class="col-md-6 col-sm-6">
+                        <p class="setting_row_text">Font Family</p>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="setting_row_count_box">
+                          <input
+                            type="text"
+                            id="Font_Family"
+                            placeholder="Eras ITC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px_50">
+                <h5
+                  class="modal-title modal-title_color"
+                  id="exampleModalLabel"
+                >
+                  Hotkeys
+                </h5>
+                <div class="row justify-content-center px_20">
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">Update | Ctrl+U</p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">Rollback | Ctrl+Z</p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">Reset | Ctrl+R</p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">
+                              Roll-forward | Ctrl+Y
+                            </p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">
+                              Edit Taskboard | Ctrl+E
+                            </p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="setting_row_box1">
+                      <div class="row align-items-center">
+                        <a href="#"
+                          ><div class="col-md-12">
+                            <p class="setting_row_text">
+                              Open Taskboard | Ctrl+O
+                            </p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="save_btn">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end-Modal -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-2.2.0.min.js"
+      type="text/javascript"
+    ></script>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myLinks");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      }
+
+      function closeForm() {
+        var formContainer = document.getElementById("new-taskboard-form");
+        formContainer.style.display = "none";
+      }
+
+      // Global variable to keep track of the currently selected taskboard
+      let currentTaskboard = null;
+
+      // Update taskboard functionality
+      document
+        .getElementById("update-button")
+        .addEventListener("click", function () {
+          if (!currentTaskboard) {
+            alert("Please select a taskboard first.");
+            return;
+          }
+
+          var fileInput = document.createElement("input");
+          fileInput.type = "file";
+          fileInput.accept = ".xlsx";
+
+          fileInput.addEventListener("change", function (event) {
+            var file = event.target.files[0];
+            var formData = new FormData();
+            formData.append("file", file);
+            formData.append("name", currentTaskboard);
+
+            fetch("/upload/", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                fetchTaskboardData(currentTaskboard);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+
+          fileInput.click();
+        });
+
+      // Open taskboard selection modal
+      document
+        .getElementById("open-button")
+        .addEventListener("click", function () {
+          fetch("/list/")
+            .then((response) => response.json())
+            .then((taskboards) => {
+              populateTaskboardSelector(Object.values(taskboards));
+              showModal();
+            })
+            .catch((error) => {
+              console.error("Error fetching taskboards:", error);
+            });
+        });
+
+      // Populate taskboard selector in modal
+      function populateTaskboardSelector(taskboards) {
+        var selector = document.getElementById("taskboard-selector");
+        selector.innerHTML = "";
+        taskboards.forEach((taskboard) => {
+          var option = document.createElement("option");
+          option.value = taskboard;
+          option.textContent = taskboard;
+          selector.appendChild(option);
+        });
+      }
+
+      // Show modal
+      function showModal() {
+        var modal = document.getElementById("taskboard-selection-modal");
+        modal.style.display = "block";
+      }
+
+      // Close modal functionality
+      document
+        .querySelector(".close-button")
+        .addEventListener("click", function () {
+          var modal = document.getElementById("taskboard-selection-modal");
+          modal.style.display = "none";
+        });
+
+      window.onclick = function (event) {
+        var modal = document.getElementById("taskboard-selection-modal");
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Handle taskboard selection from modal
+      document
+        .getElementById("select-taskboard-button")
+        .addEventListener("click", function () {
+          var selectedTaskboard =
+            document.getElementById("taskboard-selector").value;
+          if (selectedTaskboard) {
+            openTaskboard(selectedTaskboard);
+            var modal = document.getElementById("taskboard-selection-modal");
+            modal.style.display = "none";
+          } else {
+            alert("Please select a taskboard.");
+          }
+        });
+
+      // Edit taskboard functionality
+      document
+        .getElementById("edit-button")
+        .addEventListener("click", function () {
+          if (!currentTaskboard) {
+            alert("Please select a taskboard first.");
+            return;
+          }
+          window.location.href = `/edit?name=${encodeURIComponent(
+            currentTaskboard
+          )}`;
+        });
+
+      // New taskboard functionality
+      // New taskboard functionality
+      document
+        .getElementById("new-button")
+        .addEventListener("click", function () {
+          document.getElementById("new-taskboard-form").style.display = "block";
+        });
+
+      // Submit new taskboard
+      document
+        .getElementById("submit-new-taskboard")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent the form from submitting in the traditional way
+
+          var taskboardName =
+            document.getElementById("new-taskboard-name").value;
+          var fileInput = document.getElementById("new-taskboard-file");
+          var file = fileInput.files[0];
+
+          if (!taskboardName || !file) {
+            alert("Please enter a taskboard name and select a file.");
+            return;
+          }
+
+          var formData = new FormData();
+          formData.append("name", taskboardName);
+          formData.append("file", file);
+
+          fetch("/create", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // console.log('Taskboard created:', data);
+              document.getElementById("new-taskboard-form").style.display =
+                "none";
+              document.getElementById("new-taskboard-name").value = "";
+              fileInput.value = "";
+              // Redirect to the homepage with the new taskboard name as a query parameter
+              window.location.href = `/?name=${encodeURIComponent(
+                taskboardName
+              )}`;
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert(
+                "A taskboard with this name already exists. Please choose another name!"
+              );
+            });
+        });
+
+      function fetchTaskboardData(taskboardName) {
+        console.log("Fetching data for:", taskboardName);
+        fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            var taskboardGrid = document.getElementById("taskboard-grid");
+            taskboardGrid.innerHTML = "";
+
+            // Convert data object to an array of key-value pairs
+            const dataArray = Object.entries(data);
+
+            // Sort the array based on the task_order
+            dataArray.sort((a, b) => a[1].task_order - b[1].task_order);
+
+            // Iterate over sorted data and create cards
+            dataArray.forEach(([taskId, taskData]) => {
+              createCard(taskId, taskData);
+            });
+
+            // Add the plusCard element
+            const plusCard = document.createElement("div");
+            plusCard.innerHTML = `<div class='task-card plus-card' style='text-align:center; cursor:pointer;'><span class='bi bi-plus-lg' style='font-size: 2em;'></span></div>`;
+            plusCard.addEventListener("click", function () {
+              document.getElementById("new-task-modal").style.display = "block";
+            });
+            taskboardGrid.appendChild(plusCard);
+          })
+          .catch((error) => {
+            console.error("Error fetching taskboard data:", error);
+          });
+      }
+
+      function addNewTask() {
+        const taskContent = document.getElementById("new-task-content").value;
+        if (!currentTaskboard) {
+          alert("No taskboard selected.");
+          return;
+        }
+
+        const payload = {
+          content: taskContent, // Ensure this matches the Pydantic model in FastAPI
+        };
+
+        fetch(`/taskboard/${encodeURIComponent(currentTaskboard)}/task`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload), // Correctly stringify the payload
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Task added:", data);
+            document.getElementById("new-task-modal").style.display = "none";
+            fetchTaskboardData(currentTaskboard); // Optionally refresh or update UI
+          })
+          .catch((error) => console.error("Error adding task:", error));
+      }
+
+      function createCard(taskId, row) {
+        // Create the card element and assign it a class and task ID
+        var card = document.createElement("div");
+        card.className = "task-card";
+        card.setAttribute("data-task-id", taskId); // Set the unique task ID
+
+        Object.keys(row).forEach((key) => {
+          if (row[key] !== null && row[key] !== undefined) {
+            var p = document.createElement("p");
+            p.textContent = `${key}: `;
+            p.classList.add("editable-text");
+
+            // Create an editable span for the content
+            var span = document.createElement("span");
+            span.contentEditable = "true";
+            span.textContent = row[key];
+
+            span.addEventListener("blur", function (event) {
+              var newText = this.textContent; // Use `this` to refer to the span
+              fetch("/update-task", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  taskboardName: currentTaskboard,
+                  taskId: taskId, // Use the taskId passed to createCard
+                  key: key,
+                  value: newText,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+                .catch((error) => console.error("Error updating task:", error));
+            });
+
+            p.appendChild(span); // Append the span to the paragraph element
+            card.appendChild(p); // Append the paragraph to the card
+          }
+        });
+
+        // Append the card to the taskboard grid
+        document.getElementById("taskboard-grid").appendChild(card);
+      }
+
+      // Open taskboard function
+      function openTaskboard(taskboardName) {
+        currentTaskboard = taskboardName;
+        fetchTaskboardData(taskboardName);
+      }
+
+      // DOMContentLoaded event listener
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskboardName = urlParams.get("name");
+        if (taskboardName) {
+          openTaskboard(taskboardName);
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const taskboards = document.getElementById("taskboard-grid");
+        let selectedCard = null; // To store the currently selected card
+
+        taskboards.addEventListener("dblclick", function (e) {
+          if (e.target.classList.contains("task-card")) {
+            if (selectedCard) {
+              // If there's already a selected card, deselect it
+              selectedCard.classList.remove("selected");
+            }
+            selectedCard = e.target;
+            selectedCard.classList.add("selected"); // Add a class to style the selected card
+            e.stopPropagation(); // Stop the event from propagating further
+          }
+        });
+
+        document.addEventListener("click", function (e) {
+          if (selectedCard) {
+            // Check if the click is on another task card
+            if (e.target.classList.contains("task-card")) {
+              // If the clicked card is not the selected card, insert before the clicked card
+              if (selectedCard !== e.target) {
+                taskboards.insertBefore(selectedCard, e.target);
+              }
+            } else if (e.target === taskboards) {
+              // If the click is directly on the taskboard (not on a card), append to the end
+              taskboards.appendChild(selectedCard);
+            } else {
+              // Check for clicks on elements inside the taskboard but not directly on a card
+              let closestTaskCard = e.target.closest(".task-card");
+              if (closestTaskCard) {
+                // If the click is near another card, insert before that card
+                taskboards.insertBefore(selectedCard, closestTaskCard);
+              } else if (taskboards.contains(e.target)) {
+                // If the click is within the taskboards but not on or near a card, append to the end
+                taskboards.appendChild(selectedCard);
+              }
+            }
+            selectedCard.classList.remove("selected");
+            selectedCard = null; // Reset selected card after dropping
+          }
+        });
+
+        // Optional: Style for the selected card
+        const style = document.createElement("style");
+        style.innerHTML = `
+            .task-card.selected {
+                border: 2px solid blue; /* Example style */
+                opacity: 0.7;
+            }
+        `;
+        document.head.appendChild(style);
+      });
+
+      // Update this function to set the taskboard name in the navigation bar
+      function openTaskboard(taskboardName) {
+        currentTaskboard = taskboardName;
+        fetchTaskboardData(taskboardName);
+        document.getElementById("taskboardName").textContent = taskboardName; // Update the navigation bar text
+      }
+
+      // DOMContentLoaded event listener with updated logic
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskboardName = urlParams.get("name");
+        if (taskboardName) {
+          openTaskboard(taskboardName);
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const taskboards = document.getElementById("taskboard-grid");
+        let selectedCard = null; // Variable to store the selected card
+
+        // Event listener for double-click to select a card
+        taskboards.addEventListener("dblclick", function (e) {
+          if (e.target.classList.contains("task-card")) {
+            if (selectedCard) {
+              // Deselect previously selected card
+              selectedCard.classList.remove("selected");
+              console.log("Deselected card:", selectedCard); // Debugging log
+            }
+            // Mark new selected card and add any visual indication if needed
+            selectedCard = e.target;
+            selectedCard.classList.add("selected");
+            console.log("Selected card:", selectedCard); // Debugging log
+          }
+        });
+
+        // Event listener for click to place the selected card before clicked card
+        taskboards.addEventListener("click", function (e) {
+          if (
+            selectedCard &&
+            e.target.classList.contains("task-card") &&
+            selectedCard !== e.target
+          ) {
+            // Move selected card before the clicked card
+            e.target.parentNode.insertBefore(selectedCard, e.target);
+            selectedCard.classList.remove("selected"); // Remove selection from moved card
+            console.log("Moved selected card before:", e.target); // Debugging log
+            selectedCard = null; // Reset selected card variable
+            updateTaskOrder(); // Call function to update order in the backend
+          }
+        });
+
+        function updateTaskOrder() {
+          if (!currentTaskboard) {
+            alert("No taskboard selected.");
+            return;
+          }
+          const tasks = document.querySelectorAll(".task-card");
+          const taskOrder = Array.from(tasks)
+            .map((task) => task.dataset.taskId)
+            .filter((taskId) => taskId !== undefined); // Filter out undefined elements
+
+          console.log(currentTaskboard);
+
+          console.log(
+            JSON.stringify({
+              taskBoardName: currentTaskboard,
+              order: taskOrder,
+            })
+          );
+          fetch("/update-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              taskBoardName: currentTaskboard,
+              order: taskOrder,
+            }), // Include task board name
+          })
+            .then((response) => response.json())
+            .then((data) => console.log("Order updated successfully"))
+            .catch((error) => console.error("Error updating order:", error));
+        }
+      });
+    </script>
+  </body>
+</html>
