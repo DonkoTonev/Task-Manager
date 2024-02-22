@@ -4,8 +4,10 @@ Welcome to the Task Manager Application! This application is designed to help us
 
 - **Excel File Upload**: Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
   
-- **Taskboard Creation**: Upon uploading an Excel file for the first time, the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by uploading additional Excel files.
-  
+- **Creation Of New Taskboard**: Upon uploading an Excel file for the first time, you will be asked to give a name for the new taskboard, and then the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by just uploading additional Excel files to it.
+
+- **Updating the Existing Taskboard**: Users can then update this taskboard by just uploading additional Excel files to it. The newly uploaded Excel rows are just added to the database and shown on the page.
+
 - **Edit Functionality**: Users have the ability to modify their taskboards through the edit page. This includes options to delete, duplicate, or modify existing tasks.
   
 - **Add New Tasks**: Users can add new tasks directly from the frontend interface. These tasks are stored in the database for future reference.
