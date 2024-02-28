@@ -74,8 +74,6 @@ From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New
 All of the other functionality of the Edit page is under development. It will be released soon.
 
 
-- **Drag & Drop Functionality** (In Progress): The next step in development involves implementing drag & drop functionality. Users will be able to rearrange tasks by dragging and dropping them across the taskboard. The new structure will be automatically saved in the database.
-
 ## Technologies Used
 
 - **Backend**: FastAPI is utilized to handle the backend logic of the application. FastAPI provides a modern, fast (high-performance), web framework for building APIs with Python 3.7+.
