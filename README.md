@@ -47,6 +47,12 @@ From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New
 
   After giving a name of the taskboard and clicking `OK`, the currently opened taskboard will be duplicated.
 
+- The `Delete` button:
+
+  When you click on the `Delete` button, a pop-up that ask you if you are sure that you want to delete the currently opened taskboard will appear. After clicking `OK`, the currently opened taskboard will be deleted forever:
+
+  ![Screenshot 2024-02-28 102006](https://github.com/DonkoTonev/Task-Manager/assets/116662870/5dcfc2a3-5c15-4b98-b4d1-24efa031be8a)
+
 - **Add New Tasks**: Users can add new tasks directly from the frontend interface. These tasks are stored in the database for future reference.
   
 - **Task Content Editing**: Users can edit the content of existing tasks directly from the frontend. Any modifications made are automatically saved to the database.
