@@ -2,6 +2,13 @@ Welcome to the Task Manager Application! This application is designed to help us
 
 ![Screenshot 2024-02-28 082954](https://github.com/DonkoTonev/Task-Manager/assets/116662870/c6b21dd3-5338-4ffc-bcc1-b97a90e1c3ad)
 
+## Technologies Used
+
+- **Backend**: FastAPI is utilized to handle the backend logic of the application. FastAPI provides a modern, fast (high-performance), web framework for building APIs with Python 3.7+.
+
+- **Frontend**: The frontend interface is developed using JavaScript, HTML, and CSS. These technologies provide the necessary tools for creating a dynamic and interactive user experience.
+
+- **Database**: SQLite is used as the database management system for storing task data. SQLite is a lightweight, serverless, self-contained database engine that is perfect for small to medium-sized applications.
 
 ## Features
 
@@ -73,13 +80,5 @@ From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New
 
 All of the other functionality of the Edit page is under development. It will be released soon.
 
-
-## Technologies Used
-
-- **Backend**: FastAPI is utilized to handle the backend logic of the application. FastAPI provides a modern, fast (high-performance), web framework for building APIs with Python 3.7+.
-
-- **Frontend**: The frontend interface is developed using JavaScript, HTML, and CSS. These technologies provide the necessary tools for creating a dynamic and interactive user experience.
-
-- **Database**: SQLite is used as the database management system for storing task data. SQLite is a lightweight, serverless, self-contained database engine that is perfect for small to medium-sized applications.
 
 
