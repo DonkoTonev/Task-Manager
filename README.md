@@ -31,10 +31,21 @@ After clicking the `Update` button, you should upload `.xlsx` file with which yo
 
 After selecting the `.xlsx` file, its data will be uploaded to the taskboard that you are updating, and will be saved.
 
-- **Updating the Existing Taskboard**: Users can then update this taskboard by just uploading additional Excel files to it. The newly uploaded Excel rows are just added to the database and shown on the page.
+- **The Edit Page**: When you click on the `Edit` button in the navbar, you will be routed to the Edit page from which you can edit the currently opened taskboard:
 
-- **Edit Functionality**: Users have the ability to modify their taskboards through the edit page. This includes options to delete, duplicate, or modify existing tasks.
-  
+![Untitled design (4)](https://github.com/DonkoTonev/Task-Manager/assets/116662870/51008284-66c4-43df-803e-7c39816514b4)
+
+![Screenshot 2024-02-28 095550](https://github.com/DonkoTonev/Task-Manager/assets/116662870/2a32d0f5-5796-41c3-8eb1-a5771433b3d9)
+
+From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New` and `Close` buttons.
+
+- The `Duplicate` button
+  When you click on the `Duplicate` button, you can duplicate your currently opened taskboard, a pop up will appear that will prompt you to enter a name of the new taskboard (the duplicate taskboard):
+
+  ![Screenshot 2024-02-28 100559](https://github.com/DonkoTonev/Task-Manager/assets/116662870/61d04729-7115-4230-9717-0190298dfc34)
+
+  After giving a name of the taskboard and clicking `OK`, the currently opened taskboard will be duplicated.
+
 - **Add New Tasks**: Users can add new tasks directly from the frontend interface. These tasks are stored in the database for future reference.
   
 - **Task Content Editing**: Users can edit the content of existing tasks directly from the frontend. Any modifications made are automatically saved to the database.
