@@ -31,6 +31,12 @@ After clicking the `Update` button, you should upload `.xlsx` file with which yo
 
 After selecting the `.xlsx` file, its data will be uploaded to the taskboard that you are updating, and will be saved.
 
+- **Choosing Which Taskboard To Open**: When you have a few taskboards uploaded and click the `Open` button, a form that prompts you to select one from your uploaded taskboards will appear:
+
+![Screenshot 2024-02-28 103647](https://github.com/DonkoTonev/Task-Manager/assets/116662870/1c50358f-43cb-484f-a3fe-08b6be79e49a)
+
+When you select any taskboard and click `Open Taskboard`, it will be opened.
+
 - **The Edit Page**: When you click on the `Edit` button in the navbar, you will be routed to the Edit page from which you can edit the currently opened taskboard:
 
 ![Untitled design (4)](https://github.com/DonkoTonev/Task-Manager/assets/116662870/51008284-66c4-43df-803e-7c39816514b4)
@@ -53,10 +59,21 @@ From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New
 
   ![Screenshot 2024-02-28 102006](https://github.com/DonkoTonev/Task-Manager/assets/116662870/5dcfc2a3-5c15-4b98-b4d1-24efa031be8a)
 
-- **Add New Tasks**: Users can add new tasks directly from the frontend interface. These tasks are stored in the database for future reference.
-  
-- **Task Content Editing**: Users can edit the content of existing tasks directly from the frontend. Any modifications made are automatically saved to the database.
-  
+- The `Close` button:
+
+  When you click on the `Close` button, the edit page will be closed and you will be redirected to the main page.
+
+- The `New` button:
+
+  Its functionality is under development
+
+- The `Save` button:
+
+  Its functionality is under development
+
+All of the other functionality of the Edit page is under development. It will be released soon.
+
+
 - **Drag & Drop Functionality** (In Progress): The next step in development involves implementing drag & drop functionality. Users will be able to rearrange tasks by dragging and dropping them across the taskboard. The new structure will be automatically saved in the database.
 
 ## Technologies Used
