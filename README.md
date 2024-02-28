@@ -1,5 +1,8 @@
 Welcome to the Task Manager Application! This application is designed to help users manage their tasks efficiently. Whether you're organizing personal chores, managing projects, or planning your day-to-day activities, this application offers a convenient platform to streamline your tasks.
 
+![Screenshot 2024-02-28 082954](https://github.com/DonkoTonev/Task-Manager/assets/116662870/c6b21dd3-5338-4ffc-bcc1-b97a90e1c3ad)
+
+
 ## Features
 
 - **Excel File Upload**: Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
