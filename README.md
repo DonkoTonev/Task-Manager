@@ -5,7 +5,15 @@ Welcome to the Task Manager Application! This application is designed to help us
 
 ## Features
 
-- **Excel File Upload**: Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
+- **Excel File Upload**: After opening the application, if you don't have any uploaded `.xlsx` files (taskboards), you can upload any `.xlsx` file by clicking the `New` button from the navbar:
+
+![Untitled design](https://github.com/DonkoTonev/Task-Manager/assets/116662870/6f11d8b8-7e27-4c9c-98d1-85a2d07504df)
+
+After clicking on the `New` button, a form that prompts you to enter the name of your taskboard and upload the `.xlsx` file will pop up.
+
+![Untitled design (1)](https://github.com/DonkoTonev/Task-Manager/assets/116662870/aecdf2b3-0637-4950-892f-edc667081aad)
+
+Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
   
 - **Creation Of New Taskboard**: Upon uploading an Excel file for the first time, you will be asked to give a name for the new taskboard, and then the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by just uploading additional Excel files to it.
 
