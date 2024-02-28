@@ -39,7 +39,8 @@ After selecting the `.xlsx` file, its data will be uploaded to the taskboard tha
 
 From the navbar of the Edit page, you have a `Save`, `Duplicate`, `Delete`, `New` and `Close` buttons.
 
-- The `Duplicate` button
+- The `Duplicate` button:
+
   When you click on the `Duplicate` button, you can duplicate your currently opened taskboard, a pop up will appear that will prompt you to enter a name of the new taskboard (the duplicate taskboard):
 
   ![Screenshot 2024-02-28 100559](https://github.com/DonkoTonev/Task-Manager/assets/116662870/61d04729-7115-4230-9717-0190298dfc34)
