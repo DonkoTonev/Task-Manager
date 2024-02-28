@@ -13,7 +13,10 @@ After clicking on the `New` button, a form that prompts you to enter the name of
 
 ![Untitled design (1)](https://github.com/DonkoTonev/Task-Manager/assets/116662870/aecdf2b3-0637-4950-892f-edc667081aad)
 
-Users can upload Excel files containing task data. Each row in the Excel file represents a separate task, which is then displayed as a card on the application.
+After giving a name of your new taskboard and uploading the `.xlsx` file which contains your tasks, the newly created taskboard will be shown on the homepage (Each row from your `.xlsx` file will be shown as different task):
+
+![Screenshot 2024-02-28 084832](https://github.com/DonkoTonev/Task-Manager/assets/116662870/ad8f091f-6860-4fee-8ce3-51007b6cefb4)
+
   
 - **Creation Of New Taskboard**: Upon uploading an Excel file for the first time, you will be asked to give a name for the new taskboard, and then the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by just uploading additional Excel files to it.
 
