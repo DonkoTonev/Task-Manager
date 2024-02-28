@@ -23,7 +23,13 @@ After the `.xlsx` file is uploaded and the newly created task is showed on the a
 
 All of the modifications made are automatically saved to the database.
 
-- **Creation Of New Taskboard**: Upon uploading an Excel file for the first time, you will be asked to give a name for the new taskboard, and then the application automatically generates a taskboard based on the data provided. Users can then update this taskboard by just uploading additional Excel files to it.
+- **Updating an Existing Taskboard**: After you uploaded and saved a taskboard, you have the opportunity to update it by clicking the `Update` button from the navbar:
+
+![Untitled design (3)](https://github.com/DonkoTonev/Task-Manager/assets/116662870/fc7f7b84-6e70-4797-b2dc-95d95dd3bbc2)
+
+After clicking the `Update` button, you should upload `.xlsx` file with which you want to update your taskboard. 
+
+After selecting the `.xlsx` file, its data will be uploaded to the taskboard that you are updating, and will be saved.
 
 - **Updating the Existing Taskboard**: Users can then update this taskboard by just uploading additional Excel files to it. The newly uploaded Excel rows are just added to the database and shown on the page.
 
