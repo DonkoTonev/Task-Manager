@@ -33,73 +33,73 @@
 
     <style>
       #new-taskboard-form {
-        display: none; /* Keep it hidden initially */
-        margin: 20px auto; /* Centered with automatic margins */
+        display: none; 
+        margin: 20px auto; 
         padding: 20px;
-        border: none; /* Remove border */
+        border: none; 
         border-radius: 8px;
-        background-color: #ffffff; /* Light background for contrast */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-        width: 90%; /* Responsive width */
-        max-width: 500px; /* Maximum width to maintain form structure */
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        width: 90%; 
+        max-width: 500px; 
       }
 
       #new-taskboard-form input[type="text"],
       #new-taskboard-form input[type="file"] {
-        width: calc(100% - 20px); /* Full width minus padding */
+        width: calc(100% - 20px);
         padding: 10px;
         margin: 10px 0;
-        display: block; /* Ensure it takes its own line */
+        display: block; 
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-sizing: border-box; /* Include padding and border in element's width */
-        font-size: 16px; /* Larger font size for better readability */
+        box-sizing: border-box;
+        font-size: 16px; 
       }
 
       #new-taskboard-form button {
-        width: calc(100% - 20px); /* Full width minus padding */
-        background-color: #007bff; /* Bootstrap primary color */
+        width: calc(100% - 20px);
+        background-color: #007bff;
         color: white;
         padding: 14px 20px;
         margin: 8px 0;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 16px; /* Match input font size for consistency */
-        transition: background-color 0.2s; /* Smooth transition for hover effect */
+        font-size: 16px; 
+        transition: background-color 0.2s; 
       }
 
       #new-taskboard-form button:hover {
-        background-color: #0056b3; /* Darker shade on hover for feedback */
+        background-color: #0056b3; 
       }
 
       #new-taskboard-form input[type="text"]::placeholder,
       #new-taskboard-form input[type="file"]::placeholder {
         color: #888;
-        font-size: 16px; /* Increase placeholder font size for better visibility */
+        font-size: 16px; 
       }
 
       .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
+        display: none;
+        position: fixed; 
+        z-index: 1;
         left: 0;
         top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0, 0, 0); /* Fallback color */
-        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0, 0, 0); 
+        background-color: rgba(0, 0, 0, 0.4); 
         padding-top: 60px;
       }
 
       .modal-content {
         background-color: #fefefe;
-        margin: 5% auto; /* 5% from the top and centered */
+        margin: 5% auto; 
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        border-radius: 8px; /* Optional: Rounded corners */
+        width: 80%; 
+        border-radius: 8px;
       }
 
       .taskboard-selector {
@@ -117,19 +117,19 @@
         grid-template-columns: repeat(
           auto-fill,
           minmax(250px, 1fr)
-        ); /* Creates as many columns as can fit, with each card having a minimum width of 250px and maximum of 1 fraction of the available space */
-        gap: 20px; /* Adjusts spacing between cards */
+        ); 
+        gap: 20px; 
       }
 
       .task-card {
         padding: 10px;
-        background-color: #444; /* Dark background */
+        background-color: #444; 
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         box-sizing: border-box;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        color: #bbbbbb; /* Lighter text color */
+        color: #bbbbbb;
       }
       #new-taskboard-form {
         transform: none;
@@ -137,26 +137,26 @@
 
       body .wrapper #new-taskboard-form input[type="text"],
       body .wrapper #new-taskboard-form input[type="file"] {
-        width: 100% !important; /* Full width of the parent */
-        padding: 10px !important; /* Comfortable padding */
-        margin-bottom: 10px !important; /* Space between fields */
-        display: block !important; /* Ensure display is block */
-        border: 1px solid #ccc !important; /* Consistent border */
-        border-radius: 4px !important; /* Rounded corners for aesthetics */
-        box-sizing: border-box !important; /* Include padding and border in the element's total width and height */
-        font-size: 16px !important; /* Increase font size for better readability */
+        width: 100% !important; 
+        padding: 10px !important;
+        margin-bottom: 10px !important; 
+        display: block !important; 
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important; 
+        box-sizing: border-box !important; 
+        font-size: 16px !important; 
       }
 
       body .wrapper #new-taskboard-form button {
-        width: 100% !important; /* Full width to match input fields */
-        padding: 10px !important; /* Consistent padding */
-        margin-top: 10px !important; /* Space above the button */
-        background-color: #007bff !important; /* Bootstrap primary button color */
+        width: 100% !important; 
+        padding: 10px !important; 
+        margin-top: 10px !important; 
+        background-color: #007bff !important;
         color: white !important;
         border: none !important;
         border-radius: 4px !important;
         cursor: pointer !important;
-        font-size: 16px !important; /* Match input font size */
+        font-size: 16px !important; 
       }
 
       .task-card.dragging {
@@ -170,7 +170,6 @@
       <div class="mobile-container">
         <!-- Top Navigation Menu -->
         <div class="topnav">
-          <!-- <a href="javascript:void(0);" class="new_task" onclick="myFunction()">My New Taskboard -->
           <a
             href="javascript:void(0);"
             class="new_task"
@@ -536,454 +535,6 @@
       src="https://code.jquery.com/jquery-2.2.0.min.js"
       type="text/javascript"
     ></script>
-    <script>
-      function myFunction() {
-        var x = document.getElementById("myLinks");
-        if (x.style.display === "block") {
-          x.style.display = "none";
-        } else {
-          x.style.display = "block";
-        }
-      }
-
-      function closeForm() {
-        var formContainer = document.getElementById("new-taskboard-form");
-        formContainer.style.display = "none";
-      }
-
-      // Global variable to keep track of the currently selected taskboard
-      let currentTaskboard = null;
-
-      // Update taskboard functionality
-      document
-        .getElementById("update-button")
-        .addEventListener("click", function () {
-          if (!currentTaskboard) {
-            alert("Please select a taskboard first.");
-            return;
-          }
-
-          var fileInput = document.createElement("input");
-          fileInput.type = "file";
-          fileInput.accept = ".xlsx";
-
-          fileInput.addEventListener("change", function (event) {
-            var file = event.target.files[0];
-            var formData = new FormData();
-            formData.append("file", file);
-            formData.append("name", currentTaskboard);
-
-            fetch("/upload/", {
-              method: "POST",
-              body: formData,
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                fetchTaskboardData(currentTaskboard);
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
-          });
-
-          fileInput.click();
-        });
-
-      // Open taskboard selection modal
-      document
-        .getElementById("open-button")
-        .addEventListener("click", function () {
-          fetch("/list/")
-            .then((response) => response.json())
-            .then((taskboards) => {
-              populateTaskboardSelector(Object.values(taskboards));
-              showModal();
-            })
-            .catch((error) => {
-              console.error("Error fetching taskboards:", error);
-            });
-        });
-
-      // Populate taskboard selector in modal
-      function populateTaskboardSelector(taskboards) {
-        var selector = document.getElementById("taskboard-selector");
-        selector.innerHTML = "";
-        taskboards.forEach((taskboard) => {
-          var option = document.createElement("option");
-          option.value = taskboard;
-          option.textContent = taskboard;
-          selector.appendChild(option);
-        });
-      }
-
-      // Show modal
-      function showModal() {
-        var modal = document.getElementById("taskboard-selection-modal");
-        modal.style.display = "block";
-      }
-
-      // Close modal functionality
-      document
-        .querySelector(".close-button")
-        .addEventListener("click", function () {
-          var modal = document.getElementById("taskboard-selection-modal");
-          modal.style.display = "none";
-        });
-
-      window.onclick = function (event) {
-        var modal = document.getElementById("taskboard-selection-modal");
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-
-      // Handle taskboard selection from modal
-      document
-        .getElementById("select-taskboard-button")
-        .addEventListener("click", function () {
-          var selectedTaskboard =
-            document.getElementById("taskboard-selector").value;
-          if (selectedTaskboard) {
-            openTaskboard(selectedTaskboard);
-            var modal = document.getElementById("taskboard-selection-modal");
-            modal.style.display = "none";
-          } else {
-            alert("Please select a taskboard.");
-          }
-        });
-
-      // Edit taskboard functionality
-      document
-        .getElementById("edit-button")
-        .addEventListener("click", function () {
-          if (!currentTaskboard) {
-            alert("Please select a taskboard first.");
-            return;
-          }
-          window.location.href = `/edit?name=${encodeURIComponent(
-            currentTaskboard
-          )}`;
-        });
-
-      // New taskboard functionality
-      // New taskboard functionality
-      document
-        .getElementById("new-button")
-        .addEventListener("click", function () {
-          document.getElementById("new-taskboard-form").style.display = "block";
-        });
-
-      // Submit new taskboard
-      document
-        .getElementById("submit-new-taskboard")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent the form from submitting in the traditional way
-
-          var taskboardName =
-            document.getElementById("new-taskboard-name").value;
-          var fileInput = document.getElementById("new-taskboard-file");
-          var file = fileInput.files[0];
-
-          if (!taskboardName || !file) {
-            alert("Please enter a taskboard name and select a file.");
-            return;
-          }
-
-          var formData = new FormData();
-          formData.append("name", taskboardName);
-          formData.append("file", file);
-
-          fetch("/create", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              // console.log('Taskboard created:', data);
-              document.getElementById("new-taskboard-form").style.display =
-                "none";
-              document.getElementById("new-taskboard-name").value = "";
-              fileInput.value = "";
-              // Redirect to the homepage with the new taskboard name as a query parameter
-              window.location.href = `/?name=${encodeURIComponent(
-                taskboardName
-              )}`;
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              alert(
-                "A taskboard with this name already exists. Please choose another name!"
-              );
-            });
-        });
-
-      function fetchTaskboardData(taskboardName) {
-        console.log("Fetching data for:", taskboardName);
-        fetch(`/get/?name=${encodeURIComponent(taskboardName)}`)
-          .then((response) => response.json())
-          .then((data) => {
-            var taskboardGrid = document.getElementById("taskboard-grid");
-            taskboardGrid.innerHTML = "";
-
-            // Convert data object to an array of key-value pairs
-            const dataArray = Object.entries(data);
-
-            // Sort the array based on the task_order
-            dataArray.sort((a, b) => a[1].task_order - b[1].task_order);
-
-            // Iterate over sorted data and create cards
-            dataArray.forEach(([taskId, taskData]) => {
-              createCard(taskId, taskData);
-            });
-
-            // Add the plusCard element
-            const plusCard = document.createElement("div");
-            plusCard.innerHTML = `<div class='task-card plus-card' style='text-align:center; cursor:pointer;'><span class='bi bi-plus-lg' style='font-size: 2em;'></span></div>`;
-            plusCard.addEventListener("click", function () {
-              document.getElementById("new-task-modal").style.display = "block";
-            });
-            taskboardGrid.appendChild(plusCard);
-          })
-          .catch((error) => {
-            console.error("Error fetching taskboard data:", error);
-          });
-      }
-
-      function addNewTask() {
-        const taskContent = document.getElementById("new-task-content").value;
-        if (!currentTaskboard) {
-          alert("No taskboard selected.");
-          return;
-        }
-
-        const payload = {
-          content: taskContent, // Ensure this matches the Pydantic model in FastAPI
-        };
-
-        fetch(`/taskboard/${encodeURIComponent(currentTaskboard)}/task`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload), // Correctly stringify the payload
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("Task added:", data);
-            document.getElementById("new-task-modal").style.display = "none";
-            fetchTaskboardData(currentTaskboard); // Optionally refresh or update UI
-          })
-          .catch((error) => console.error("Error adding task:", error));
-      }
-
-      function createCard(taskId, row) {
-        // Create the card element and assign it a class and task ID
-        var card = document.createElement("div");
-        card.className = "task-card";
-        card.setAttribute("data-task-id", taskId); // Set the unique task ID
-
-        Object.keys(row).forEach((key) => {
-          if (row[key] !== null && row[key] !== undefined) {
-            var p = document.createElement("p");
-            p.textContent = `${key}: `;
-            p.classList.add("editable-text");
-
-            // Create an editable span for the content
-            var span = document.createElement("span");
-            span.contentEditable = "true";
-            span.textContent = row[key];
-
-            span.addEventListener("blur", function (event) {
-              var newText = this.textContent; // Use `this` to refer to the span
-              fetch("/update-task", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  taskboardName: currentTaskboard,
-                  taskId: taskId, // Use the taskId passed to createCard
-                  key: key,
-                  value: newText,
-                }),
-              })
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-                .catch((error) => console.error("Error updating task:", error));
-            });
-
-            p.appendChild(span); // Append the span to the paragraph element
-            card.appendChild(p); // Append the paragraph to the card
-          }
-        });
-
-        // Append the card to the taskboard grid
-        document.getElementById("taskboard-grid").appendChild(card);
-      }
-
-      // Open taskboard function
-      function openTaskboard(taskboardName) {
-        currentTaskboard = taskboardName;
-        fetchTaskboardData(taskboardName);
-      }
-
-      // DOMContentLoaded event listener
-      document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const taskboardName = urlParams.get("name");
-        if (taskboardName) {
-          openTaskboard(taskboardName);
-        }
-      });
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const taskboards = document.getElementById("taskboard-grid");
-        let selectedCard = null; // To store the currently selected card
-
-        taskboards.addEventListener("dblclick", function (e) {
-          if (e.target.classList.contains("task-card")) {
-            if (selectedCard) {
-              // If there's already a selected card, deselect it
-              selectedCard.classList.remove("selected");
-            }
-            selectedCard = e.target;
-            selectedCard.classList.add("selected"); // Add a class to style the selected card
-            e.stopPropagation(); // Stop the event from propagating further
-          }
-        });
-
-        document.addEventListener("click", function (e) {
-          if (selectedCard) {
-            // Check if the click is on another task card
-            if (e.target.classList.contains("task-card")) {
-              // If the clicked card is not the selected card, insert before the clicked card
-              if (selectedCard !== e.target) {
-                taskboards.insertBefore(selectedCard, e.target);
-              }
-            } else if (e.target === taskboards) {
-              // If the click is directly on the taskboard (not on a card), append to the end
-              taskboards.appendChild(selectedCard);
-            } else {
-              // Check for clicks on elements inside the taskboard but not directly on a card
-              let closestTaskCard = e.target.closest(".task-card");
-              if (closestTaskCard) {
-                // If the click is near another card, insert before that card
-                taskboards.insertBefore(selectedCard, closestTaskCard);
-              } else if (taskboards.contains(e.target)) {
-                // If the click is within the taskboards but not on or near a card, append to the end
-                taskboards.appendChild(selectedCard);
-              }
-            }
-            selectedCard.classList.remove("selected");
-            selectedCard = null; // Reset selected card after dropping
-          }
-        });
-
-        // Optional: Style for the selected card
-        const style = document.createElement("style");
-        style.innerHTML = `
-            .task-card.selected {
-                border: 2px solid blue; /* Example style */
-                opacity: 0.7;
-            }
-        `;
-        document.head.appendChild(style);
-      });
-
-      // Update this function to set the taskboard name in the navigation bar
-      function openTaskboard(taskboardName) {
-        currentTaskboard = taskboardName;
-        fetchTaskboardData(taskboardName);
-        document.getElementById("taskboardName").textContent = taskboardName; // Update the navigation bar text
-      }
-
-      // DOMContentLoaded event listener with updated logic
-      document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const taskboardName = urlParams.get("name");
-        if (taskboardName) {
-          openTaskboard(taskboardName);
-        }
-      });
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const taskboards = document.getElementById("taskboard-grid");
-        let selectedCard = null; // Variable to store the selected card
-
-        // Event listener for double-click to select a card
-        taskboards.addEventListener("dblclick", function (e) {
-          if (e.target.classList.contains("task-card")) {
-            if (selectedCard) {
-              // Deselect previously selected card
-              selectedCard.classList.remove("selected");
-              console.log("Deselected card:", selectedCard); // Debugging log
-            }
-            // Mark new selected card and add any visual indication if needed
-            selectedCard = e.target;
-            selectedCard.classList.add("selected");
-            console.log("Selected card:", selectedCard); // Debugging log
-          }
-        });
-
-        // Event listener for click to place the selected card before clicked card
-        taskboards.addEventListener("click", function (e) {
-          if (
-            selectedCard &&
-            e.target.classList.contains("task-card") &&
-            selectedCard !== e.target
-          ) {
-            // Move selected card before the clicked card
-            e.target.parentNode.insertBefore(selectedCard, e.target);
-            selectedCard.classList.remove("selected"); // Remove selection from moved card
-            console.log("Moved selected card before:", e.target); // Debugging log
-            selectedCard = null; // Reset selected card variable
-            updateTaskOrder(); // Call function to update order in the backend
-          }
-        });
-
-        function updateTaskOrder() {
-          if (!currentTaskboard) {
-            alert("No taskboard selected.");
-            return;
-          }
-          const tasks = document.querySelectorAll(".task-card");
-          const taskOrder = Array.from(tasks)
-            .map((task) => task.dataset.taskId)
-            .filter((taskId) => taskId !== undefined); // Filter out undefined elements
-
-          console.log(currentTaskboard);
-
-          console.log(
-            JSON.stringify({
-              taskBoardName: currentTaskboard,
-              order: taskOrder,
-            })
-          );
-          fetch("/update-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              taskBoardName: currentTaskboard,
-              order: taskOrder,
-            }), // Include task board name
-          })
-            .then((response) => response.json())
-            .then((data) => console.log("Order updated successfully"))
-            .catch((error) => console.error("Error updating order:", error));
-        }
-      });
-    </script>
+    <script src="static\taskboard.js"></script>
   </body>
 </html>
