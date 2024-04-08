@@ -32,12 +32,6 @@ db = TaskboardManager()
 async def home():
     return FileResponse("static/index.html")
 
-
-@app.get("/settings")
-async def settings():
-    return FileResponse("static/settings.html")
-
-
 @app.get("/edit")
 async def edit():
     return FileResponse("static/edit.html")
