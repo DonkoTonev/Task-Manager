@@ -3,12 +3,9 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
-from pydantic import BaseModel
 from io import BytesIO
 from fastapi.responses import FileResponse
 from typing import Optional, Annotated
-import traceback
-
 
 app = FastAPI(title="Taskboard")
 app.mount("/static", StaticFiles(directory="static",
@@ -132,45 +129,114 @@ async def get_taskboard(name: str):
     return db.getAsDict(name)
 
 
+@app.get("/get-settings/")
+async def get_taskboard_settings(name: str):
+    try:
+        # Retrieve the current settings for the taskboard
+        settings = db.getSettings(name)
+        return settings
+    except Exception as e:
+        return {"error": str(e)}
+
 @app.post("/update-task")
 async def update_task(update_details: dict = Body(...)):
     taskboardName = update_details['taskboardName']
     taskId = update_details['taskId']
     key = update_details['key']
     value = update_details['value']
+
     try:
-        db.updateTask(taskboardName, taskId, key, value)
+        db.updateTask(taskboardName, taskId, key, value)  # Pass font size to your TaskboardManager
         return {"message": "Task updated successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-class TaskContent(BaseModel):
-    content: str
-
-
-@app.post("/taskboard/{taskboard_name}/task")
-async def create_task(taskboard_name: str, task_content: TaskContent):
-    print(f"Adding task to {taskboard_name}: {task_content.content}")
+@app.post("/save-font-size")
+async def save_font_size(name: str, font_size: str):
     try:
-        db.addTask(taskboard_name, task_content)
-        return {"message": "Task created successfully."}
+        db.saveFontsize(name, font_size)
+        return {"message": "Font size saved successfully."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": str(e)}
 
 
-@app.post("/update-order")
-async def update_order(data: dict):
+
+
+
+@app.post("/save-bg-color")
+async def save_bg_color(name: str, bg_color: str):
     try:
-        order = data.get('order')
-        taskBoardName = data.get('taskBoardName')
-        print(order, taskBoardName)
-        # Assuming db is an instance of YourDatabaseClass
-        db.updateTaskOrder(taskBoardName, order)
-        return {"message": "Order updated successfully."}
+        db.saveBgColor(name, bg_color)
+        return {"message": "Background color saved successfully."}
     except Exception as e:
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": str(e)}
+    
+    
+@app.post("/save-font-color")
+async def save_font_color(name: str, font_color: str):
+    try:
+        db.saveFontColor(name, font_color)
+        return {"message": "Background color saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
+
+@app.post("/save-view-headers")
+async def save_view_headers(name: str, view_header: str):
+    try:
+        db.saveViewHeader(name, view_header)
+        return {"message": "Background color saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+
+@app.post("/save-title-header")
+async def save_title_header(name: str, title_header: str):
+    try:
+        db.saveTitleHeader(name, title_header)
+        return {"message": "Background color saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
+    
+    
+    
+@app.post("/save-text-wrapping")
+async def save_text_wrapping(name: str, text_wrapping: str):
+    try:
+        db.saveTextWrapping(name, text_wrapping)
+        return {"message": "Text-Wrapping saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+
+    
+    
+    
+    
+    
+
+@app.post("/save-sorting-header")
+async def save_sorting_header(name: str, sorting_header: str):
+    try:
+        db.saveSortingHeader(name, sorting_header)
+        return {"message": "Background color saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+@app.post("/save-sort-by")
+async def save_sort_by(name: str, sort_by: str):
+    try:
+        db.saveSortBy(name, sort_by)
+        return {"message": "Background color saved successfully."}
+    except Exception as e:
+        return {"error": str(e)}
+
 
 
 if __name__ == "__main__":
@@ -185,4 +251,4 @@ if __name__ == "__main__":
         db.uploadFile("My New Taskboard", in_file.read())
         in_file.close()
 
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run("app:app", host="localhost", port=8001, reload=True)
