@@ -34,8 +34,7 @@ class TaskboardManager:
             cursor = self.global_db.cursor()
             cursor.execute(
                 """CREATE TABLE IF NOT EXISTS '{}' (
-                        id INTEGER PRIMARY KEY,
-                        task_order INTEGER DEFAULT 0
+                        id INTEGER PRIMARY KEY
                     )""".format(
                     name
                 )
@@ -53,6 +52,7 @@ class TaskboardManager:
                 "INSERT INTO table_metadata (table_name) VALUES ('{}')".format(
                     name)
             )
+
 
     def uploadFile(self, name, data):
         # Check if the Taskboard exists
@@ -95,6 +95,7 @@ class TaskboardManager:
                     ),
                     row_values,
                 )
+
 
     def _ensure_columns_exist(self, name, columns):
         with self.global_db:
@@ -196,13 +197,13 @@ class TaskboardManager:
 
         with self.global_db:
             cursor = self.global_db.cursor()
-            cursor.execute(f"SELECT * FROM '{name}' ORDER BY task_order ASC")
+            cursor.execute(f"SELECT * FROM '{name}'")
 
             # Get column names
             columns = [desc[0] for desc in cursor.description]
 
             # Fetch all rows except the first one (header row)
-            rows = cursor.fetchall()[0:]
+            rows = cursor.fetchall()[1:]
 
             # Create a nested dictionary
             table_dict = {}
@@ -224,57 +225,199 @@ class TaskboardManager:
             cursor.execute(update_query, (value, taskId))
             self.global_db.commit()
 
-    def updateTaskOrder(self, table_name, order):
-        print(table_name, order)
+    def saveFontsize(self, name, font_size):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
         with self.global_db:
             cursor = self.global_db.cursor()
-
-            # Check if the 'task_order' column exists in the table
-            cursor.execute(f"PRAGMA table_info({table_name})")
-            columns = cursor.fetchall()
-            has_task_order_column = any(
-                column[1] == 'task_order' for column in columns)
-
-            # If the 'task_order' column doesn't exist, add it to the table
-            if not has_task_order_column:
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'font_size' not in columns:
                 cursor.execute(
-                    f"ALTER TABLE {table_name} ADD COLUMN task_order INTEGER")
-
-            # Update the task order
-            for idx, task_id in enumerate(order, start=1):
-                print(idx, task_id)
-                cursor.execute(
-                    f"UPDATE {table_name} SET task_order = ? WHERE id = ?", (idx, task_id))
-
+                    f"ALTER TABLE '{name}' ADD COLUMN font_size INTEGER"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET font_size = ?",
+                (font_size,)
+            )
             self.global_db.commit()
 
-    def addTask(self, taskboardName, taskContent):
-        # Validate taskboardName
-        if not self._taskboard_exists(taskboardName):
-            raise ValueError(f"Taskboard '{taskboardName}' does not exist.")
+
+    def saveBgColor(self, name, bg_color):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
 
         with self.global_db:
             cursor = self.global_db.cursor()
-
-            # Assume taskContent has a property 'content' that holds the string content
-            contentString = taskContent.content if hasattr(
-                taskContent, 'content') else str(taskContent)
-
-            # Check if the 'content' column exists
-            cursor.execute(f"PRAGMA table_info('{taskboardName}')")
-            columns = [row[1] for row in cursor.fetchall()]
-            if 'content' not in columns:
-                # If the 'content' column does not exist, add it
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'bg_color' not in columns:
                 cursor.execute(
-                    f"ALTER TABLE '{taskboardName}' ADD COLUMN content TEXT")
+                    f"ALTER TABLE '{name}' ADD COLUMN bg_color TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET bg_color = ?",
+                (bg_color,)
+            )
+            self.global_db.commit()
 
-            # Since parameters can't be used for table names, ensure taskboardName is safe
-            sql = f"INSERT INTO '{taskboardName}' (content) VALUES (?)"
 
-            try:
-                cursor.execute(sql, (contentString,))
-                self.global_db.commit()
-            except Exception as e:
-                print(f"Error inserting task into {taskboardName}: {e}")
-                # Depending on your error handling, you might want to re-raise the exception
-                raise
+    def saveFontColor(self, name, font_color):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'font_color' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN font_color TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET font_color = ?",
+                (font_color,)
+            )
+            self.global_db.commit()
+
+
+    def saveViewHeader(self, name, view_header):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'view_header' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN view_header TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET view_header = ?",
+                (view_header,)
+            )
+            self.global_db.commit()
+
+
+    def saveTitleHeader(self, name, title_header):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'title_header' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN title_header TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET title_header = ?",
+                (title_header,)
+            )
+            self.global_db.commit()
+            
+    def saveTextWrapping(self, name, text_wrapping):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'text_wrapping' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN text_wrapping TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET text_wrapping = ?",
+                (text_wrapping,)
+            )
+            self.global_db.commit()
+
+    def saveSortingHeader(self, name, sorting_header):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'sorting_header' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN sorting_header TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET sorting_header = ?",
+                (sorting_header,)
+            )
+            self.global_db.commit()
+
+
+    def saveSortBy(self, name, sort_by):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(
+                f"PRAGMA table_info('{name}')"
+            )
+            columns = [column[1] for column in cursor.fetchall()]
+            if 'sort_by' not in columns:
+                cursor.execute(
+                    f"ALTER TABLE '{name}' ADD COLUMN sort_by TEXT"
+                )
+            cursor.execute(
+                f"UPDATE '{name}' SET sort_by = ?",
+                (sort_by,)
+            )
+            self.global_db.commit()
+
+    def getSettings(self, name):
+        if not self._taskboard_exists(name):
+            raise Exception(f"Taskboard '{name}' does not exist.")
+
+        with self.global_db:
+            cursor = self.global_db.cursor()
+            cursor.execute(f"PRAGMA table_info('{name}')")
+
+            # Fetch column names
+            columns = [row[1] for row in cursor.fetchall()]
+
+            cursor.execute(f"SELECT * FROM '{name}'")
+
+            # Fetch the settings from the database
+            settings = cursor.fetchone()
+
+            # Convert settings to a dictionary dynamically
+            settings_dict = {}
+            for index, column_name in enumerate(columns):
+                settings_dict[column_name] = settings[index]
+
+            return {
+                "font_size": settings_dict["font_size"],
+                "bg_color": settings_dict["bg_color"],
+                "font_color": settings_dict["font_color"],
+                "view_header": settings_dict["view_header"],
+                "title_header": settings_dict["title_header"],
+                "text_wrapping": settings_dict["text_wrapping"],
+                "sorting_header": settings_dict["sorting_header"],
+                "sort_by": settings_dict["sort_by"]
+            }

@@ -29,7 +29,11 @@
     />
 
     <link rel="stylesheet" type="text/css" href="static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="static/css/responsive.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/css/responsive.css"
+    />
   </head>
   <body class="body">
     <div class="wrapper">
@@ -147,7 +151,11 @@
                       </div>
                       <div class="col-md-6">
                         <div class="setting_row_count_box">
-                          <input type="text" id="Font_Size" placeholder="0px" />
+                          <input
+                            type="text"
+                            id="Font_Size1"
+                            placeholder="0px"
+                          />
                         </div>
                       </div>
                     </div>
@@ -163,7 +171,7 @@
                         <div class="setting_row_count_box">
                           <input
                             type="text"
-                            id="Font_Color"
+                            id="fontColor"
                             placeholder="Black"
                           />
                         </div>
@@ -179,7 +187,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="setting_row_count_box">
-                          <input type="text" id="bg" placeholder="Grey" />
+                          <input type="text" id="bgColor" placeholder="Grey" />
                         </div>
                       </div>
                     </div>
@@ -189,15 +197,17 @@
                   <div class="setting_row_box">
                     <div class="row align-items-center">
                       <div class="col-md-6">
-                        <p class="setting_row_text">Font Family</p>
+                        <p class="setting_row_text">View Headers</p>
                       </div>
                       <div class="col-md-6">
                         <div class="setting_row_count_box">
-                          <input
-                            type="text"
-                            id="Font_Family"
-                            placeholder="Eras ITC"
-                          />
+                          <select name="View_Header" id="View_Header">
+                            <option value="Nothing">Nothing</option>
+                            <option value="No">No</option>
+                            <option value="Yes">
+                              Yes
+                            </option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -306,7 +316,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="setting_row_count_box">
-                          <select name="Text-Wrapping" id="Text-Wrapping">
+                          <select name="Text-Wrapping" id="TextWrapping">
                             <option value="Disabled">Disabled</option>
                             <option value="Enable">Enable</option>
                           </select>
@@ -342,9 +352,13 @@
                       <div class="col-md-6">
                         <div class="setting_row_count_box">
                           <select name="Sort_By" id="Sort_By">
-                            <option value="Alphabetical">Alphabetical</option>
-                            <option value="Ascending">Ascending</option>
-                            <option value="Desanding">Desanding</option>
+                            <option value="Task Order">Task Order</option>
+                            <option value="Alphabetical Ascending">
+                              Alphabetical Ascending
+                            </option>
+                            <option value="Alphabetical Descending">
+                              Alphabetical Descending
+                            </option>
                           </select>
                         </div>
                       </div>
